@@ -1,4 +1,4 @@
 package Game;
 
-public class Double {
+public class Fight {
 }

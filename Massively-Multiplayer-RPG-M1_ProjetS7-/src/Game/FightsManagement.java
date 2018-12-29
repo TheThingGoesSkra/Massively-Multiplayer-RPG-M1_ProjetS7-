@@ -1,4 +1,4 @@
 package Game;
 
-public class FightManagement {
+public class FightsManagement {
 }
