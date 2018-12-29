@@ -1,4 +1,7 @@
 package Game;
 
-public class Context {
+import java.io.Serializable;
+
+public class Context implements Serializable {
+
 }
