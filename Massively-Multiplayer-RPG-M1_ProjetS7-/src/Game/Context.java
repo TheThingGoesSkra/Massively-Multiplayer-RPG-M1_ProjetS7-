@@ -11,7 +11,5 @@ public class Context implements Serializable {
     private List<Monster> monsters;
     private ArrayList<Player> players;
 
-    public void t(){
-    }
 
 }
