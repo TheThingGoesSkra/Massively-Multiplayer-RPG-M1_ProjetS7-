@@ -11,5 +11,11 @@ public class Context implements Serializable {
     private List<Monster> monsters;
     private ArrayList<Player> players;
 
+    public void addMonster(Monster monster){
+        monsters.add(monster);
+    }
 
+    public void addPlayer(Player player){
+        players.add(player);
+    }
 }
