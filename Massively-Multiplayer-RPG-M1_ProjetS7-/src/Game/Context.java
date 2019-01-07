@@ -18,4 +18,14 @@ public class Context implements Serializable {
     public void addPlayer(Player player){
         players.add(player);
     }
+
+    public void removeMonster(Monster monster){
+
+        monsters.remove(monster);
+    }
+
+    public void removePlayer(Player player){
+
+        players.remove(player);
+    }
 }
