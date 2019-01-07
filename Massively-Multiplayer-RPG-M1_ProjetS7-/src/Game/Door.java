@@ -5,17 +5,15 @@ import java.util.Map;
 
 public class Door {
 
-    private int door;
-    private static Map<Door,Pole> Porte_liste = new HashMap<Door,Pole>();
-    private Hall hall = new Hall();
-    public Door{
-
-        this.door=door;
-    }
+    private Hall hall1;
+    private Hall hall2;
 
     public Hall get_Other_Hall(Hall hall){
-
-        return hall;
+        if (hall == hall1){
+        return hall2;}
+        else if (hall == hall2){
+            return hall1;
+        }
     }
 
     public void add_Hall(Hall hall){

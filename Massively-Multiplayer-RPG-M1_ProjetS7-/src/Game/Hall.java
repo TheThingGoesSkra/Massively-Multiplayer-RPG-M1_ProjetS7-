@@ -5,7 +5,8 @@ import java.util.Map.Entry;
 
 public class Hall {
     private String name;
-    private static Map<Hall,Door>  Hall_liste = new HashMap<Hall,Door>();
+    private static Map<Pole,Door>  Hall_liste = new HashMap<Pole,Door>();
+    Context context = new Context();
     private Door door = new Door();
 
 
@@ -30,9 +31,11 @@ public class Hall {
 
     }
 
-    public void addDoor(Hall hall,Door door, Pole pole){
+    public void addDoor(Door door, Pole pole){
+        Hall.Hall_liste.put(pole,door);
 
     }
+
     public void addMonster(Monster monster){
         context.addMonster(monster);
 
@@ -70,15 +73,26 @@ public class Hall {
 
     public void exitHall(Player player){
 
-        context.removePlayer(player);
+        boolean isFighting=isFighting(player);
+
+        if (isFighting=false){
+            context.removePlayer(player);
+        }
+        else{
+            System.out.println("Le joueur est en train de se battre ");
+        }
+
 
     }
 
-    public void isFighting(Participant participant1){
-
+    public boolean isFighting(Participant participant1){
+       return true;
     }
 
     public void Heal(){
+        int i = 0;
+        while (i it = this. ;){
 
+        }
     }
 }
