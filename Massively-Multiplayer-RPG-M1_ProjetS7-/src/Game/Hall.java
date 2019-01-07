@@ -7,10 +7,10 @@ public class Hall {
     private String name;
     private static Map<Pole,Door>  Hall_liste = new HashMap<Pole,Door>();
     Context context = new Context();
-    private Door door = new Door();
 
 
-    public Hall{
+
+    public Hall (String name){
 
         this.name=name;
     }
@@ -71,15 +71,17 @@ public class Hall {
         Fight fight = new Fight(participant1,participant2);
     }
 
-    public void exitHall(Player player){
+    public boolean exitHall(Player player){
 
         boolean isFighting=isFighting(player);
 
         if (isFighting=false){
             context.removePlayer(player);
+            return  isFighting;
         }
         else{
             System.out.println("Le joueur est en train de se battre ");
+            return  isFighting;
         }
 
 
