@@ -7,13 +7,15 @@ public class Participant {
     private int attack;
     private int resilience;
     private int chance;
+    private int maxlife;
 
-    public Participant(String name, int life, int attack, int resilience, int chance) {
+    public Participant(String name, int life, int attack, int resilience, int chance, int maxlife) {
         this.name = name;
         this.life = life;
         this.attack = attack;
         this.resilience = resilience;
         this.chance = chance;
+        this.maxlife = maxlife;
     }
 
     public String getName() {
@@ -55,4 +57,8 @@ public class Participant {
     public void setChance(int chance) {
         this.chance = chance;
     }
+
+    public int getMaxlife() {return maxlife;}
+
+    public void setMaxlife(int maxlife) {this.maxlife = maxlife;}
 }

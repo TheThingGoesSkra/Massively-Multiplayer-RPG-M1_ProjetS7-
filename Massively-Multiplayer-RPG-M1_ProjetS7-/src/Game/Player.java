@@ -6,8 +6,8 @@ public class Player extends Participant {
 
     private Client proxy;
 
-    public Player(String name, int life, int attack, int resilience, int chance, Client proxy) {
-        super(name, life, attack, resilience, chance);
+    public Player(String name, int life, int attack, int resilience, int chance, Client proxy, int maxlife) {
+        super(name, life, attack, resilience, chance, maxlife );
         this.proxy = proxy;
     }
 

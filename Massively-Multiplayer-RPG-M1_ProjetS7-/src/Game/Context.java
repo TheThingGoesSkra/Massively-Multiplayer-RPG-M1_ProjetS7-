@@ -18,9 +18,6 @@ public class Context implements Serializable {
     public void addPlayer(Player player){
         players.add(player);
     }
-    public void setPlayers(ArrayList<Player> players){
-        this.players=players;
-    }
 
     public void removeMonster(Monster monster){
 
@@ -33,11 +30,7 @@ public class Context implements Serializable {
     }
 
 
-
-    public void Heal(){
-        int i = 0;
-        while (i it = this.players.iterator();{
-
-        }
+    public ArrayList<Player> getPlayers(){
+        return players;
     }
 }

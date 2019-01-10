@@ -92,9 +92,9 @@ public class Hall {
     }
 
     public void Heal(){
-        int i = 0;
-        while (i it = this. ;){
 
+        for(int i = 0 ; i < context.getPlayers().size(); i++){
+            context.getPlayers().get(i).setLife(context.getPlayers().get(i).getMaxlife());
         }
     }
 }
