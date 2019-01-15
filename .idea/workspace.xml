@@ -46,26 +46,41 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
+<<<<<<< Updated upstream
           <entry key="JAVA" value="1855" />
           <entry key="PLAIN_TEXT" value="5" />
+=======
+          <entry key="JAVA" value="2153" />
+          <entry key="PLAIN_TEXT" value="6" />
+>>>>>>> Stashed changes
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Context.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
             <state relative-caret-position="435">
               <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
+=======
+            <state relative-caret-position="510">
+              <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
+>>>>>>> Stashed changes
               <folding>
                 <element signature="e#310#311#0" expanded="true" />
                 <element signature="e#346#347#0" expanded="true" />
                 <element signature="e#389#390#0" expanded="true" />
                 <element signature="e#424#425#0" expanded="true" />
+<<<<<<< Updated upstream
                 <element signature="e#761#762#0" expanded="true" />
                 <element signature="e#791#792#0" expanded="true" />
+=======
+                <element signature="e#480#481#0" expanded="true" />
+                <element signature="e#499#500#0" expanded="true" />
+>>>>>>> Stashed changes
               </folding>
             </state>
           </provider>
@@ -74,8 +89,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Player.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
             <state relative-caret-position="135">
               <caret line="9" column="61" selection-start-line="9" selection-start-column="61" selection-end-line="9" selection-end-column="61" />
+=======
+            <state>
+              <caret column="4" lean-forward="true" selection-start-column="4" selection-end-column="4" />
+>>>>>>> Stashed changes
             </state>
           </provider>
         </entry>
@@ -84,7 +104,11 @@
         <entry file="file://$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Door.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
+<<<<<<< Updated upstream
               <caret line="17" selection-start-line="17" selection-end-line="17" />
+=======
+              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+>>>>>>> Stashed changes
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -113,8 +137,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Hall.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
             <state relative-caret-position="454">
               <caret line="78" column="11" selection-start-line="78" selection-start-column="11" selection-end-line="78" selection-end-column="11" />
+=======
+            <state relative-caret-position="394">
+              <caret line="90" selection-start-line="90" selection-end-line="96" selection-end-column="5" />
+>>>>>>> Stashed changes
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#168#179#0" expanded="true" />
@@ -135,10 +164,15 @@
       <list>
         <option value="$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Dungeon.java" />
         <option value="$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Door.java" />
+<<<<<<< Updated upstream
         <option value="$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Context.java" />
         <option value="$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Participant.java" />
         <option value="$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Player.java" />
         <option value="$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Hall.java" />
+=======
+        <option value="$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Hall.java" />
+        <option value="$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Context.java" />
+>>>>>>> Stashed changes
       </list>
     </option>
   </component>
@@ -154,7 +188,11 @@
       <select />
     </treeState>
   </component>
+<<<<<<< Updated upstream
   <component name="ProjectFrameBounds">
+=======
+  <component name="ProjectFrameBounds" extendedState="6">
+>>>>>>> Stashed changes
     <option name="x" value="75" />
     <option name="y" value="44" />
     <option name="width" value="1279" />
@@ -200,7 +238,11 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/Android/Sdk" />
     <property name="aspect.path.notification.shown" value="true" />
+<<<<<<< Updated upstream
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546945038518" />
+=======
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546876648050" />
+>>>>>>> Stashed changes
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Project" />
@@ -231,7 +273,7 @@
       <option name="presentableId" value="Default" />
       <updated>1546170491334</updated>
       <workItem from="1546170494006" duration="8815000" />
-      <workItem from="1546452839156" duration="15300000" />
+      <workItem from="1546452839156" duration="21156000" />
     </task>
     <task id="LOCAL-00001" summary="h">
       <created>1546454392446</created>
@@ -247,11 +289,22 @@
       <option name="project" value="LOCAL" />
       <updated>1546458370679</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Hall2">
+      <created>1546861586054</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1546861586054</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< Updated upstream
     <option name="totallyTimeSpent" value="29058000" />
+=======
+    <option name="totallyTimeSpent" value="29971000" />
+>>>>>>> Stashed changes
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -265,7 +318,11 @@
   <component name="ToolWindowManager">
     <frame x="75" y="44" width="1279" height="668" extended-state="0" />
     <layout>
+<<<<<<< Updated upstream
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24940239" />
+=======
+      <window_info content_ui="combo" id="Project" order="0" weight="0.24940239" />
+>>>>>>> Stashed changes
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -283,16 +340,53 @@
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32919255" />
+<<<<<<< Updated upstream
       <window_info active="true" anchor="bottom" id="Messages" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.2538524" />
+=======
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.24940239" />
+      <window_info active="true" anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.24940239" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Palette&#9;" order="6" />
+      <window_info anchor="right" id="Database" order="7" weight="0.32988048" />
+      <window_info anchor="right" id="Maven Projects" order="8" weight="0.32988048" />
+    </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24940239" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" order="0" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" />
+      <window_info anchor="bottom" id="Run" order="3" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" weight="0.32919255" />
+      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="11" visible="true" weight="0.32919255" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24940239" />
+>>>>>>> Stashed changes
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
       <window_info anchor="right" id="Database" order="7" />
       <window_info anchor="right" id="Maven Projects" order="8" />
+<<<<<<< Updated upstream
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24940239" />
@@ -323,6 +417,8 @@
       <window_info anchor="right" id="Palette&#9;" order="6" />
       <window_info anchor="right" id="Database" order="7" />
       <window_info anchor="right" id="Maven Projects" order="8" />
+=======
+>>>>>>> Stashed changes
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -344,7 +440,12 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="h" />
     <MESSAGE value="Hall" />
-    <option name="LAST_COMMIT_MESSAGE" value="Hall" />
+    <MESSAGE value="Hall2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Hall2" />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -399,6 +500,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Fight.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="21" column="8" lean-forward="true" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Player.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -406,8 +514,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Context.java">
+    <entry file="file://$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Door.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
         <state relative-caret-position="435">
           <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
           <folding>
@@ -417,12 +526,19 @@
             <element signature="e#424#425#0" expanded="true" />
             <element signature="e#761#762#0" expanded="true" />
             <element signature="e#791#792#0" expanded="true" />
+=======
+        <state relative-caret-position="255">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+>>>>>>> Stashed changes
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Participant.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
         <state relative-caret-position="499">
           <caret line="60" column="44" selection-start-line="60" selection-start-column="44" selection-end-line="60" selection-end-column="44" />
         </state>
@@ -437,10 +553,35 @@
             <element signature="e#168#179#0" expanded="true" />
             <element signature="e#1667#1668#0" expanded="true" />
             <element signature="e#1693#1694#0" expanded="true" />
+=======
+        <state relative-caret-position="394">
+          <caret line="90" selection-start-line="90" selection-end-line="96" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#168#179#0" expanded="true" />
+            <element signature="e#1667#1668#0" expanded="true" />
+            <element signature="e#1693#1694#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Massively-Multiplayer-RPG-M1_ProjetS7-/src/Game/Context.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
+          <folding>
+            <element signature="e#310#311#0" expanded="true" />
+            <element signature="e#346#347#0" expanded="true" />
+            <element signature="e#389#390#0" expanded="true" />
+            <element signature="e#424#425#0" expanded="true" />
+            <element signature="e#480#481#0" expanded="true" />
+            <element signature="e#499#500#0" expanded="true" />
+>>>>>>> Stashed changes
+          </folding>
+        </state>
+      </provider>
+    </entry>
+<<<<<<< Updated upstream
   </component>
   <component name="masterDetails">
     <states>
@@ -516,5 +657,7 @@
         </settings>
       </state>
     </states>
+=======
+>>>>>>> Stashed changes
   </component>
 </project>

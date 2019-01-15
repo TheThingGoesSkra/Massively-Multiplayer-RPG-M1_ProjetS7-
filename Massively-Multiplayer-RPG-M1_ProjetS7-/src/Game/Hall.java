@@ -8,8 +8,6 @@ public class Hall {
     private static Map<Pole,Door>  Hall_liste = new HashMap<Pole,Door>();
     Context context = new Context();
 
-
-
     public Hall (String name){
 
         this.name=name;
@@ -24,11 +22,11 @@ public class Hall {
         int lifeParticipant=participant.getLife();
         int life= lifeParticipant-hitpoint;
         participant.setLife(life);
-    }
+    } Hall_liste.get(pole);
 
-    public int getDoor(Pole pole){
-
-
+    public Door getDoor(Pole pole){
+        Door door = Hall_liste.get(pole);
+        return door;
     }
 
     public void addDoor(Door door, Pole pole){
@@ -92,9 +90,9 @@ public class Hall {
     }
 
     public void Heal(){
-
-        for(int i = 0 ; i < context.getPlayers().size(); i++){
-            context.getPlayers().get(i).setLife(context.getPlayers().get(i).getMaxlife());
+         ArrayList<Player> players = this.context.getPlayers();
+        for(int i = 0 ; i < players.size(); i++){
+            players.get(i).heal();
         }
     }
 }

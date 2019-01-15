@@ -61,4 +61,12 @@ public class Participant {
     public int getMaxlife() {return maxlife;}
 
     public void setMaxlife(int maxlife) {this.maxlife = maxlife;}
+
+    public void heal(){
+
+    }
+
+    public void heal(int soin){
+
+    }
 }
