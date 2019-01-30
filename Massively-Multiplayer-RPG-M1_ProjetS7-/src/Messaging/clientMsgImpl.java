@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class client implements Runnable {
+public class clientMsgImpl implements Runnable {
 
   // Socket de service 
   private static Socket clientSocket = null;
@@ -53,7 +53,7 @@ public class client implements Runnable {
       try {
 
         /* Thread de lecture sur le serveur. */
-        new Thread(new client()).start();
+        new Thread(new clientMsgImpl()).start();
         while (!closed) {
           os.println(inputLine.readLine().trim());
         }
@@ -71,10 +71,7 @@ public class client implements Runnable {
 
   
   public void run() {
-    /*
-     * Keep on reading from the socket till we receive "Bye" from the
-     * server. Once we received that then we want to break.
-     */
+    
     String responseLine;
     try {
       while ((responseLine = is.readLine()) != null) {
