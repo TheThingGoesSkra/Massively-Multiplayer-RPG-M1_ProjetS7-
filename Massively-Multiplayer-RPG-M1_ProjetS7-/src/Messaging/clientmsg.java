@@ -1,5 +1,3 @@
-//Example 25
-
 import java.io.DataInputStream;
 import java.io.PrintStream;
 import java.io.BufferedReader;
@@ -10,11 +8,11 @@ import java.net.UnknownHostException;
 
 public class client implements Runnable {
 
-  // The client socket
+  // Socket de service 
   private static Socket clientSocket = null;
-  // The output stream
+  // canal de sortie 
   private static PrintStream os = null;
-  // The input stream
+  // canal d'entrée 
   private static DataInputStream is = null;
 
   private static BufferedReader inputLine = null;
@@ -22,9 +20,8 @@ public class client implements Runnable {
   
   public static void main(String[] args) {
 
-    // The default port.
+    // Num de port.
     int portNumber = 2222;
-    // The default host.
     String host = "localhost";
 
     if (args.length < 2) {
@@ -37,7 +34,7 @@ public class client implements Runnable {
     }
 
     /*
-     * Open a socket on a given host and port. Open input and output streams.
+     * ouverture socket et cannaux 
      */
     try {
       clientSocket = new Socket(host, portNumber);
@@ -45,26 +42,23 @@ public class client implements Runnable {
       os = new PrintStream(clientSocket.getOutputStream());
       is = new DataInputStream(clientSocket.getInputStream());
     } catch (UnknownHostException e) {
-      System.err.println("Don't know about host " + host);
+      System.err.println("Erreur host " + host);
     } catch (IOException e) {
-      System.err.println("Couldn't get I/O for the connection to the host "
+      System.err.println("Erreur de connection "
           + host);
     }
 
-    /*
-     * If everything has been initialized then we want to write some data to the
-     * socket we have opened a connection to on the port portNumber.
-     */
+	/////////////////////////////////////////////////////////////////////////////
     if (clientSocket != null && os != null && is != null) {
       try {
 
-        /* Create a thread to read from the server. */
+        /* Thread de lecture sur le serveur. */
         new Thread(new client()).start();
         while (!closed) {
           os.println(inputLine.readLine().trim());
         }
         /*
-         * Close the output stream, close the input stream, close the socket.
+         * Fermeture de la socket et des cannaux 
          */
         os.close();
         is.close();
@@ -75,11 +69,7 @@ public class client implements Runnable {
     }
   }
 
-  /*
-   * Create a thread to read from the server. (non-Javadoc)
-   * 
-   * @see java.lang.Runnable#run()
-   */
+  
   public void run() {
     /*
      * Keep on reading from the socket till we receive "Bye" from the
@@ -89,7 +79,7 @@ public class client implements Runnable {
     try {
       while ((responseLine = is.readLine()) != null) {
         System.out.println(responseLine);
-        if (responseLine.indexOf("*** Bye") != -1)
+        if (responseLine.indexOf("** Au revoir ") != -1)
           break;
       }
       closed = true;

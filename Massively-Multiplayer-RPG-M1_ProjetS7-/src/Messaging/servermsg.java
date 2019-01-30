@@ -1,5 +1,3 @@
-//Example 26 (updated)
-
 import java.io.DataInputStream;
 import java.io.PrintStream;
 import java.io.IOException;
