@@ -107,8 +107,7 @@ class clientThread extends Thread {
         }
         for (int i = 0; i < maxClientsCount; i++) {
           if (threads[i] != null && threads[i] != this) {
-            threads[i].os.println("** Le joueur " + name
-                + " viens de rejoindre la session !! **");
+           threads[i].os.println("<<<Le joueur " + name+ " viens de rejoindre la session>>>" );
           }
         }
       }
@@ -153,12 +152,12 @@ class clientThread extends Thread {
         for (int i = 0; i < maxClientsCount; i++) {
           if (threads[i] != null && threads[i] != this
               && threads[i].clientName != null) {
-            threads[i].os.println(name
-                + " est partie !! ***");
+            threads[i].os.println("<<"+name
+                + " est partie>>");
           }
         }
       }
-      os.println("** Au revoir " + name + " !! **");
+      os.println("<<Au revoir " + name + ">>");
 
       /*
 		preparation du thread pour un nouveau joueur 

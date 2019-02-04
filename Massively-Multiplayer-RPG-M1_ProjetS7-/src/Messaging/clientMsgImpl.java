@@ -24,16 +24,7 @@ public class clientMsgImpl implements Runnable {
     int portNumber = 2222;
     String host = "localhost";
 
-    if (args.length < 2) {
-      System.out
-          .println("Usage: java MultiThreadChatClient <host> <portNumber>\n"
-              + "Now using host=" + host + ", portNumber=" + portNumber);
-    } else {
-      host = args[0];
-      portNumber = Integer.valueOf(args[1]).intValue();
-    }
-
-    /*
+     /*
      * ouverture socket et cannaux 
      */
     try {
