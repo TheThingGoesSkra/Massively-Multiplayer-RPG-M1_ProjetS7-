@@ -14,6 +14,7 @@ public class Door {
         else if (hall == hall2){
             return hall1;
         }
+        return null;
     }
 
     public void add_Hall(Hall hall){

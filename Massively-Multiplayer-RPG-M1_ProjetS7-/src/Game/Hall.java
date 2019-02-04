@@ -22,7 +22,7 @@ public class Hall {
         int lifeParticipant=participant.getLife();
         int life= lifeParticipant-hitpoint;
         participant.setLife(life);
-    } Hall_liste.get(pole);
+    }
 
     public Door getDoor(Pole pole){
         Door door = Hall_liste.get(pole);
