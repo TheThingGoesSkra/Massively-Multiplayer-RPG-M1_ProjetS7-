@@ -49,40 +49,16 @@ public class Hall {
 
     }
 
-    public  void removePlayer(Player player){
-
+    public void removePlayer(Player player){
        context.removePlayer(player);
     }
 
-
-
-    public void endFight(Participant looser){
-
-
-    }
-
-    public void runnaway(Participant participant1, Participant participant2){
+    public void removeFight(Fight fight){
 
     }
 
     public void addFight(Participant participant1, Participant participant2){
         Fight fight = new Fight(participant1,participant2);
-    }
-
-    public boolean exitHall(Player player){
-
-        boolean isFighting=isFighting(player);
-
-        if (isFighting=false){
-            context.removePlayer(player);
-            return  isFighting;
-        }
-        else{
-            System.out.println("Le joueur est en train de se battre ");
-            return  isFighting;
-        }
-
-
     }
 
     public boolean isFighting(Participant participant1){
