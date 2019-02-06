@@ -1,12 +1,12 @@
 package Game;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 public class Hall {
     private String name;
     private static Map<Pole,Door>  Hall_liste = new HashMap<Pole,Door>();
     Context context = new Context();
+    private List<Fight> fights;
 
     public Hall (String name){
 
@@ -56,18 +56,41 @@ public class Hall {
 
 
 
-    public void endFight(Participant looser){
-
-
-    }
 
     public void runnaway(Participant participant1, Participant participant2){
 
     }
 
     public void addFight(Participant participant1, Participant participant2){
-        Fight fight = new Fight(participant1,participant2);
+        ArrayList<Player> players = this.context.getPlayers();
+        List<Monster> monsters = this.context.getMonsters();
+        boolean monster = false;
+        boolean player = false;
+
+        for(int i = 0; i < players.size(); i++){
+            if (participant1 == players.get(i)){
+                player=true;
+            }
+
+        }
+            for(int  j=0; j < players.size(); j++){
+                if (participant2 == players.get(j)){
+                    monster=true;
+                }
+        }
+
+        if (monster && player == true) {
+
+            Fight fight = new Fight(participant1, participant2);
+            fights.add(fight);
+        }
     }
+
+
+    public void removeFight(Fight fight){
+        fights.remove(fight);
+    }
+
 
     public boolean exitHall(Player player){
 
@@ -85,9 +108,17 @@ public class Hall {
 
     }
 
-    public boolean isFighting(Participant participant1){
-       return true;
+    public boolean isFighting(Participant participant1) {
+        boolean isFighting = false;
+        ArrayList<Player> players = this.context.getPlayers();
+        for (int i = 0; i < players.size(); i++) {
+            if (participant1 == players.get(i)) {
+                isFighting=true;
+            }
+        }
+        return isFighting;
     }
+
 
     public void Heal(){
          ArrayList<Player> players = this.context.getPlayers();

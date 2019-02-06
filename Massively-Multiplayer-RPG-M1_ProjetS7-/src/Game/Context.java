@@ -33,4 +33,6 @@ public class Context implements Serializable {
     public ArrayList<Player> getPlayers(){
         return players;
     }
+
+    public List<Monster> getMonsters() {return  monsters;}
 }
