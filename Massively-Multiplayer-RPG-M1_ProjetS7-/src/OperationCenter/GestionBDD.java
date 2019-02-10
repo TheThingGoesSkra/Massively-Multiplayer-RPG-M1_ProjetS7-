@@ -109,7 +109,7 @@ public class GestionBDD {
             requete = "CREATE TABLE "+nomTable+" ("+nomColonnes_types+")";
             return this.requete(requete,1);
         }
-        private void printResultData(){
+        public void printResultData(){
             System.out.println(this.result);
         }
 
