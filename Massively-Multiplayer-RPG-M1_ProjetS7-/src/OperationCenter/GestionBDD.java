@@ -90,11 +90,10 @@ public class GestionBDD {
                 requete += " WHERE "+where;
             return this.requete(requete,0);
         }
-        public List<List<String>> requeteInsertInto(String insertInto, String values, String where){
+        public List<List<String>> requeteInsertInto(String insertInto, String values){
             String requete = "";
             requete = "INSERT INTO "+insertInto+" VALUES "+values;
-            if(where!="")
-                requete += " WHERE "+where;
+            
             return this.requete(requete,1);
         }
         public List<List<String>> requeteUpdate(String nomTable, String colonnes, String where){

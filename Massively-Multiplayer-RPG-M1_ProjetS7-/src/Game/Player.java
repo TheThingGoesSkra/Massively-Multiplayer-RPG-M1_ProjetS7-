@@ -1,5 +1,6 @@
 package Game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Client.*;
@@ -17,19 +18,32 @@ public class Player extends Participant {
         String passwd = "";
         GestionBDD myBDD = new GestionBDD(url,user,passwd);
         
-        String where="idplayer="+"\""+id+"\"";
-        
-        myBDD.requeteSelect("*", "player", where);
-        List<String> Res = myBDD.getResult().get(0);
-        
-        myBDD.printResultData();
+        Participant Joueur = new Participant(id,0,0,0,0,0); 
+        try 
+        {
+        	String where="idplayer="+"\""+id+"\"";
+        	myBDD.requeteSelect("*", "player", where);
+        	List<List<String>> Res = myBDD.getResult();
+        	List<String> Res1 = Res.get(0);
+        	myBDD.printResultData();
     	
-        Participant Joueur = new Participant(Res.get(0),
-        		Integer.parseInt(Res.get(1)),Integer.parseInt(Res.get(2)),
-        		Integer.parseInt(Res.get(3)),Integer.parseInt(Res.get(4)),
-        		Integer.parseInt(Res.get(5))); 
+        	Joueur = new Participant(Res1.get(0),
+        			Integer.parseInt(Res1.get(1)),Integer.parseInt(Res1.get(2)),
+        			Integer.parseInt(Res1.get(3)),Integer.parseInt(Res1.get(4)),
+        			Integer.parseInt(Res1.get(5))); 
     	
-    	return Joueur;
+    	
+        }
+        catch (Exception e)
+        {
+        	//myBDD.requete("insert into player (idplayer,life,attaque,"
+        	//		+ "resistance,chance,idclasse) values "
+        	//	+ "\"joueur inexistant\",0,0,0,0,0)",0);
+        	String values= "(\""+id+"\",0,0,0,0,0)";
+        	myBDD.requeteInsertInto("player" , values);
+        }
+		
+        return Joueur;
     	
     }
 
@@ -47,6 +61,6 @@ public class Player extends Participant {
     }
     
     public static void main(String[] args){
-    	Identification("Arthemis");   
+    	Identification("Joueurnonexistant");   
     }
 }
