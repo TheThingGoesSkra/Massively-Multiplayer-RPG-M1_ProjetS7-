@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class clientMsgImpl implements Runnable {
+public class ClientMsg implements Runnable {
 
   // Socket de service 
   private static Socket clientSocket = null;
@@ -17,7 +17,22 @@ public class clientMsgImpl implements Runnable {
 
   private static BufferedReader inputLine = null;
   private static boolean closed = false;
-  
+
+  public void run() {
+
+    String responseLine;
+    try {
+      while ((responseLine = is.readLine()) != null) {
+        System.out.println(responseLine);
+        if (responseLine.indexOf("** Au revoir ") != -1)
+          break;
+      }
+      closed = true;
+    } catch (IOException e) {
+      System.err.println("IOException:  " + e);
+    }
+  }
+
   public static void main(String[] args) {
 
     // Num de port.
@@ -44,7 +59,7 @@ public class clientMsgImpl implements Runnable {
       try {
 
         /* Thread de lecture sur le serveur. */
-        new Thread(new clientMsgImpl()).start();
+        new Thread(new ClientMsg()).start();
         while (!closed) {
           os.println(inputLine.readLine().trim());
         }
@@ -57,22 +72,6 @@ public class clientMsgImpl implements Runnable {
       } catch (IOException e) {
         System.err.println("IOException:  " + e);
       }
-    }
-  }
-
-  
-  public void run() {
-    
-    String responseLine;
-    try {
-      while ((responseLine = is.readLine()) != null) {
-        System.out.println(responseLine);
-        if (responseLine.indexOf("** Au revoir ") != -1)
-          break;
-      }
-      closed = true;
-    } catch (IOException e) {
-      System.err.println("IOException:  " + e);
     }
   }
 }

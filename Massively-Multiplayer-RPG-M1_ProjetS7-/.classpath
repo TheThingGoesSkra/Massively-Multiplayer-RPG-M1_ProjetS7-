@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry excluding="Messaging/" kind="src" path="src"/>
-	<classpathentry kind="src" path="src/Messaging"/>
-	<classpathentry kind="lib" path="C:/Users/Asus/javaproj/Massively-Multiplayer-RPG-M1_ProjetS7-/mysql-connector-java-8.0.15.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
