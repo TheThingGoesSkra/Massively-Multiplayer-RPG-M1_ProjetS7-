@@ -53,7 +53,7 @@ public class Hall {
        context.removePlayer(player);
     }
 
-<<<<<<< HEAD
+
 
 
 
@@ -78,9 +78,8 @@ public class Hall {
                     monster=true;
                 }
         }
-=======
+
     public void removeFight(Fight fight){
->>>>>>> master
 
         if (monster && player == true) {
 
@@ -94,7 +93,7 @@ public class Hall {
         fights.remove(fight);
     }
 
-<<<<<<< HEAD
+
 
     public boolean exitHall(Player player){
 
@@ -112,20 +111,17 @@ public class Hall {
 
     }
 
-    public boolean isFighting(Participant participant1) {
-        boolean isFighting = false;
-        ArrayList<Player> players = this.context.getPlayers();
-        for (int i = 0; i < players.size(); i++) {
-            if (participant1 == players.get(i)) {
-                isFighting=true;
-            }
-        }
-        return isFighting;
-=======
     public boolean isFighting(Participant participant1){
-       return true;
->>>>>>> master
-    }
+            boolean isFighting = false;
+            ArrayList<Player> players = this.context.getPlayers();
+            for (int i = 0; i < players.size(); i++) {
+                if (participant1 == players.get(i)) {
+                    isFighting = true;
+                }
+            }
+            return isFighting;
+        }
+
 
 
     public void Heal(){
