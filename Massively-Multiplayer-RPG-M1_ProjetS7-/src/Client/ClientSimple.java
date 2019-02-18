@@ -5,9 +5,15 @@ import Game.Participant;
 import Game.Player;
 import Labyrinth.Labyrinth;
 
-import java.rmi.RemoteException;
-
 public class ClientSimple {
+
+    private Client proxy;
+    private Context context;
+    private Session session;
+
+    public ClientSimple(Client proxy) {
+        this.proxy = proxy;
+    }
 
     public void setContext(Context context){};
     public void addPlayer(Player player){};

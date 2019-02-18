@@ -3,6 +3,7 @@ package OperationCenter;
 import Client.Session;
 import Game.Player;
 import Labyrinth.Labyrinth;
+import Labyrinth.LabyrinthSimple;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -15,10 +16,10 @@ public class OperationCenterImpl extends UnicastRemoteObject implements Operatio
     private HashMap<Labyrinth,List<String>> responsabilities;
 
     protected OperationCenterImpl() throws RemoteException {};
-    public Session identification(String name) throws RemoteException {Session session=new Session();return session;};
+    public Session identification(String name) throws RemoteException {return null;};
     public void save(ArrayList<Player> players, String labyrinth, String Hall)  throws RemoteException {};
-    public void recordLabyrinth(Labyrinth server)  throws RemoteException {};
-    public void recordMessagerie(String ip,int numPort) throws RemoteException {};
+    public LabyrinthSimple recordLabyrinth(Labyrinth server)  throws RemoteException {return null;};
+    public ArrayList<String> recordMessagerie(String ip,int numPort) throws RemoteException {return null;};
    /*public void a(){
         Labyrinth a;
         List<String> b=responsabilities.get(a);

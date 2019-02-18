@@ -3,14 +3,21 @@ package OperationCenter;
 import Client.Session;
 import Game.Player;
 import Labyrinth.Labyrinth;
+import Labyrinth.LabyrinthSimple;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class OperationCenterSimple {
 
-    public Session identification(String name){Session session=new Session();return session;};
-    public void save(ArrayList<Player> players, String labyrinth, String Hall){};
-    public void recordLabyrinth(Labyrinth server){};
-    public void recordMessagerie(String ip,int numPort){};
+    private LabyrinthSimple labyrinth;
+    HashMap<Labyrinth,ArrayList<String>> resp;
+    private ArrayList<String> halls;
+
+    public Session identification(String name) {return null;};
+    public void save(ArrayList<Player> players, String labyrinth, String Hall) {};
+    public LabyrinthSimple recordLabyrinth(Labyrinth server) {return labyrinth;};
+    public ArrayList<String> recordMessagerie(String ip,int numPort) {return halls;};
+
 
 }
