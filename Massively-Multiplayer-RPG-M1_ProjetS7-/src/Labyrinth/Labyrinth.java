@@ -1,14 +1,18 @@
 package Labyrinth;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import Game.*;
 import Client.*;
 public interface Labyrinth extends Remote {
 	
-	public  Context login(Session s) throws RemoteException;
-	public Context changeHall(String Hall, String player, Pole direction) throws RemoteException;
-	public void newFight(Participant forward, Participant attacked) throws RemoteException;
-	public void runnaway(Participant forward, Participant attacked) throws RemoteException;
-	public void logOut(String player) throws RemoteException;
+	public void login(Session s, Client proxy) throws RemoteException;
+	public void changeHall(String Hall, String player, Pole direction) throws RemoteException;
+	public void newFight(String forward, String attacked) throws RemoteException;
+	public void runnaway(String Hall, String forward, String runner) throws RemoteException;
+	public void logOut(String Hall, String player) throws RemoteException;
+	public void setReponsabiities(HashMap<Labyrinth,ArrayList<String>> resp) throws RemoteException;
 
 }

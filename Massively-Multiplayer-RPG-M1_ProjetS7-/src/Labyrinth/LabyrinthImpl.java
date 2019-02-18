@@ -1,27 +1,28 @@
 package Labyrinth;
 
+import Client.Client;
 import Game.*;
 
 import static java.lang.Thread.sleep;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import Client.Session;
 
-public class LabyrinthImpl implements Labyrinth{
-	
-	public  Context login(Session s) throws RemoteException {
-		return null;
+public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth{
+
+	protected LabyrinthImpl() throws RemoteException {
 	}
-	public Context changeHall(String Hall, String player, Pole direction) throws RemoteException {
-		return null;
-	}
-	public void newFight(Participant forward, Participant attacked) throws RemoteException {
-	}
-	public void runnaway(Participant forward, Participant attacked) throws RemoteException {
-	}
-	public void logOut(String player) throws RemoteException {
-	}
+
+	public void login(Session s, Client proxy) throws RemoteException{};
+	public void changeHall(String Hall, String player, Pole direction) throws RemoteException{};
+	public void newFight(String forward, String attacked) throws RemoteException{};
+	public void runnaway(String Hall, String forward, String runner) throws RemoteException{};
+	public void logOut(String Hall, String player) throws RemoteException{};
+	public void setReponsabiities(HashMap<Labyrinth,ArrayList<String>> resp) throws RemoteException{};
 
 
 }
