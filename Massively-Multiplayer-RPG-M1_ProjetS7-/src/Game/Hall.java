@@ -22,7 +22,7 @@ public class Hall {
         int lifeParticipant=participant.getLife();
         int life= lifeParticipant-hitpoint;
         participant.setLife(life);
-    } Hall_liste.get(pole);
+    }
 
     public Door getDoor(Pole pole){
         Door door = Hall_liste.get(pole);
@@ -49,11 +49,11 @@ public class Hall {
 
     }
 
-    public  void removePlayer(Player player){
-
+    public void removePlayer(Player player){
        context.removePlayer(player);
     }
 
+<<<<<<< HEAD
 
 
 
@@ -78,6 +78,9 @@ public class Hall {
                     monster=true;
                 }
         }
+=======
+    public void removeFight(Fight fight){
+>>>>>>> master
 
         if (monster && player == true) {
 
@@ -91,6 +94,7 @@ public class Hall {
         fights.remove(fight);
     }
 
+<<<<<<< HEAD
 
     public boolean exitHall(Player player){
 
@@ -117,6 +121,10 @@ public class Hall {
             }
         }
         return isFighting;
+=======
+    public boolean isFighting(Participant participant1){
+       return true;
+>>>>>>> master
     }
 
 
