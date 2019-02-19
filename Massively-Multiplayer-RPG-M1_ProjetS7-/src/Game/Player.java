@@ -3,7 +3,7 @@ package Game;
 import java.util.List;
 
 import Client.*;
-import OperationCenter.GestionBDD;
+import OperationCenter.DAO;
 
 public class Player extends Participant {
 
@@ -15,7 +15,7 @@ public class Player extends Participant {
         url += "?autoReconnect=true&useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
         String user = "root";
         String passwd = "";
-        GestionBDD myBDD = new GestionBDD(url,user,passwd);
+        DAO myBDD = new DAO(url,user,passwd);
         
         String where="idplayer="+"\""+id+"\"";
         

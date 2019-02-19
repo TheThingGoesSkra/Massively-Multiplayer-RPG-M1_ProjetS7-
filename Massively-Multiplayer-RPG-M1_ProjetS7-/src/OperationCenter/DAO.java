@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GestionBDD {
+public class DAO {
 
         private String url;
         private String login;
@@ -16,7 +16,7 @@ public class GestionBDD {
         List<List<String>> result;
 
         //Constructor
-        public GestionBDD(String url, String login, String password){
+        public DAO(String url, String login, String password){
             this.url = url;
             this.login = login;
             this.password = password;
@@ -43,7 +43,9 @@ public class GestionBDD {
             this.password = password;
         }
         public List<List<String>> getResult() {
-            return this.result;
+            List<List<String>> result= new ArrayList<>();
+            result.addAll(this.result);
+            return result;
         }
 
         //Methods
@@ -113,14 +115,14 @@ public class GestionBDD {
             System.out.println(this.result);
         }
 
-        //Test
+        /*//Test
         public static void main(String[] args){
             String url = "jdbc:mysql://localhost:3306/projets7";
             url += "?autoReconnect=true&useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
             String user = "root";
             String passwd = "";
-            GestionBDD myBDD = new GestionBDD(url,user,passwd);
+            DAO myBDD = new DAO(url,user,passwd);
             myBDD.requete("SELECT * FROM hall",0);
             myBDD.printResultData();
-        }
+        }*/
     }

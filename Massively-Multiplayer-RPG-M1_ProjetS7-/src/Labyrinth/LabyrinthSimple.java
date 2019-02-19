@@ -12,7 +12,15 @@ import java.util.HashSet;
 
 public class LabyrinthSimple {
 
-    private HashSet<Hall> halls = new HashSet<Hall>();
+    private String id;
+    private String name;
+    private HashSet<Hall> halls;
+
+    public LabyrinthSimple(String id, String name){
+        this.id=id;
+        this.name=name;
+        this.halls = new HashSet<Hall>();
+    }
 
     public void login(Session s, Client proxy){};
     public void changeHall(String Hall, String player, Pole direction){};

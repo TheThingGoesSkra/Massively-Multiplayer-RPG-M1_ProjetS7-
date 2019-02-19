@@ -3,18 +3,23 @@ package Game;
 import java.util.*;
 
 public class Hall {
+    private String id;
     private String name;
-    private static Map<Pole,Door>  Hall_liste = new HashMap<Pole,Door>();
-    Context context = new Context();
+    private String idType;
+    private static Map<Pole,Door> halls;
+    Context context;
     private List<Fight> fights;
 
-    public Hall (String name){
-
+    public Hall (String id, String name, String idType){
+        this.context = new Context();
+        this.fights = new ArrayList<Fight>();
+        this.halls = new HashMap<Pole,Door>();
+        this.id=id;
         this.name=name;
+        this.idType=idType;
     }
 
     public void setName(String name) {
-
         this.name = name;
     }
 
@@ -25,12 +30,12 @@ public class Hall {
     }
 
     public Door getDoor(Pole pole){
-        Door door = Hall_liste.get(pole);
+        Door door = halls.get(pole);
         return door;
     }
 
     public void addDoor(Door door, Pole pole){
-        Hall.Hall_liste.put(pole,door);
+        Hall.halls.put(pole,door);
 
     }
 
@@ -61,33 +66,24 @@ public class Hall {
 
     }
 
-    public void addFight(Participant participant1, Participant participant2){
+    public void addFight(Participant participant1, Participant participant2) {
         ArrayList<Player> players = this.context.getPlayers();
         List<Monster> monsters = this.context.getMonsters();
         boolean monster = false;
         boolean player = false;
 
-        for(int i = 0; i < players.size(); i++){
-            if (participant1 == players.get(i)){
-                player=true;
+        for (int i = 0; i < players.size(); i++) {
+            if (participant1 == players.get(i)) {
+                player = true;
             }
 
         }
-            for(int  j=0; j < players.size(); j++){
-                if (participant2 == players.get(j)){
-                    monster=true;
-                }
-        }
-
-    public void removeFight(Fight fight){
-
-        if (monster && player == true) {
-
-            Fight fight = new Fight(participant1, participant2);
-            fights.add(fight);
+        for (int j = 0; j < players.size(); j++) {
+            if (participant2 == players.get(j)) {
+                monster = true;
+            }
         }
     }
-
 
     public void removeFight(Fight fight){
         fights.remove(fight);
