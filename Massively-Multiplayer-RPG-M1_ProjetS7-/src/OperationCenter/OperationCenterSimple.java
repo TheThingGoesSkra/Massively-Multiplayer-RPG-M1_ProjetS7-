@@ -5,9 +5,14 @@ import Game.*;
 import Labyrinth.Labyrinth;
 import Labyrinth.LabyrinthSimple;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
+import java.rmi.UnknownHostException;
+import java.rmi.registry.LocateRegistry;
+import java.util.*;
 
 public class OperationCenterSimple {
 
@@ -22,6 +27,8 @@ public class OperationCenterSimple {
         String user = "root";
         String passwd = "";
         myBDD = new DAO(url,user,passwd);
+        halls=new ArrayList<String>();
+        resp=new HashMap<Labyrinth,ArrayList<String>>();
     }
 
     public void initialisation(String labyrinthName){
@@ -32,13 +39,13 @@ public class OperationCenterSimple {
         List<String> Res = myBDD.getResult().get(0);
         String idLabyrinth=Res.get(0);
         String labyrinthname=Res.get(1);
-        myBDD.printResultData();
+        //myBDD.printResultData();
         // Création du labyrinthe
         this.labyrinth=new LabyrinthSimple(idLabyrinth,labyrinthName);
         // Savoir quels bonus sont présents dans le labyrinthe
         where="idlabyrinth="+"\""+idLabyrinth+"\"";
         myBDD.requeteSelect("*", "bonusestdanslabyrinth", where);
-        myBDD.printResultData();
+        //myBDD.printResultData();
         List<List<String>> resultats = myBDD.getResult();
         for (List<String> ligne : resultats) {
             // Récupération des infos pour chaque bonus
@@ -48,23 +55,30 @@ public class OperationCenterSimple {
         // Savoir quels monstre sont présents dans le labyrinthe
         where="idlabyrinth="+"\""+idLabyrinth+"\"";
         myBDD.requeteSelect("*", "monstreestdanslabyrinth", where);
-        myBDD.printResultData();
+        //myBDD.printResultData();
         resultats = myBDD.getResult();
-        List<Monster> tamponMonsters=new ArrayList<Monster>();
+        ArrayList<Monster> tamponMonsters=new ArrayList<Monster>();
         for (List<String> ligne : resultats) {
             // Récupération des infos pour chaque Monstre
             String idMonstre=ligne.get(0);
             where="idmonstre="+"\""+idMonstre+"\"";
             myBDD.requeteSelect("*", "monstre", where);
-            myBDD.printResultData();
+            //myBDD.printResultData();
             List<String> infosMonstre= myBDD.getResult().get(0);
+            String idMonster = infosMonstre.get(0);
+            String name = infosMonstre.get(1);
+            int attack =Integer.parseInt(infosMonstre.get(2));
+            int chance = Integer.parseInt(infosMonstre.get(3));
+            int résilience = Integer.parseInt(infosMonstre.get(4));
+            int maxLife = Integer.parseInt(infosMonstre.get(5));
+            int boss = Integer.parseInt(infosMonstre.get(2));
             // Création du monstre
-            Monster monster = new Monster(infosMonstre.get(0), infosMonstre.get(1), Integer.parseInt(infosMonstre.get(2)), Integer.parseInt(infosMonstre.get(3)),
-                    Integer.parseInt(infosMonstre.get(4)), Integer.parseInt(infosMonstre.get(5)), Integer.parseInt(infosMonstre.get(2)));
+            Monster monster = new Monster(idMonster, name, attack, chance,
+                    résilience, maxLife, boss);
             // Savoir quels bonus sont distribués par le monstre
             where="idmonstre="+"\""+idMonstre+"\"";
             myBDD.requeteSelect("*", "monstredistribue", where);
-            myBDD.printResultData();
+            //myBDD.printResultData();
             resultats = myBDD.getResult();
             for (List<String> ligne2 : resultats) {
                 // insertion des bonus dans le monstre
@@ -76,7 +90,7 @@ public class OperationCenterSimple {
         // Récupératon des infos pour chaque porte présente dans le labyrinthe
         where="idlabyrinth="+"\""+idLabyrinth+"\"";
         myBDD.requeteSelect("*", "porte", where);
-        myBDD.printResultData();
+        //myBDD.printResultData();
         resultats = myBDD.getResult();
         // Création d'une liste pour stocker les portes temporairement
         List<Door> tamponDoors=new ArrayList<Door>();
@@ -91,38 +105,106 @@ public class OperationCenterSimple {
         // Récupération des infos pour chaque hall
         where="idlabyrinth="+"\""+idLabyrinth+"\"";
         myBDD.requeteSelect("*", "hall", where);
-        myBDD.printResultData();
+        //myBDD.printResultData();
         resultats = myBDD.getResult();
         List<Hall> tamponHalls=new ArrayList<Hall>();
         for (List<String> ligne : resultats) {
             // Création des Halls
-            Hall hall=new Hall(ligne.get(0), ligne.get(1), ligne.get(2));
+            String idHall=ligne.get(0);
+            String name=ligne.get(1);
+            String idTypeHall=ligne.get(2);
+            Hall hall=new Hall(idHall, name, idTypeHall);
             tamponHalls.add(hall);
+            halls.add(idHall);
         }
 
-        for (List<String> ligne : resultats) {
-            String idHall=ligne.get(0);
-            where="idHall="+"\""+idHall+"\"";
+        // Trouver les portes correspondant à chaque hall
+        for (Hall hall : tamponHalls) {
+            String idHall = hall.getIdHall();
+            where = "idHall=" + "\"" + idHall + "\"";
             myBDD.requeteSelect("*", "hallestcompose", where);
-            myBDD.printResultData();
+            //myBDD.printResultData();
             resultats = myBDD.getResult();
             for (List<String> ligne2 : resultats) {
-                // TODO mettre portes dans hall
+                // Mettre les portes dans chaque hall
+                String idDoor = ligne2.get(1);
+                String tamponDirection = ligne2.get(2);
+                Pole direction = null;
+                switch (tamponDirection) {
+                    case "North":
+                        direction = Pole.NORTH;
+                        break;
+                    case "South":
+                        direction = Pole.SOUTH;
+                        break;
+                    case "West":
+                        direction = Pole.WEST;
+                        break;
+                    case "East":
+                        direction = Pole.EAST;
+                        break;
+                }
+                if (direction != null) {
+                    Door door = getDoor(idDoor, tamponDoors);
+                    door.addHall(hall);
+                    hall.addDoor(door, direction);
+                } else {
+                    System.err.println("Error with the direction of a labyrinth door");
+                }
             }
-            String idTypeHall=ligne.get(2);
-            where="idtypehall="+"\""+idTypeHall+"\"";
+            String idTypeHall = hall.getIdType();
+            where = "idtypehall=" + "\"" + idTypeHall + "\"";
             myBDD.requeteSelect("*", "monstreestdans", where);
-            myBDD.printResultData();
+            //myBDD.printResultData();
             resultats = myBDD.getResult();
+
             for (List<String> ligne2 : resultats) {
-                // TODO mettre monstres dans hall
+                // Mettre monstres dans chaque hall
+                String idMonster = ligne2.get(0);
+                Monster monster = getMonster(idMonster, tamponMonsters);
+                if (monster != null) {
+                    hall.addMonster(monster);
+                } else {
+                    System.err.println("Error : no monster add in Hall " + idTypeHall);
+                }
+            }
+            // Ajout du hall dans le labyrinth
+            this.labyrinth.addHall(hall);
+        }
+            // Tests
+            HashSet<Hall> halls2=this.labyrinth.getHalls();
+            for (Hall hall2: halls2) {
+                System.out.println("Hall : {"+hall2.getIdHall()+", "+hall2.getName()+", "+hall2.getIdType()+"}");
+                HashMap<Pole,Door> doors=hall2.getDoors();
+                for (Pole direction : doors.keySet()){
+                    Door door=doors.get(direction);
+                    Hall h1=door.getHall1();
+                    String id1;
+                    if(h1!=null) {
+                        id1 = h1.getIdHall();
+                    }else{
+                        id1 = "null";
+                    }
+                    Hall h2=door.getHall2();
+                    String id2;
+                    if(h2!=null) {
+                        id2 = h2.getIdHall();
+                    }else{
+                        id2 = "null";
+                    }
+                    System.out.println("Porte : {"+direction+", "+door.getIdDoor()+", "+id1+", "+id2+"}");
+                }
+                Context context = hall2.getContext();
+                ArrayList<Monster> monsters= context.getMonsters();
+                for (Monster monster : monsters) {
+                    System.out.println("Monster : {"+monster.getIdMonster()+", "+monster.getName()+"}");
+                }
             }
         }
-    }
 
     public Bonus getBonus(String idBonus, List<Bonus> bonus){
         for (Bonus tampon : bonus ) {
-            if(tampon.getIdBonus()==idBonus){
+            if(tampon.getIdBonus().equals(idBonus)){
                 return tampon;
             }
         }
@@ -131,30 +213,87 @@ public class OperationCenterSimple {
 
     public Monster getMonster(String idMonster, List<Monster> monsters){
         for (Monster tampon : monsters ) {
-            if(tampon.getIdMonster()==idMonster){
+            if(tampon.getIdMonster().equals(idMonster)){
                 return tampon;
             }
         }
         return null;
     };
 
+    public LabyrinthSimple getLabyrinth() {
+        return labyrinth;
+    }
+
+    public void setLabyrinth(LabyrinthSimple labyrinth) {
+        this.labyrinth = labyrinth;
+    }
+
     public Door getDoor(String idDoor, List<Door> doors){
         for (Door tampon : doors ) {
-            if(tampon.getIdDoor()==idDoor){
+            if(tampon.getIdDoor().equals(idDoor)){
                 return tampon;
             }
         }
         return null;
+    };
+
+    public void addServerResponsabilities(Labyrinth server) {
+        resp.put(server, new ArrayList<String>());
     };
 
     public Session identification(String name) {return null;};
     public void save(ArrayList<Player> players, String labyrinth, String Hall) {};
-    public LabyrinthSimple recordLabyrinth(Labyrinth server) {return labyrinth;};
+
     public ArrayList<String> recordMessagerie(String ip,int numPort) {return halls;};
 
-    public static void main(String[] args) {
-        OperationCenterSimple test=new OperationCenterSimple();
-        test.initialisation("The Nebias labyrinth");
-    }
+    public void buildDistribution() throws RemoteException {
+        // distribuer chaque hall à un serveur  dans la structure
+        Iterator<Labyrinth> iterator=resp.keySet().iterator();
+        for(String hall : halls){
+            if (!iterator.hasNext()) {
+                iterator=resp.keySet().iterator();
+            }
+            Labyrinth tampon=iterator.next();
+            resp.get(tampon).add(hall);
+        }
+        for(Labyrinth tampon : resp.keySet()){
+            try {
+                tampon.setReponsabiities(resp);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
 
     }
+
+    public static void main(String[] args) throws RemoteException {
+        OperationCenterSimple noc=new OperationCenterSimple();
+        noc.initialisation("The Nebias labyrinth");
+        try {
+            LocateRegistry.createRegistry(1099);
+            OperationCenterImpl impl=new OperationCenterImpl(noc);
+            String url = "rmi://localhost/ServerNocRMI";
+            System.out.println("Enregistrement de l'objet avec l'url : " + url);
+            Naming.rebind(url, impl);
+            System.out.println("Serveur lancé");
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Veuillez saisir start lorsque vous aurez terminé d'enregistrer les serveurs de jeux :");
+        String str = sc.nextLine();
+        if(str.equals("start")){
+            noc.buildDistribution();
+        }
+        while(true){
+
+        }
+    }
+    }
+

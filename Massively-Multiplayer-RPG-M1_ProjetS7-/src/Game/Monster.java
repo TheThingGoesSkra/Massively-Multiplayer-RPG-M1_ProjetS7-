@@ -1,6 +1,8 @@
 package Game;
 
-public class Monster extends Participant {
+import java.io.Serializable;
+
+public class Monster extends Participant implements Serializable{
 
     private String idMonster;
 

@@ -1,11 +1,12 @@
 package Game;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.System.exit;
 
-public class Door {
+public class Door implements Serializable{
 
     private String idDoor;
     private Hall hall1;
@@ -13,9 +14,19 @@ public class Door {
 
     public Door(String idDoor){
         this.idDoor=idDoor;
+        this.hall1=null;
+        this.hall2=null;
     };
 
-    public Hall get_Other_Hall(Hall hall){
+    public Hall getHall1() {
+        return hall1;
+    }
+
+    public Hall getHall2() {
+        return hall2;
+    }
+
+    public Hall getOtherHall(Hall hall){
         if (hall == hall1){
         return hall2;}
         else if (hall == hall2){
@@ -24,7 +35,7 @@ public class Door {
         return null;
     }
 
-    public void add_Hall(Hall hall){
+    public void addHall(Hall hall){
         if (hall1 == null){
             hall1=hall;}
         else if (hall2 == null){

@@ -1,26 +1,83 @@
 package Game;
 
+import Labyrinth.Labyrinth;
+
+import java.io.Serializable;
 import java.util.*;
 
-public class Hall {
-    private String id;
+public class Hall implements Serializable{
+    private String idHall;
     private String name;
     private String idType;
-    private static Map<Pole,Door> halls;
+    private HashMap<Pole,Door> doors;
+    private transient Labyrinth proxy;
     Context context;
-    private List<Fight> fights;
+    private transient List<Fight> fights;
 
     public Hall (String id, String name, String idType){
         this.context = new Context();
         this.fights = new ArrayList<Fight>();
-        this.halls = new HashMap<Pole,Door>();
-        this.id=id;
+        this.doors = new HashMap<Pole,Door>();
+        this.idHall =id;
         this.name=name;
         this.idType=idType;
     }
 
+    public String getIdHall() {
+        return idHall;
+    }
+
+    public void setIdHall(String idHall) {
+        this.idHall = idHall;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getIdType() {
+        return idType;
+    }
+
+    public Labyrinth getProxy() {
+        return proxy;
+    }
+
+    public void setProxy(Labyrinth proxy) {
+        this.proxy = proxy;
+    }
+
+    public void setIdType(String idType) {
+        this.idType = idType;
+    }
+
+    public HashMap<Pole, Door> getDoors() {
+        return doors;
+    }
+
+    public void setDoors(HashMap<Pole, Door> doors) {
+        this.doors = doors;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public List<Fight> getFights() {
+        return fights;
+    }
+
+    public void setFights(List<Fight> fights) {
+        this.fights = fights;
+    }
+
     public void setName(String name) {
         this.name = name;
+
     }
 
     public void hitpoints(Participant participant, int hitpoint){
@@ -30,12 +87,12 @@ public class Hall {
     }
 
     public Door getDoor(Pole pole){
-        Door door = halls.get(pole);
+        Door door = doors.get(pole);
         return door;
     }
 
     public void addDoor(Door door, Pole pole){
-        Hall.halls.put(pole,door);
+        this.doors.put(pole,door);
 
     }
 

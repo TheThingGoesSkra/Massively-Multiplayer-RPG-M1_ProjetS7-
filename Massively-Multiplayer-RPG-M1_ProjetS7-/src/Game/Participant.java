@@ -1,6 +1,8 @@
 package Game;
 
-public class Participant {
+import java.io.Serializable;
+
+public class Participant implements Serializable{
 
     private String name;
     private int life;

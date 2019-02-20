@@ -8,8 +8,13 @@ import java.util.Vector;
 
 public class Context implements Serializable {
 
-    private List<Monster> monsters;
+    private ArrayList<Monster> monsters;
     private ArrayList<Player> players;
+
+    public Context(){
+        this.monsters=new ArrayList<Monster>();
+        this.players=new ArrayList<Player>();
+    }
 
     public void addMonster(Monster monster){
         monsters.add(monster);
@@ -20,12 +25,10 @@ public class Context implements Serializable {
     }
 
     public void removeMonster(Monster monster){
-
         monsters.remove(monster);
     }
 
     public void removePlayer(Player player){
-
         players.remove(player);
     }
 
@@ -34,5 +37,5 @@ public class Context implements Serializable {
         return players;
     }
 
-    public List<Monster> getMonsters() {return  monsters;}
+    public ArrayList<Monster> getMonsters() {return  monsters;}
 }

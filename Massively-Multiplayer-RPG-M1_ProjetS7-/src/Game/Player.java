@@ -1,11 +1,12 @@
 package Game;
 
+import java.io.Serializable;
 import java.util.List;
 
 import Client.*;
 import OperationCenter.DAO;
 
-public class Player extends Participant {
+public class Player extends Participant implements Serializable{
 
     private Client proxy;
     
