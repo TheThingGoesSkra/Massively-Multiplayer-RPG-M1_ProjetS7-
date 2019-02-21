@@ -1,174 +1,109 @@
 package Game;
 
-import Labyrinth.Labyrinth;
-
-import java.io.Serializable;
 import java.util.*;
 
-public class Hall implements Serializable{
-    private String idHall;
+public class Hall {
     private String name;
-    private String idType;
-    private HashMap<Pole,Door> doors;
-    private transient Labyrinth proxy;
-    Context context;
-    private transient List<Fight> fights;
+    private static Map<Pole, Door> Hall_liste = new HashMap<Pole, Door>();
+    Context context = new Context();
+    private ArrayList<Fight> fights;
+    boolean monster = false;
+    boolean player = false;
+    public Hall(String name) {
 
-    public Hall (String id, String name, String idType){
-        this.context = new Context();
-        this.fights = new ArrayList<Fight>();
-        this.doors = new HashMap<Pole,Door>();
-        this.idHall =id;
-        this.name=name;
-        this.idType=idType;
-    }
-
-    public String getIdHall() {
-        return idHall;
-    }
-
-    public void setIdHall(String idHall) {
-        this.idHall = idHall;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getIdType() {
-        return idType;
-    }
-
-    public Labyrinth getProxy() {
-        return proxy;
-    }
-
-    public void setProxy(Labyrinth proxy) {
-        this.proxy = proxy;
-    }
-
-    public void setIdType(String idType) {
-        this.idType = idType;
-    }
-
-    public HashMap<Pole, Door> getDoors() {
-        return doors;
-    }
-
-    public void setDoors(HashMap<Pole, Door> doors) {
-        this.doors = doors;
-    }
-
-    public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    public List<Fight> getFights() {
-        return fights;
-    }
-
-    public void setFights(List<Fight> fights) {
-        this.fights = fights;
+        this.name = name;
     }
 
     public void setName(String name) {
+
         this.name = name;
+    }
+
+    public void changeHall(String player, Pole pole){
 
     }
 
-    public void hitpoints(Participant participant, int hitpoint){
-        int lifeParticipant=participant.getLife();
-        int life= lifeParticipant-hitpoint;
-        participant.setLife(life);
-    }
 
-    public Door getDoor(Pole pole){
-        Door door = doors.get(pole);
+    public Door getDoor(Pole pole) {
+        Door door = Hall_liste.get(pole);
         return door;
     }
 
-    public void addDoor(Door door, Pole pole){
-        this.doors.put(pole,door);
+    public void addDoor(Door door, Pole pole) {
+        Hall.Hall_liste.put(pole, door);
 
     }
 
-    public void addMonster(Monster monster){
+    public void addMonster(Monster monster) {
         context.addMonster(monster);
 
     }
 
-    public void addPlayer(Player player){
+    public void removeMonster(Monster monster) {
+        context.removeMonster(monster);
+
+    }
+
+    public void addPlayer(Player player) {
         context.addPlayer(player);
 
     }
 
-    public void removeMonster(Monster monster){
-     context.removeMonster(monster);
+
+    public boolean exitPlayer (Player player){
+
+        boolean isFighting = isFighting(player);
+
+        if (isFighting = false) {
+            context.removePlayer(player);
+            return isFighting;
+        } else {
+            System.out.println("Le joueur est en train de se battre ");
+            return isFighting;
+        }
+
 
     }
 
-    public void removePlayer(Player player){
-       context.removePlayer(player);
-    }
 
-
-
-
-
-    public void runnaway(Participant participant1, Participant participant2){
+    public void runnaway(Participant participant1, Participant participant2) {
 
     }
 
     public void addFight(Participant participant1, Participant participant2) {
         ArrayList<Player> players = this.context.getPlayers();
         List<Monster> monsters = this.context.getMonsters();
-        boolean monster = false;
-        boolean player = false;
+
 
         for (int i = 0; i < players.size(); i++) {
             if (participant1 == players.get(i)) {
-                player = true;
+                this.player = true;
             }
 
         }
         for (int j = 0; j < players.size(); j++) {
             if (participant2 == players.get(j)) {
-                monster = true;
+                this.monster = true;
             }
         }
-    }
 
-    public void removeFight(Fight fight){
-        fights.remove(fight);
-    }
+        if (this.monster && this.player == true) {
 
-
-
-    public boolean exitHall(Player player){
-
-        boolean isFighting=isFighting(player);
-
-        if (isFighting=false){
-            context.removePlayer(player);
-            return  isFighting;
+            Fight fight1 = new Fight(participant1, participant2);
+            fights.add(fight1);
         }
-        else{
-            System.out.println("Le joueur est en train de se battre ");
-            return  isFighting;
+    }
+
+
+        public void removeFight (Fight fight1){
+            fights.remove(fight1);
         }
 
 
-    }
-
-    public boolean isFighting(Participant participant1){
+        public boolean isFighting (Participant participant1){
             boolean isFighting = false;
-            ArrayList<Player> players = this.context.getPlayers();
-            for (int i = 0; i < players.size(); i++) {
-                if (participant1 == players.get(i)) {
+            for (Fight fight : fights) {
+                if (participant1 == fight.getAttacked() || participant1 == fight.getForward()) {
                     isFighting = true;
                 }
             }
@@ -176,11 +111,12 @@ public class Hall implements Serializable{
         }
 
 
-
-    public void Heal(){
-         ArrayList<Player> players = this.context.getPlayers();
-        for(int i = 0 ; i < players.size(); i++){
-            players.get(i).heal();
+        public void Heal () {
+            ArrayList<Player> players = this.context.getPlayers();
+            for (int i = 0; i < players.size(); i++) {
+                players.get(i).heal();
+            }
         }
+
+
     }
-}

@@ -25,4 +25,15 @@ public class Fight {
     public void setAttacked(Participant attacked) {
         this.attacked = attacked;
     }
+
+    public void hitpoints(Participant participant, int hitpoint) {
+        int lifeParticipant = participant.getLife();
+        int life = lifeParticipant - hitpoint;
+        participant.setLife(life);
+    }
+    public void alertFight(){}
+    public void calculateHitpoint(){}
+    public void chooseParticipant(){}
+    public void deadParticipant(Participant participant){}
+    public void endFight(){}
 }
