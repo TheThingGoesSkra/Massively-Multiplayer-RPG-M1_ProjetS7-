@@ -74,7 +74,7 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 			if(str.equals("start")){
 				HashSet<Hall> halls2=labyrinth.getHalls();
 				for (Hall hall2: halls2) {
-					System.out.println("Hall : {" + hall2.getIdHall() + ", " + hall2.getName() + ", " + hall2.getIdType()+"}");
+					System.out.println("Hall : {" + hall2.getIdHall() + ", " + hall2.getName() + ", " + hall2.getIdType()+", "+hall2.getProxy().toString()+"}");
 					HashMap<Pole, Door> doors = hall2.getDoors();
 					for (Pole direction : doors.keySet()) {
 						Door door = doors.get(direction);
