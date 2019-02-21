@@ -19,14 +19,14 @@ public class OperationCenterSimple {
     private LabyrinthSimple labyrinth;
     HashMap<Labyrinth,ArrayList<String>> resp;
     private ArrayList<String> halls;
-    private DAO myBDD;
+    private GestionBDD myBDD;
 
     public OperationCenterSimple(){
         String url = "jdbc:mysql://localhost:3306/projets7";
         url += "?autoReconnect=true&useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
         String user = "root";
         String passwd = "";
-        myBDD = new DAO(url,user,passwd);
+        myBDD = new GestionBDD(url,user,passwd);
         halls=new ArrayList<String>();
         resp=new HashMap<Labyrinth,ArrayList<String>>();
     }

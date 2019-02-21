@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DAO {
+public class GestionBDD {
 
         private String url;
         private String login;
@@ -16,7 +16,7 @@ public class DAO {
         List<List<String>> result;
 
         //Constructor
-        public DAO(String url, String login, String password){
+        public GestionBDD(String url, String login, String password){
             this.url = url;
             this.login = login;
             this.password = password;
