@@ -4,6 +4,7 @@ import Client.Client;
 import Client.Session;
 import Game.Hall;
 import Game.Pole;
+import Game.Player;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -36,6 +37,9 @@ public class LabyrinthSimple implements Serializable{
         return name;
     }
 
+    public void addPlayer(String hall, Player player){
+        getHall(hall).addPlayer(player);
+    }
     public void setName(String name) {
         this.name = name;
     }

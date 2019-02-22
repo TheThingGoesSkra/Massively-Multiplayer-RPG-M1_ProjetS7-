@@ -2,21 +2,89 @@ package Game;
 
 import java.util.*;
 
-public class Hall {
-    private String name;
-    private static Map<Pole, Door> Hall_liste = new HashMap<Pole, Door>();
-    Context context = new Context();
-    private ArrayList<Fight> fights;
-    boolean monster = false;
-    boolean player = false;
-    public Hall(String name) {
+import Client.Client;
+import Labyrinth.Labyrinth;
+import java.io.Serializable;
 
-        this.name = name;
+
+
+
+public class Hall implements Serializable {
+    private String idHall;
+    private String name;
+    private String idType;
+    private HashMap<Pole,Door> doors;
+    private transient Labyrinth proxy;
+    Context context;
+    private transient List<Fight> fights;
+
+
+
+
+    public Hall (String id, String name, String idType){
+        this.context = new Context();
+        this.fights = new ArrayList<Fight>();
+        this.doors = new HashMap<Pole,Door>();
+        this.idHall =id;
+        this.name=name;
+        this.idType=idType;
+    }
+
+    public String getIdHall() {
+        return idHall;
+    }
+
+    public void setIdHall(String idHall) {
+        this.idHall = idHall;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getIdType() {
+        return idType;
+    }
+
+    public Labyrinth getProxy() {
+        return proxy;
+    }
+
+    public void setProxy(Labyrinth proxy) {
+        this.proxy = proxy;
+    }
+
+    public void setIdType(String idType) {
+        this.idType = idType;
+    }
+
+    public HashMap<Pole, Door> getDoors() {
+        return doors;
+    }
+
+    public void setDoors(HashMap<Pole, Door> doors) {
+        this.doors = doors;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public List<Fight> getFights() {
+        return fights;
+    }
+
+    public void setFights(List<Fight> fights) {
+        this.fights = fights;
     }
 
     public void setName(String name) {
-
         this.name = name;
+
     }
 
     public void changeHall(String player, Pole pole){
@@ -24,13 +92,13 @@ public class Hall {
     }
 
 
-    public Door getDoor(Pole pole) {
-        Door door = Hall_liste.get(pole);
+    public Door getDoor(Pole pole){
+        Door door = doors.get(pole);
         return door;
     }
 
-    public void addDoor(Door door, Pole pole) {
-        Hall.Hall_liste.put(pole, door);
+    public void addDoor(Door door, Pole pole){
+        this.doors.put(pole,door);
 
     }
 
@@ -44,12 +112,38 @@ public class Hall {
 
     }
 
-    public void addPlayer(Player player) {
+    public void addPlayers(Player player) {
         context.addPlayer(player);
 
     }
 
+    public boolean addPlayer(Player player){
+        boolean playerAdd =false;
+        ArrayList<Player> players;
+        List<Monster> monsters;
 
+        Client client = new Client;
+        Client client1 = new Client;
+        client = player.getProxy();
+        players = context.getPlayers();
+
+        for ( Player player1 : players ) {
+            client1 = player1.getProxy();
+        }
+        context.addPlayer(player);
+        monsters=context.getMonsters();
+        if( monsters !=null){
+            Monster monster = new Monster();
+            monster = monsters.get(0);
+            addFight(player,monster);
+            playerAdd =true;
+            return playerAdd;
+        }
+
+        else {
+            return playerAdd;
+        }
+    }
     public boolean exitPlayer (Player player){
 
         boolean isFighting = isFighting(player);
@@ -62,7 +156,6 @@ public class Hall {
             return isFighting;
         }
 
-
     }
 
 
@@ -73,21 +166,22 @@ public class Hall {
     public void addFight(Participant participant1, Participant participant2) {
         ArrayList<Player> players = this.context.getPlayers();
         List<Monster> monsters = this.context.getMonsters();
-
+        boolean monster = false;
+        boolean player = false;
 
         for (int i = 0; i < players.size(); i++) {
             if (participant1 == players.get(i)) {
-                this.player = true;
+                player = true;
             }
 
         }
         for (int j = 0; j < players.size(); j++) {
             if (participant2 == players.get(j)) {
-                this.monster = true;
+                monster = true;
             }
         }
 
-        if (this.monster && this.player == true) {
+        if (monster && player == true) {
 
             Fight fight1 = new Fight(participant1, participant2);
             fights.add(fight1);

@@ -23,6 +23,7 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 	private LabyrinthSimple labyrinth;
     private OperationCenter noc;
 
+
 	protected LabyrinthImpl() throws RemoteException {
 	}
 
@@ -42,7 +43,17 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 		this.noc = noc;
 	}
 
-	public void login(Session s, Client proxy) throws RemoteException{};
+	public void login(Session s, Client proxy) throws RemoteException{
+		 Player player;
+		 String idhall;
+		 idhall= s.getHall();
+		 player = s.getPlayer();
+		player.setProxy(proxy);
+		labyrinth.addPlayer(idhall,player);
+	}
+	public void setProxy(Client proxy){
+
+	}
 	public void changeHall(String Hall, String player, Pole direction) throws RemoteException{};
 	public void newFight(String forward, String attacked) throws RemoteException{};
 	public void runnaway(String Hall, String forward, String runner) throws RemoteException{};
@@ -112,4 +123,6 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 			e.printStackTrace();
 		}
 	}
+
+
 	}
