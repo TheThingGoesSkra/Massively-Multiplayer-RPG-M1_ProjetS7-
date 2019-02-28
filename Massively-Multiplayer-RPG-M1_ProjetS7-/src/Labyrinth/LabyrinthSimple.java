@@ -37,8 +37,9 @@ public class LabyrinthSimple implements Serializable{
         return name;
     }
 
-    public void addPlayer(String hall, Player player){
-        getHall(hall).addPlayer(player);
+    public void addPlayer(String idHall, Player player){
+        Hall hall = this.getHall(idHall);
+        hall.addPlayer(player);
     }
     public void setName(String name) {
         this.name = name;
@@ -70,7 +71,7 @@ public class LabyrinthSimple implements Serializable{
     public void changeHall(String Hall, String player, Pole direction){};
     public void newFight(String forward, String attacked){};
     public void runnaway(String Hall, String forward, String runner){};
-    public void logOut(String Hall, String player){};
+    public void logout(String Hall, String player){};
 
     public void setReponsabiities(HashMap<Labyrinth,ArrayList<String>> resp){
         for(Labyrinth key : resp.keySet()){

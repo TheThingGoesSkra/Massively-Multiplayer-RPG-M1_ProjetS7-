@@ -16,6 +16,24 @@ public class Context implements Serializable {
         this.players=new ArrayList<Player>();
     }
 
+    public Boolean participantExist(Participant participant){
+        if(participant instanceof Player){
+            for(Player player : players){
+                if(participant==player){
+                    return true;
+                }
+            }
+        }
+        if(participant instanceof Monster){
+            for(Monster monster : monsters){
+                if(participant==monster){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void addMonster(Monster monster){
         monsters.add(monster);
     }
@@ -37,5 +55,7 @@ public class Context implements Serializable {
         return players;
     }
 
-    public ArrayList<Monster> getMonsters() {return  monsters;}
+    public ArrayList<Monster> getMonsters() {
+        return  monsters;
+    }
 }
