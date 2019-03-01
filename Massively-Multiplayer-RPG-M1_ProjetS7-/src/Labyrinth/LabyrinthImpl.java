@@ -54,7 +54,11 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 	public void setProxy(Client proxy){
 
 	}
-	public void changeHall(String Hall, String player, Pole direction) throws RemoteException{};
+	public int changeHall(String Hall, String player, Pole direction) throws RemoteException{
+
+		int idHalls = labyrinth.changeHall(Hall, player, direction);
+				return idHalls;
+	};
 	public void newFight(String forward, String attacked) throws RemoteException{};
 	public void runnaway(String Hall, String forward, String runner) throws RemoteException{};
 	public void logOut(String Hall, String player) throws RemoteException{};

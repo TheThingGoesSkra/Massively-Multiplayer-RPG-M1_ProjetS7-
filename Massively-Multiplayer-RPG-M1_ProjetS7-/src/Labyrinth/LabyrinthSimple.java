@@ -67,7 +67,12 @@ public class LabyrinthSimple implements Serializable{
     }
 
     public void login(Session s, Client proxy){};
-    public void changeHall(String Hall, String player, Pole direction){};
+    public int changeHall(String Hall, String player, Pole direction){
+         int idHalls;
+         Hall hall = getHall(Hall);
+         idHalls= hall.changeHall(player, direction);
+         return idHalls;
+    };
     public void newFight(String forward, String attacked){};
     public void runnaway(String Hall, String forward, String runner){};
     public void logOut(String Hall, String player){};
