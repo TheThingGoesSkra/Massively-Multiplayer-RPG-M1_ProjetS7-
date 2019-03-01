@@ -72,15 +72,35 @@ public class Participant implements Serializable{
 
     public void setMaxlife(int maxlife) {this.maxlife = maxlife;}
 
+    public Boolean hitpoints(int hitpoints){
+        if(this.life>0) {
+            this.life = this.life - hitpoints;
+            if(this.life<=0){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        return false;
+    }
+
     public void heal(){
 
     }
 
-    public String toString(){
-        return name;
+    public void heal(int healpoints){
+
     }
 
-    public void heal(int soin){
+    public Boolean isAlive(){
+        if(life>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
+    public String toString(){
+        return name;
     }
 }

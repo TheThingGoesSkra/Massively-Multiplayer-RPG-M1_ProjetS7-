@@ -7,6 +7,7 @@ import Labyrinth.Labyrinth;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface Client extends Remote {
 
@@ -16,4 +17,6 @@ public interface Client extends Remote {
     public void setLabyrinthServer(Labyrinth server) throws RemoteException;
     public void startFight(Participant forward, Participant attacked) throws RemoteException;
     public void hitpoints(Participant forward, Participant attacked, int hitpoints) throws RemoteException;
+    public void endFight(ArrayList<Participant> winners, Participant looser) throws RemoteException;
+
 }

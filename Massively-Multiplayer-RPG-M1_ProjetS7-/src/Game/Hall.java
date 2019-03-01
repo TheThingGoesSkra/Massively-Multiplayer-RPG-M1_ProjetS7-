@@ -107,6 +107,10 @@ public class Hall implements Serializable {
 
     }
 
+    public void removeParticipant(Participant participant){
+        context.removeParticipant(participant);
+    }
+
     public void removeMonster(Monster monster) {
         context.removeMonster(monster);
 
@@ -167,14 +171,14 @@ public class Hall implements Serializable {
         boolean participant2 =  context.participantExist(attacked);;
         if (participant1 && participant2) {
             Fight fight = new Fight(forward, attacked, context, fights, idHall, idLabyrinth);
-            // TODO : fight.start();
-            // fights.add(fight);
+            fight.start();
+            fights.add(fight);
         }
     }
 
 
-        public void removeFight (Fight fight1){
-            fights.remove(fight1);
+        public void removeFight (Fight fight){
+            fights.remove(fight);
         }
 
 

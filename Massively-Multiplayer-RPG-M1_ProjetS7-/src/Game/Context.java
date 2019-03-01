@@ -42,6 +42,15 @@ public class Context implements Serializable {
         players.add(player);
     }
 
+    public void removeParticipant(Participant participant){
+        if(participant instanceof Player){
+            removePlayer((Player)participant);
+        }
+        if(participant instanceof Monster){
+            removeMonster((Monster)participant);
+        }
+    }
+
     public void removeMonster(Monster monster){
         monsters.remove(monster);
     }

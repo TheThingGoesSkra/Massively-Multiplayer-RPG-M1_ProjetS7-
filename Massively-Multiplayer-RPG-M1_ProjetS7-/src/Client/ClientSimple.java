@@ -13,6 +13,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.UnknownHostException;
 import java.rmi.registry.LocateRegistry;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientSimple {
@@ -70,6 +71,8 @@ public class ClientSimple {
     public void setLabyrinthServer(Labyrinth server){};
     public void startFight(Participant forward, Participant attacked){};
     public void hitpoints(Participant forward, Participant attacked, int hitpoints){};
+    public void endFight(ArrayList<Participant> winners, Participant looser) {};
+
 
     public void initialisation(){
         OperationCenter r = null;

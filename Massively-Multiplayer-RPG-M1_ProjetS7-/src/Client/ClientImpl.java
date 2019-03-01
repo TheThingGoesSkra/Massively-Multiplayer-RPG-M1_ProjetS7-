@@ -8,6 +8,7 @@ import Labyrinth.Labyrinth;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 public class ClientImpl extends UnicastRemoteObject implements Client, Serializable {
 
@@ -28,5 +29,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     public void setLabyrinthServer(Labyrinth server) throws RemoteException {};
     public void startFight(Participant forward, Participant attacked) throws RemoteException {};
     public void hitpoints(Participant forward, Participant attacked, int hitpoints) throws RemoteException {};
+    public void endFight(ArrayList<Participant> winners, Participant looser) throws RemoteException {};
 
 }
