@@ -1,9 +1,6 @@
 package Client;
 
-import Game.Context;
-import Game.Monster;
-import Game.Participant;
-import Game.Player;
+import Game.*;
 import Labyrinth.Labyrinth;
 import OperationCenter.OperationCenter;
 
@@ -16,6 +13,8 @@ import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import static java.lang.Thread.sleep;
 
 public class ClientSimple {
 
@@ -117,6 +116,34 @@ public class ClientSimple {
         }
     };
 
+    public void newFight(String attacked){
+        Labyrinth labyrinth = session.getProxy();
+        String idHall = session.getHall();
+        Player myplayer = session.getPlayer();
+        String myname = myplayer.getName();
+        try {
+            labyrinth.newFight(idHall,myname,attacked);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void runnaway(String forward){
+        Labyrinth labyrinth = session.getProxy();
+        String idHall = session.getHall();
+        Player myplayer = session.getPlayer();
+        String myname = myplayer.getName();
+        try {
+            labyrinth.runnaway(idHall,forward,myname);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void alertRunnaway(Participant forward, Participant runner) {
+        System.out.println(runner.getName()+" fuit le combat face à "+forward.getName()+" !");
+    }
+
     public void heal() throws RemoteException{
         System.out.println("Tous le monde est soigné !");
         Player myplayer = session.getPlayer();
@@ -171,6 +198,8 @@ public class ClientSimple {
         Scanner sc = new Scanner(System.in);
         System.out.println("Veuillez saisir le nom de votre personnage :");
         String str = sc.nextLine();
+        System.out.println("Veuillez saisir le nom du personnage que vous souhaitez attaquer :");
+        String str2 = sc.nextLine();
         client.nocConnection(str);
         // test Noc connection
         Session session=client.getSession();
@@ -187,6 +216,20 @@ public class ClientSimple {
         List<Monster> monsters=context.getMonsters();
         System.out.println("Monsters : "+monsters.toString());
         System.out.println("Players : "+players.toString());
-
+        if(str.equals("Chupacabra")) {
+            try {
+                sleep(9000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            client.newFight(str2);
+            try {
+                sleep(9000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            client.runnaway(str2);
+        }
     }
+
 }

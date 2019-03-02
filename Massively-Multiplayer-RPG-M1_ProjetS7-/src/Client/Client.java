@@ -11,12 +11,13 @@ import java.util.ArrayList;
 
 public interface Client extends Remote {
 
-    public void setContext(Context context) throws RemoteException;
-    public void addPlayer(Player player) throws RemoteException;
-    public void setHall(String Hall) throws RemoteException;
-    public void setLabyrinthServer(Labyrinth server) throws RemoteException;
-    public void startFight(Participant forward, Participant attacked) throws RemoteException;
-    public void hitpoints(Participant forward, Participant attacked, int hitpoints) throws RemoteException;
-    public void endFight(ArrayList<Participant> winners, Participant looser) throws RemoteException;
-    public void heal() throws RemoteException;
+    void setContext(Context context) throws RemoteException;
+    void addPlayer(Player player) throws RemoteException;
+    void setHall(String Hall) throws RemoteException;
+    void setLabyrinthServer(Labyrinth server) throws RemoteException;
+    void startFight(Participant forward, Participant attacked) throws RemoteException;
+    void hitpoints(Participant forward, Participant attacked, int hitpoints) throws RemoteException;
+    void endFight(ArrayList<Participant> winners, Participant looser) throws RemoteException;
+    void heal() throws RemoteException;
+    void alertRunnaway(Participant forward, Participant runner) throws RemoteException;
 }

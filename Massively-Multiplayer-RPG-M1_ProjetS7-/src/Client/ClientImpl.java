@@ -37,6 +37,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     public void endFight(ArrayList<Participant> winners, Participant looser) throws RemoteException {
         client.endFight(winners,looser);
     };
+
+    public void alertRunnaway(Participant forward, Participant runner) throws RemoteException{
+        client.alertRunnaway(forward,runner);
+    };
+
     public void heal() throws RemoteException{
         client.heal();
     };

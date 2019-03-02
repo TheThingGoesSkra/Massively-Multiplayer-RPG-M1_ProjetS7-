@@ -125,8 +125,23 @@ public class Fight extends Thread {
         endFight();
     }
 
+    public void runnaway(Participant runner){
+        Participant forward=this.getOtherParticipant(runner);
+        ArrayList<Player> players = context.getPlayers();
+        for(Player player : players){
+            Client client = player.getProxy();
+            try {
+                client.alertRunnaway(forward, runner);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        this.endFight();
+    }
+
     public void endFight(){
         int index=fights.indexOf(this);
+        System.out.println(index);
         fights.remove(index);
         if(fights.isEmpty()){
             ArrayList<Player> players=context.getPlayers();
@@ -156,7 +171,8 @@ public class Fight extends Thread {
 
     public void run(){
         alertFight();
-        while(true){
+        while(!this.isInterrupted()){
+            if(forward.isAlive() && attacked.isAlive()){
             Participant notChoosed;
             Participant choosed=chooseParticipant();
             if(forward==choosed){
@@ -164,7 +180,6 @@ public class Fight extends Thread {
             }else{
                 notChoosed=forward;
             }
-            if(choosed.isAlive() && notChoosed.isAlive()){
                 int hitpoints = calculateHitpoint(notChoosed,choosed);
                 Boolean isKiller=choosed.hitpoints(hitpoints);
                 List<Player> players=context.getPlayers();
@@ -183,8 +198,9 @@ public class Fight extends Thread {
             try {
                 sleep(2000);
             } catch (InterruptedException e) {
-                this.interrupt();
+                return;
             }
         }
+        return;
     }
 }

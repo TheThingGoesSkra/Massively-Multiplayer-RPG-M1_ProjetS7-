@@ -2,9 +2,7 @@ package Labyrinth;
 
 import Client.Client;
 import Client.Session;
-import Game.Hall;
-import Game.Pole;
-import Game.Player;
+import Game.*;
 import OperationCenter.OperationCenter;
 
 import java.io.Serializable;
@@ -84,11 +82,16 @@ public class LabyrinthSimple implements Serializable{
     public void login(Session s, Client proxy){};
     public void changeHall(String Hall, String player, Pole direction){};
 
-    public void newFight(String forward, String attacked){
-
+    public void newFight(String idHall, String forwardName, String attackedName){
+        Hall hall=this.getHall(idHall);
+        hall.addFight(forwardName,attackedName);
     };
 
-    public void runnaway(String Hall, String forward, String runner){};
+    public void runnaway(String idHall, String forwardName, String runnerName){
+        Hall hall = this.getHall(idHall);
+        hall.runnaway(forwardName,runnerName);
+    };
+
     public void logout(String Hall, String player){};
 
     public void setReponsabiities(HashMap<Labyrinth,ArrayList<String>> resp){

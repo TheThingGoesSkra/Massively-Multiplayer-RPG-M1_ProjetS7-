@@ -179,9 +179,27 @@ public class Hall implements Serializable {
         }
     }
 
+    public Fight getFight(Participant forward, Participant attacked){
+        for(Fight fight:fights){
+            Boolean forwardExist=fight.participantExist(forward);
+            Boolean attackedExist=fight.participantExist(attacked);
+            if(forwardExist && attackedExist){
+                return fight;
+            }
+        }
+        return null;
+    }
 
-    public void runnaway(Participant participant1, Participant participant2) {
-
+    public void runnaway(String forwardName, String runnerName) {
+        Participant forward=context.getParticipant(forwardName);
+        Participant runner=context.getParticipant(runnerName);
+        if(forward!=null && runner!=null) {
+            Fight fight = this.getFight(forward, runner);
+            if(fight!=null){
+                System.out.println("runnaway");
+                fight.runnaway(runner);
+            }
+        }
     }
 
     public void addFight(Participant forward, Participant attacked) {
@@ -196,6 +214,15 @@ public class Hall implements Serializable {
         }
     }
 
+    public void addFight(String forwardName, String attackedName) {
+        Participant forward=context.getParticipant(forwardName);
+        Participant attacked=context.getParticipant(attackedName);
+        if(forward!=null && attacked!=null){
+            Fight fight = new Fight(forward, attacked, context, fights, idHall, idLabyrinth, noc);
+            fight.start();
+            fights.add(fight);
+        }
+    }
 
         public void removeFight (Fight fight){
             fights.remove(fight);

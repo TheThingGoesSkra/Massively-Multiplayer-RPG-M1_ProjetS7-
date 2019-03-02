@@ -52,6 +52,20 @@ public class Context implements Serializable {
         return false;
     }
 
+    public Participant getParticipant(String participant){
+        for(Monster monster : monsters){
+            if(participant.equals(monster.getName())){
+                return monster;
+            }
+        }
+        for(Player player : players){
+            if(participant.equals(player.getName())){
+                return player;
+            }
+        }
+        return null;
+    }
+
     public void addMonster(Monster monster){
         monsters.add(monster);
     }
