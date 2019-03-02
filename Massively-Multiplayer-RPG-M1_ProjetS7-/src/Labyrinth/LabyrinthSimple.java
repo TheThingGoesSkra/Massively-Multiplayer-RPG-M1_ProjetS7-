@@ -5,6 +5,7 @@ import Client.Session;
 import Game.Hall;
 import Game.Pole;
 import Game.Player;
+import OperationCenter.OperationCenter;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -18,6 +19,8 @@ public class LabyrinthSimple implements Serializable{
     private String id;
     private String name;
     private HashSet<Hall> halls;
+    private OperationCenter noc;
+
 
     public LabyrinthSimple(String id, String name){
         this.id=id;
@@ -31,6 +34,17 @@ public class LabyrinthSimple implements Serializable{
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public OperationCenter getNoc() {
+        return noc;
+    }
+
+    public void setNoc(OperationCenter noc) {
+        this.noc = noc;
+        for(Hall hall:halls){
+            hall.setNoc(noc);
+        }
     }
 
     public String getName() {
@@ -69,7 +83,11 @@ public class LabyrinthSimple implements Serializable{
 
     public void login(Session s, Client proxy){};
     public void changeHall(String Hall, String player, Pole direction){};
-    public void newFight(String forward, String attacked){};
+
+    public void newFight(String forward, String attacked){
+
+    };
+
     public void runnaway(String Hall, String forward, String runner){};
     public void logout(String Hall, String player){};
 
@@ -78,6 +96,7 @@ public class LabyrinthSimple implements Serializable{
             List<String> hallsId = resp.get(key);
             for(String hallId : hallsId){
                 Hall hall = this.getHall(hallId);
+
                 if(hall==null){
                     System.err.println("Erreur : Hall introuvable ");
                 }else{

@@ -5,6 +5,8 @@ import java.util.*;
 
 import Client.Client;
 import Labyrinth.Labyrinth;
+import OperationCenter.OperationCenter;
+
 import java.io.Serializable;
 
 
@@ -19,6 +21,8 @@ public class Hall implements Serializable {
     private transient Labyrinth proxy;
     private Context context;
     private ArrayList<Fight> fights;
+    private OperationCenter noc;
+
 
     public Hall (String idLabyrinth, String id, String name, String idType){
         this.context = new Context();
@@ -80,6 +84,22 @@ public class Hall implements Serializable {
 
     public void setFights(ArrayList<Fight> fights) {
         this.fights = fights;
+    }
+
+    public String getIdLabyrinth() {
+        return idLabyrinth;
+    }
+
+    public void setIdLabyrinth(String idLabyrinth) {
+        this.idLabyrinth = idLabyrinth;
+    }
+
+    public OperationCenter getNoc() {
+        return noc;
+    }
+
+    public void setNoc(OperationCenter noc) {
+        this.noc = noc;
     }
 
     public void setName(String name) {
@@ -144,7 +164,7 @@ public class Hall implements Serializable {
         monsters=context.getMonsters();
         if(!monsters.isEmpty()) {
             Monster monster = monsters.get(0);
-            this.addFight(player, monster);
+            this.addFight(monster, player);
         }
     }
 
@@ -154,7 +174,7 @@ public class Hall implements Serializable {
             context.removePlayer(player);
             return true;
         } else {
-            System.out.println("Le joueur est en train de se battre ");
+            System.out.println("Le joueur est en train de se battre.");
             return false;
         }
     }
@@ -170,7 +190,7 @@ public class Hall implements Serializable {
         boolean participant1 = context.participantExist(forward);
         boolean participant2 =  context.participantExist(attacked);;
         if (participant1 && participant2) {
-            Fight fight = new Fight(forward, attacked, context, fights, idHall, idLabyrinth);
+            Fight fight = new Fight(forward, attacked, context, fights, idHall, idLabyrinth, noc);
             fight.start();
             fights.add(fight);
         }
@@ -194,9 +214,9 @@ public class Hall implements Serializable {
 
 
         public void Heal () {
-            ArrayList<Player> players = this.context.getPlayers();
-            for (int i = 0; i < players.size(); i++) {
-                players.get(i).heal();
+            ArrayList<Player> players = context.getPlayers();
+            for(Player player : players){
+                player.heal();
             }
         }
 

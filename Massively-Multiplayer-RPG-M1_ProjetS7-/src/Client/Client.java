@@ -18,5 +18,5 @@ public interface Client extends Remote {
     public void startFight(Participant forward, Participant attacked) throws RemoteException;
     public void hitpoints(Participant forward, Participant attacked, int hitpoints) throws RemoteException;
     public void endFight(ArrayList<Participant> winners, Participant looser) throws RemoteException;
-
+    public void heal() throws RemoteException;
 }

@@ -85,11 +85,11 @@ public class Participant implements Serializable{
     }
 
     public void heal(){
-
+        this.life=this.maxlife;
     }
 
     public void heal(int healpoints){
-
+        this.life=this.life+healpoints;
     }
 
     public Boolean isAlive(){

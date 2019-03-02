@@ -1,7 +1,11 @@
 package Game;
 
 import Client.Client;
+import OperationCenter.OperationCenter;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +19,17 @@ public class Fight extends Thread {
     private String idHall;
     private Context context;
     private List<Fight> fights;
+    private OperationCenter noc;
 
-    public Fight(Participant forward, Participant attacked, Context context, List<Fight> fights, String idHall, String idLabyrinth) {
+
+    public Fight(Participant forward, Participant attacked, Context context, List<Fight> fights, String idHall, String idLabyrinth, OperationCenter noc) {
         this.forward = forward;
         this.attacked = attacked;
         this.idLabyrinth=idLabyrinth;
         this.idHall=idHall;
         this.context=context;
         this.fights=fights;
+        this.noc=noc;
     }
 
     public Participant getForward() {
@@ -119,7 +126,32 @@ public class Fight extends Thread {
     }
 
     public void endFight(){
-        // TODO : Dernière fonction avant les tests
+        int index=fights.indexOf(this);
+        fights.remove(index);
+        if(fights.isEmpty()){
+            ArrayList<Player> players=context.getPlayers();
+            for(Player player:players){
+                player.heal();
+                Client client=player.getProxy();
+                try {
+                    client.heal();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+            ArrayList<Monster> monsters=context.getMonsters();
+            for(Monster monster:monsters) {
+                monster.heal();
+            }
+            try {
+                if(!players.isEmpty()) {
+                    noc.save(players, idLabyrinth, idHall);
+                }
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        this.interrupt();
     }
 
     public void run(){
@@ -149,9 +181,9 @@ public class Fight extends Thread {
                 }
             }
             try {
-                sleep(1000);
+                sleep(2000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                this.interrupt();
             }
         }
     }

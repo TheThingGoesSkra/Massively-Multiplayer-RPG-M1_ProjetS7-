@@ -23,12 +23,22 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     };
     public void addPlayer(Player player) throws RemoteException {
         client.addPlayer(player);
-        System.out.println("Nouveau context : "+client.getContext().getPlayers().toString());
     };
     public void setHall(String Hall) throws RemoteException {};
     public void setLabyrinthServer(Labyrinth server) throws RemoteException {};
-    public void startFight(Participant forward, Participant attacked) throws RemoteException {};
-    public void hitpoints(Participant forward, Participant attacked, int hitpoints) throws RemoteException {};
-    public void endFight(ArrayList<Participant> winners, Participant looser) throws RemoteException {};
+    public void startFight(Participant forward, Participant attacked) throws RemoteException {
+        client.startFight(forward,attacked);
+    };
+
+    public void hitpoints(Participant forward, Participant attacked, int hitpoints) throws RemoteException {
+        client.hitpoints(forward,attacked,hitpoints);
+    };
+
+    public void endFight(ArrayList<Participant> winners, Participant looser) throws RemoteException {
+        client.endFight(winners,looser);
+    };
+    public void heal() throws RemoteException{
+        client.heal();
+    };
 
 }

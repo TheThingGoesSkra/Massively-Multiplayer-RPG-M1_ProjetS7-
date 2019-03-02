@@ -16,6 +16,24 @@ public class Context implements Serializable {
         this.players=new ArrayList<Player>();
     }
 
+    public Player getPlayer(String name) {
+        for (Player player : players) {
+            if (player.getName().equals(name)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public Monster getMonster(String name) {
+        for (Monster monster : monsters) {
+            if (monster.getName().equals(name)) {
+                return monster;
+            }
+        }
+        return null;
+    }
+
     public Boolean participantExist(Participant participant){
         if(participant instanceof Player){
             for(Player player : players){
