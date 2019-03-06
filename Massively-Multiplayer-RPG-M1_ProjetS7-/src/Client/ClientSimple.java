@@ -1,5 +1,6 @@
 package Client;
 
+import GUI.PrincipalGUI;
 import Game.*;
 import Labyrinth.Labyrinth;
 import OperationCenter.OperationCenter;
@@ -18,6 +19,7 @@ import static java.lang.Thread.sleep;
 
 public class ClientSimple {
 
+    private PrincipalGUI gui;
     private Client proxy;
     private OperationCenter noc;
     private Context context;
@@ -27,9 +29,48 @@ public class ClientSimple {
         try {
             Client proxy=new ClientImpl(this);
             this.proxy=proxy;
+            /* Set the Nimbus look and feel */
+            //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+            /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+             * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+             */
+            try {
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
+                }
+            } catch (ClassNotFoundException ex) {
+                java.util.logging.Logger.getLogger(PrincipalGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                java.util.logging.Logger.getLogger(PrincipalGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                java.util.logging.Logger.getLogger(PrincipalGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+                java.util.logging.Logger.getLogger(PrincipalGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
+            //</editor-fold>
+            //</editor-fold>
+
+            /* Create and display the form */
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    gui=new PrincipalGUI();
+                    gui.setVisible(true);
+                }
+            });
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public PrincipalGUI getGui() {
+        return gui;
+    }
+
+    public void setGui(PrincipalGUI gui) {
+        this.gui = gui;
     }
 
     public void setContext(Context context){
@@ -73,6 +114,7 @@ public class ClientSimple {
 
     public void startFight(Participant forward, Participant attacked){
         System.out.println(forward.getName()+" attaque "+attacked.getName()+" !");
+        gui.getInformationsGUI1().getLabyrinthGUI1().startFight(forward,attacked);
     };
 
     public void hitpoints(Participant forward, Participant attacked, int hitpoints){
@@ -81,21 +123,20 @@ public class ClientSimple {
             if(attacked.getName().equals(myplayer.getName())){
                 System.out.println(forward.getName()+" vous fait perdre "+hitpoints+" pts de vie !");
                 myplayer.hitpoints(hitpoints);
-                System.out.println("Votre vie : "+myplayer.getLife());
             }else{
                 System.out.println(forward.getName()+" fait perdre "+hitpoints+" pts de vie à "+attacked.getName()+" !");
                 Player player = context.getPlayer(attacked.getName());
                 if(player!=null){
                     player.hitpoints(hitpoints);
                 }
-                System.out.println("Sa vie : "+player.getLife());
             }
         }else if(attacked instanceof Monster){
             System.out.println(forward.getName()+" fait perdre "+hitpoints+" pts de vie à "+attacked.getName()+" !");
             Monster monster=context.getMonster(attacked.getName());
             monster.hitpoints(hitpoints);
-            System.out.println("Sa vie : "+monster.getLife());
         }
+        gui.getInformationsGUI1().getLabyrinthGUI1().hitpoints(forward,attacked,hitpoints);
+        gui.getInformationsGUI1().getLabyrinthGUI1().initJTree();
     };
 
     public void endFight(ArrayList<Participant> winners, Participant looser) {
@@ -114,6 +155,7 @@ public class ClientSimple {
                 monster.heal(1);
             }
         }
+        gui.getInformationsGUI1().getLabyrinthGUI1().endFight(winners,looser);
     };
 
     public void newFight(String attacked){
@@ -142,6 +184,7 @@ public class ClientSimple {
 
     public void alertRunnaway(Participant forward, Participant runner) {
         System.out.println(runner.getName()+" fuit le combat face à "+forward.getName()+" !");
+        gui.getInformationsGUI1().getLabyrinthGUI1().alertRunnaway(forward,runner);
     }
 
     public void heal() throws RemoteException{
@@ -156,6 +199,7 @@ public class ClientSimple {
         for(Monster monster:monsters) {
             monster.heal();
         }
+        gui.getInformationsGUI1().getLabyrinthGUI1().heal();
     };
 
 
@@ -194,7 +238,7 @@ public class ClientSimple {
     public static void main(String[] args) throws RemoteException {
 
         ClientSimple client=new ClientSimple();
-        client.initialisation();
+        client.initialisation();;
         Scanner sc = new Scanner(System.in);
         System.out.println("Veuillez saisir le nom de votre personnage :");
         String str = sc.nextLine();
