@@ -107,8 +107,31 @@ public class Hall implements Serializable {
 
     }
 
-    public void changeHall(String player, Pole pole){
+    public int changeHall(String player, Pole pole){
+        int idHalls =0;
+        Door door = new Door();
+        getDoor(pole);
+        if ( getDoor(pole) != null) {
+           Player player1=context.getPlayers(player);
+            exitPlayer(player1);
 
+            if(exitPlayer(player1) == true){
+               Hall hall= door.getOtherHall(this.idHall);
+                getName();
+               Client client =  player1.getProxy();
+               hall.getProxy();
+
+               if ( hall.getProxy() == this.getProxy()){
+                    hall.addPlayer(player1);
+               }
+
+               else if ( hall.getProxy() != this.getProxy()){
+                    player1.getProxy();
+               }
+            }
+
+        }
+        return idHalls;
     }
 
 
