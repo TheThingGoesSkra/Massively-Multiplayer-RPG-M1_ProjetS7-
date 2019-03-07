@@ -22,8 +22,11 @@ public class OperationCenterImpl extends UnicastRemoteObject implements Operatio
         this.noc=noc;
     };
 
-    public Session identification(String name) throws RemoteException {return null;};
-    public void save(ArrayList<Player> players, String labyrinth, String Hall)  throws RemoteException {};
+    public Session identification(String name) throws RemoteException {
+        return noc.identification(name);
+    };
+
+    public void save(ArrayList<Player> players, String idLabyrinth, String idHall)  throws RemoteException {};
     public LabyrinthSimple recordLabyrinth(Labyrinth server)  throws RemoteException {
         noc.addServerResponsabilities(server);
         LabyrinthSimple labyrinth=noc.getLabyrinth();

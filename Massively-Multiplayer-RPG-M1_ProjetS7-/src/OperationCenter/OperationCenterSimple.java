@@ -113,7 +113,7 @@ public class OperationCenterSimple {
             String idHall=ligne.get(0);
             String name=ligne.get(1);
             String idTypeHall=ligne.get(2);
-            Hall hall=new Hall(idHall, name, idTypeHall);
+            Hall hall=new Hall("", idHall, name, idTypeHall);
             tamponHalls.add(hall);
             halls.add(idHall);
         }
@@ -241,7 +241,55 @@ public class OperationCenterSimple {
         resp.put(server, new ArrayList<String>());
     };
 
-    public Session identification(String name) {return null;};
+    public Session identification(String name) {
+        Player player;
+        Session session;
+        String where = "idplayer=" + "\"" + name + "\"";
+        this.myBDD.requeteSelect("*", "player", where);
+        List<List<String>> res = this.myBDD.getResult();
+        if (!res.isEmpty()) {
+            List<String> res1 = res.get(0);
+            this.myBDD.printResultData();
+            player = new Player(res1.get(0), Integer.parseInt(res1.get(2)),
+                    Integer.parseInt(res1.get(3)), Integer.parseInt(res1.get(4)), Integer.parseInt(res1.get(1)));
+            String idLabyrinth = "0";
+            // TODO : && idlabyrinth = idLabyrinth
+            where = "idplayer=" + "\"" + name + "\"";
+            this.myBDD.requeteSelect("*", "session", where);
+            res = this.myBDD.getResult();
+            if (!res.isEmpty()) {
+                res1 = res.get(0);
+                String idHall = res1.get(2);
+                String life = res1.get(3);
+                player.setLife(Integer.parseInt(life));
+                // TODO : Intégrer adresse serveur messagerie
+                session = new Session(player, idLabyrinth, idHall);
+            }else{
+                String idHall = "0";
+                player.setLife(player.getMaxlife());
+                session = new Session(player, idLabyrinth, idHall);
+            }
+        } else {
+                String values = "(\"" + name + "\",10,1,1,1,0)";
+                this.myBDD.requeteInsertInto("player", values, "");
+                player = new Player(name, 10, 1, 1, 1, 10);
+                String idLabyrinth = "0";
+                String idHall = "0";
+                session = new Session(player, idLabyrinth, idHall);
+        }
+        String idHall = session.getIdHall();
+        for(Labyrinth key : resp.keySet()){
+            for(String hall : resp.get(key)){
+                if(hall.equals(idHall)){
+                    session.setProxy(key);
+                    return session;
+                }
+            }
+        }
+        return session;
+    }
+
+
     public void save(ArrayList<Player> players, String labyrinth, String Hall) {};
 
     public ArrayList<String> recordMessagerie(String ip,int numPort) {return halls;};

@@ -1,9 +1,12 @@
 package Game;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 import Client.Client;
 import Labyrinth.Labyrinth;
+import OperationCenter.OperationCenter;
+
 import java.io.Serializable;
 
 
@@ -11,20 +14,21 @@ import java.io.Serializable;
 
 public class Hall implements Serializable {
     private String idHall;
+    private String idLabyrinth;
     private String name;
     private String idType;
     private HashMap<Pole,Door> doors;
     private transient Labyrinth proxy;
-    Context context;
-    private transient List<Fight> fights;
+    private Context context;
+    private ArrayList<Fight> fights;
+    private OperationCenter noc;
 
 
-
-
-    public Hall (String id, String name, String idType){
+    public Hall (String idLabyrinth, String id, String name, String idType){
         this.context = new Context();
         this.fights = new ArrayList<Fight>();
         this.doors = new HashMap<Pole,Door>();
+        this.idLabyrinth=idLabyrinth;
         this.idHall =id;
         this.name=name;
         this.idType=idType;
@@ -78,8 +82,24 @@ public class Hall implements Serializable {
         return fights;
     }
 
-    public void setFights(List<Fight> fights) {
+    public void setFights(ArrayList<Fight> fights) {
         this.fights = fights;
+    }
+
+    public String getIdLabyrinth() {
+        return idLabyrinth;
+    }
+
+    public void setIdLabyrinth(String idLabyrinth) {
+        this.idLabyrinth = idLabyrinth;
+    }
+
+    public OperationCenter getNoc() {
+        return noc;
+    }
+
+    public void setNoc(OperationCenter noc) {
+        this.noc = noc;
     }
 
     public void setName(String name) {
@@ -130,6 +150,10 @@ public class Hall implements Serializable {
 
     }
 
+    public void removeParticipant(Participant participant){
+        context.removeParticipant(participant);
+    }
+
     public void removeMonster(Monster monster) {
         context.removeMonster(monster);
 
@@ -140,80 +164,91 @@ public class Hall implements Serializable {
 
     }
 
-    public boolean addPlayer(Player player){
-        boolean playerAdd =false;
+    public void addPlayer(Player player){
         ArrayList<Player> players;
         List<Monster> monsters;
-
-        Client client = new Client;
-        Client client1 = new Client;
-        client = player.getProxy();
+        Client client= player.getProxy();
+        Client tamponClient;
+        try {
+            client.setContext(context);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         players = context.getPlayers();
-
-        for ( Player player1 : players ) {
-            client1 = player1.getProxy();
+        for ( Player tamponPlayer : players ) {
+            tamponClient = tamponPlayer.getProxy();
+            try {
+                tamponClient.addPlayer(player);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
         context.addPlayer(player);
         monsters=context.getMonsters();
-        if( monsters !=null){
-            Monster monster = new Monster();
-            monster = monsters.get(0);
-            addFight(player,monster);
-            playerAdd =true;
-            return playerAdd;
-        }
-
-        else {
-            return playerAdd;
+        if(!monsters.isEmpty()) {
+            Monster monster = monsters.get(0);
+            this.addFight(monster, player);
         }
     }
+
     public boolean exitPlayer (Player player){
-
         boolean isFighting = isFighting(player);
-
         if (isFighting = false) {
             context.removePlayer(player);
-            return isFighting;
+            return true;
         } else {
-            System.out.println("Le joueur est en train de se battre ");
-            return isFighting;
+            System.out.println("Le joueur est en train de se battre.");
+            return false;
         }
-
     }
 
-
-    public void runnaway(Participant participant1, Participant participant2) {
-
+    public Fight getFight(Participant forward, Participant attacked){
+        for(Fight fight:fights){
+            Boolean forwardExist=fight.participantExist(forward);
+            Boolean attackedExist=fight.participantExist(attacked);
+            if(forwardExist && attackedExist){
+                return fight;
+            }
+        }
+        return null;
     }
 
-    public void addFight(Participant participant1, Participant participant2) {
+    public void runnaway(String forwardName, String runnerName) {
+        Participant forward=context.getParticipant(forwardName);
+        Participant runner=context.getParticipant(runnerName);
+        if(forward!=null && runner!=null) {
+            Fight fight = this.getFight(forward, runner);
+            if(fight!=null){
+                System.out.println("runnaway");
+                fight.runnaway(runner);
+            }
+        }
+    }
+
+    public void addFight(Participant forward, Participant attacked) {
         ArrayList<Player> players = this.context.getPlayers();
         List<Monster> monsters = this.context.getMonsters();
-        boolean monster = false;
-        boolean player = false;
-
-        for (int i = 0; i < players.size(); i++) {
-            if (participant1 == players.get(i)) {
-                player = true;
-            }
-
-        }
-        for (int j = 0; j < players.size(); j++) {
-            if (participant2 == players.get(j)) {
-                monster = true;
-            }
-        }
-
-        if (monster && player == true) {
-
-            Fight fight1 = new Fight(participant1, participant2);
-            fights.add(fight1);
+        boolean participant1 = context.participantExist(forward);
+        boolean participant2 =  context.participantExist(attacked);;
+        if (participant1 && participant2) {
+            Fight fight = new Fight(forward, attacked, context, fights, idHall, idLabyrinth, noc);
+            fight.start();
+            fights.add(fight);
         }
     }
 
+    public void addFight(String forwardName, String attackedName) {
+        Participant forward=context.getParticipant(forwardName);
+        Participant attacked=context.getParticipant(attackedName);
+        if(forward!=null && attacked!=null){
+            Fight fight = new Fight(forward, attacked, context, fights, idHall, idLabyrinth, noc);
+            fight.start();
+            fights.add(fight);
+        }
+    }
 
-        public void removeFight (Fight fight1){
-            fights.remove(fight1);
+        public void removeFight (Fight fight){
+            fights.remove(fight);
         }
 
 
@@ -229,9 +264,9 @@ public class Hall implements Serializable {
 
 
         public void Heal () {
-            ArrayList<Player> players = this.context.getPlayers();
-            for (int i = 0; i < players.size(); i++) {
-                players.get(i).heal();
+            ArrayList<Player> players = context.getPlayers();
+            for(Player player : players){
+                player.heal();
             }
         }
 

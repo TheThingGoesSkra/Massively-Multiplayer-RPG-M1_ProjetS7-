@@ -2,9 +2,8 @@ package Labyrinth;
 
 import Client.Client;
 import Client.Session;
-import Game.Hall;
-import Game.Pole;
-import Game.Player;
+import Game.*;
+import OperationCenter.OperationCenter;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -18,6 +17,8 @@ public class LabyrinthSimple implements Serializable{
     private String id;
     private String name;
     private HashSet<Hall> halls;
+    private OperationCenter noc;
+
 
     public LabyrinthSimple(String id, String name){
         this.id=id;
@@ -33,12 +34,24 @@ public class LabyrinthSimple implements Serializable{
         this.id = id;
     }
 
+    public OperationCenter getNoc() {
+        return noc;
+    }
+
+    public void setNoc(OperationCenter noc) {
+        this.noc = noc;
+        for(Hall hall:halls){
+            hall.setNoc(noc);
+        }
+    }
+
     public String getName() {
         return name;
     }
 
-    public void addPlayer(String hall, Player player){
-        getHall(hall).addPlayer(player);
+    public void addPlayer(String idHall, Player player){
+        Hall hall = this.getHall(idHall);
+        hall.addPlayer(player);
     }
     public void setName(String name) {
         this.name = name;
@@ -77,11 +90,24 @@ public class LabyrinthSimple implements Serializable{
     public void runnaway(String Hall, String forward, String runner){};
     public void logOut(String Hall, String player){};
 
+    public void newFight(String idHall, String forwardName, String attackedName){
+        Hall hall=this.getHall(idHall);
+        hall.addFight(forwardName,attackedName);
+    };
+
+    public void runnaway(String idHall, String forwardName, String runnerName){
+        Hall hall = this.getHall(idHall);
+        hall.runnaway(forwardName,runnerName);
+    };
+
+    public void logout(String Hall, String player){};
+
     public void setReponsabiities(HashMap<Labyrinth,ArrayList<String>> resp){
         for(Labyrinth key : resp.keySet()){
             List<String> hallsId = resp.get(key);
             for(String hallId : hallsId){
                 Hall hall = this.getHall(hallId);
+
                 if(hall==null){
                     System.err.println("Erreur : Hall introuvable ");
                 }else{

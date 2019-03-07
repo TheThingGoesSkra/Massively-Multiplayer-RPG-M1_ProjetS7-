@@ -1,5 +1,23 @@
 package Client;
 
-public interface Client {
-    setContext(context);
+import Game.Context;
+import Game.Participant;
+import Game.Player;
+import Labyrinth.Labyrinth;
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+
+public interface Client extends Remote {
+
+    void setContext(Context context) throws RemoteException;
+    void addPlayer(Player player) throws RemoteException;
+    void setHall(String Hall) throws RemoteException;
+    void setLabyrinthServer(Labyrinth server) throws RemoteException;
+    void startFight(Participant forward, Participant attacked) throws RemoteException;
+    void hitpoints(Participant forward, Participant attacked, int hitpoints) throws RemoteException;
+    void endFight(ArrayList<Participant> winners, Participant looser) throws RemoteException;
+    void heal() throws RemoteException;
+    void alertRunnaway(Participant forward, Participant runner) throws RemoteException;
 }

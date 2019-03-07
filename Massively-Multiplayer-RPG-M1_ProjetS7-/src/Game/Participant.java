@@ -20,6 +20,14 @@ public class Participant implements Serializable{
         this.maxlife = maxlife;
     }
 
+    public Participant(String name, int attack, int resilience, int chance, int maxlife) {
+        this.name = name;
+        this.attack = attack;
+        this.resilience = resilience;
+        this.chance = chance;
+        this.maxlife = maxlife;
+    }
+
     public String getName() {
         return name;
     }
@@ -64,11 +72,35 @@ public class Participant implements Serializable{
 
     public void setMaxlife(int maxlife) {this.maxlife = maxlife;}
 
-    public void heal(){
-
+    public Boolean hitpoints(int hitpoints){
+        if(this.life>0) {
+            this.life = this.life - hitpoints;
+            if(this.life<=0){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        return false;
     }
 
-    public void heal(int soin){
+    public void heal(){
+        this.life=this.maxlife;
+    }
 
+    public void heal(int healpoints){
+        this.life=this.life+healpoints;
+    }
+
+    public Boolean isAlive(){
+        if(life>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public String toString(){
+        return name;
     }
 }
