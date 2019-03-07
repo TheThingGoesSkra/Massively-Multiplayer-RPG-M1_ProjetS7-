@@ -22,9 +22,11 @@ public class LabyrinthGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTextArea jTextArea4;
+    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTree jTree1;
     private static Context context;
+    private String debutTexte;
+    private String finTexte;
     // End of variables declaration
     public class MyTreeCellRenderer extends DefaultTreeCellRenderer {
 
@@ -101,7 +103,7 @@ public class LabyrinthGUI extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTextArea4 = new javax.swing.JTextArea();
+        jTextPane1 = new javax.swing.JTextPane();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -130,14 +132,14 @@ public class LabyrinthGUI extends javax.swing.JPanel {
         jScrollPane6.setBackground(new java.awt.Color(102, 102, 102));
         jScrollPane6.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jTextArea4.setEditable(false);
-        jTextArea4.setBackground(new java.awt.Color(102, 102, 102));
-        jTextArea4.setColumns(20);
-        jTextArea4.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
-        jTextArea4.setForeground(new java.awt.Color(245, 255, 255));
-        jTextArea4.setRows(5);
-        jTextArea4.setRequestFocusEnabled(false);
-        jScrollPane6.setViewportView(jTextArea4);
+        jTextPane1.setEditable(false);
+        jTextPane1.setBackground(new java.awt.Color(102, 102, 102));
+        jTextPane1.setBorder(null);
+        jTextPane1.setContentType("text/html"); // NOI18N
+        debutTexte="<html>\r\n<head>\r\n\r\n</head>\r\n<body bgcolor=\"#666666\">\r\n<p style=\"margin-top: 2 ; margin-left: 8\">\r<font size=\"+1\">C'est partie !<br>\n";
+        finTexte="</font></p>\n</body>\n</html>\n";
+        jTextPane1.setText(debutTexte+finTexte);
+        jScrollPane6.setViewportView(jTextPane1);
         jPanel5.add(jScrollPane6, java.awt.BorderLayout.CENTER);
 
         add(jPanel5, java.awt.BorderLayout.CENTER);
@@ -324,29 +326,25 @@ public class LabyrinthGUI extends javax.swing.JPanel {
     }
 
     public void startFight(Participant forward, Participant attacked) {
-        String alert=forward.getName()+" attaque "+attacked.getName()+" !\n";
-        jTextArea4.append(alert);
+        String alert=forward.getName()+" attaque "+attacked.getName()+" !<br>\n";
+        debutTexte=debutTexte+alert;
+        jTextPane1.setText(debutTexte+finTexte);
     }
     public void hitpoints(Participant forward, Participant attacked, int hitpoints) {
-        jTextArea4.append(forward.getName());
-        jTextArea4.setForeground(new java.awt.Color(245, 255, 255));
-        jTextArea4.append(" fait perdre "+hitpoints+" pts de vie à ");
-        jTextArea4.setForeground(new java.awt.Color(255, 17, 50));
-        jTextArea4.append(attacked.getName());
-        jTextArea4.setForeground(new java.awt.Color(245, 255, 255));
-        jTextArea4.append(" !\n");
-
+        String alert=forward.getName()+" fait perdre "+hitpoints+" pts de vie à "+attacked.getName()+" !<br>\n";
+        debutTexte=debutTexte+alert;
+        jTextPane1.setText(debutTexte+finTexte);
     }
     public void endFight(ArrayList<Participant> winners, Participant looser) {
         String alert="Perdant : "+looser.getName()+" Gagnants : "+winners.toString()+"\n";
-        jTextArea4.append(alert);
+        //jTextArea4.append(alert);
     }
     public void alertRunnaway(Participant forward, Participant runner) {
         String alert=runner.getName()+" fuit le combat face à "+forward.getName()+" !\n";
-        jTextArea4.append(alert);
+        //jTextArea4.append(alert);
     }
     public void heal() {
         String alert="Tous le monde est soigné !\n";
-        jTextArea4.append(alert);
+        //jTextArea4.append(alert);
     }
 }
