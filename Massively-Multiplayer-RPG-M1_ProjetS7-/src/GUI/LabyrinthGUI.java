@@ -7,9 +7,7 @@ import Game.Player;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTreeUI;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -26,7 +24,7 @@ public class LabyrinthGUI extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTree jTree1;
-    private Context context;
+    private static Context context;
     // End of variables declaration
     public class MyTreeCellRenderer extends DefaultTreeCellRenderer {
 
@@ -60,6 +58,7 @@ public class LabyrinthGUI extends javax.swing.JPanel {
                 label.setText("<html><font color=red>"+resultats[0]+"</font> <font color=black>"+resultats[1]+"</font></html>");
             }
             label.setFont(new java.awt.Font("Tahoma", 0, 16));
+            label.setPreferredSize(new Dimension(200,23));
             return label;
         }
     }
@@ -71,6 +70,22 @@ public class LabyrinthGUI extends javax.swing.JPanel {
         this.context=context;
         initComponents();
         initJTree();
+    }
+
+    public JTree getjTree1() {
+        return jTree1;
+    }
+
+    public void setjTree1(JTree jTree1) {
+        this.jTree1 = jTree1;
+    }
+
+    public static Context getContext() {
+        return context;
+    }
+
+    public static void setContext(Context context) {
+        LabyrinthGUI.context = context;
     }
 
     /**
@@ -119,7 +134,7 @@ public class LabyrinthGUI extends javax.swing.JPanel {
         jTextArea4.setBackground(new java.awt.Color(102, 102, 102));
         jTextArea4.setColumns(20);
         jTextArea4.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
-        jTextArea4.setForeground(new java.awt.Color(204, 204, 255));
+        jTextArea4.setForeground(new java.awt.Color(245, 255, 255));
         jTextArea4.setRows(5);
         jTextArea4.setRequestFocusEnabled(false);
         jScrollPane6.setViewportView(jTextArea4);
@@ -127,6 +142,20 @@ public class LabyrinthGUI extends javax.swing.JPanel {
 
         add(jPanel5, java.awt.BorderLayout.CENTER);
     }// </editor-fold>
+
+    public DefaultMutableTreeNode removeAllChildren(DefaultMutableTreeNode rootNode){
+        while(rootNode.getChildCount() > 0){
+            DefaultMutableTreeNode t = (DefaultMutableTreeNode)rootNode.getChildAt(0);
+            rootNode.remove(t);
+        }
+        return rootNode;
+    }
+
+    public void removeAll(){
+        DefaultMutableTreeNode myRoot = ((DefaultMutableTreeNode) jTree1.getModel().getRoot());
+        myRoot = removeAllChildren(myRoot);
+        ((DefaultTreeModel) jTree1.getModel()).setRoot(myRoot);
+    }
 
     public void initJTree(){
         ArrayList<Player> players = context.getPlayers();
@@ -137,15 +166,12 @@ public class LabyrinthGUI extends javax.swing.JPanel {
         for(Monster monster:monsters) {
             this.ajouterMonster(monster,0);
         }
-
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                expandAll(jTree1);
-            }
-        });
+        DefaultTreeModel model = (DefaultTreeModel)this.jTree1.getModel();
+        model.reload();
+        expandAll(jTree1);
     }
 
-    private void expandAll(JTree tree) {
+    public void expandAll(JTree tree) {
         for (int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);
         }
@@ -156,7 +182,6 @@ public class LabyrinthGUI extends javax.swing.JPanel {
         DefaultTreeModel model = (DefaultTreeModel)this.jTree1.getModel();
         DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode)model.getRoot();
         rootNode.add(treeNode);
-        model.reload();
         return treeNode;
     }
 
@@ -190,9 +215,11 @@ public class LabyrinthGUI extends javax.swing.JPanel {
             groupNode.add(treeNode);
         else{
             DefaultMutableTreeNode temp = searchNode(groupNode,name);
-            if(temp != null)
-                groupNode.remove(temp);
-            groupNode.insert(treeNode, 0);
+            if(temp != null) {
+                temp.setUserObject(name);
+            }else{
+                groupNode.insert(treeNode, 0);
+            }
         }
         model.reload();
         return treeNode;
@@ -219,7 +246,6 @@ public class LabyrinthGUI extends javax.swing.JPanel {
                 groupNode.remove(temp);
             groupNode.insert(treeNode, 0);
         }
-        model.reload();
         return treeNode;
     }
 
@@ -244,7 +270,6 @@ public class LabyrinthGUI extends javax.swing.JPanel {
                 groupNode.remove(temp);
             groupNode.insert(treeNode, 0);
         }
-        model.reload();
         return treeNode;
     }
 
@@ -260,12 +285,42 @@ public class LabyrinthGUI extends javax.swing.JPanel {
         Enumeration<?> children = parentNode.children();
         while (children.hasMoreElements()) {
             DefaultMutableTreeNode child = (DefaultMutableTreeNode) children.nextElement();
-            if(child.getUserObject().equals(childNode)){
-                temp = child;
-                break;
+            if (child.isLeaf()){
+                System.out.println(child.getUserObject().toString()+" et "+childNode);
+                if (child.getUserObject().toString().split(" ")[1].equals(childNode.toString().split(" ")[1])) {
+                    temp = child;
+                    break;
+                }
+            }else{
+                if (child.getUserObject().equals(childNode)) {
+                    temp = child;
+                    break;
+                }
             }
         }
         return temp;
+    }
+
+    public static Enumeration saveExpansionState(JTree tree) {
+        return tree.getExpandedDescendants(new TreePath(tree.getModel().getRoot()));
+    }
+    public static void loadExpansionState(JTree tree, Enumeration enumeration) {
+        if (enumeration != null) {
+            while (enumeration.hasMoreElements()) {
+                TreePath treePath = (TreePath) enumeration.nextElement();
+                tree.expandPath(treePath);
+            }
+        }
+    }
+
+    public void actualiserJTree(Participant participant , int mode){
+        if(mode==0) {
+            DefaultTreeModel model = (DefaultTreeModel) this.jTree1.getModel();
+            DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) model.getRoot();
+        }else if (mode==1) {
+            DefaultMutableTreeNode temp = this.ajouterParticipant(participant, 1);
+        }
+        expandAll(jTree1);
     }
 
     public void startFight(Participant forward, Participant attacked) {
@@ -273,8 +328,14 @@ public class LabyrinthGUI extends javax.swing.JPanel {
         jTextArea4.append(alert);
     }
     public void hitpoints(Participant forward, Participant attacked, int hitpoints) {
-        String alert=forward.getName()+" fait perdre "+hitpoints+" pts de vie à "+attacked.getName()+" !\n";
-        jTextArea4.append(alert);
+        jTextArea4.append(forward.getName());
+        jTextArea4.setForeground(new java.awt.Color(245, 255, 255));
+        jTextArea4.append(" fait perdre "+hitpoints+" pts de vie à ");
+        jTextArea4.setForeground(new java.awt.Color(255, 17, 50));
+        jTextArea4.append(attacked.getName());
+        jTextArea4.setForeground(new java.awt.Color(245, 255, 255));
+        jTextArea4.append(" !\n");
+
     }
     public void endFight(ArrayList<Participant> winners, Participant looser) {
         String alert="Perdant : "+looser.getName()+" Gagnants : "+winners.toString()+"\n";

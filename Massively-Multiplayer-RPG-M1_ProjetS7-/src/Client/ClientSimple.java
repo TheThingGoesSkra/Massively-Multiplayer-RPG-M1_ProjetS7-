@@ -1,5 +1,6 @@
 package Client;
 
+import GUI.LabyrinthGUI;
 import GUI.PrincipalGUI;
 import Game.*;
 import Labyrinth.Labyrinth;
@@ -22,13 +23,14 @@ public class ClientSimple {
     private PrincipalGUI gui;
     private Client proxy;
     private OperationCenter noc;
-    private Context context;
+    private static Context context;
     private Session session;
 
     public ClientSimple() {
         try {
             Client proxy=new ClientImpl(this);
             this.proxy=proxy;
+            this.context=new Context();
             /* Set the Nimbus look and feel */
             //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
             /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -56,7 +58,7 @@ public class ClientSimple {
             /* Create and display the form */
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
-                    gui=new PrincipalGUI();
+                    gui=new PrincipalGUI(context);
                     gui.setVisible(true);
                 }
             });
@@ -74,7 +76,15 @@ public class ClientSimple {
     }
 
     public void setContext(Context context){
-        this.context=context;
+        ArrayList<Monster> monsters = this.context.getMonsters();
+        ArrayList<Player> players = this.context.getPlayers();
+        monsters.removeAll(monsters);
+        monsters.addAll(context.getMonsters());
+        players.removeAll(players);
+        players.addAll(context.getPlayers());
+        players.add(session.getPlayer());
+        gui.getInformationsGUI1().getLabyrinthGUI1().removeAll();
+        gui.getInformationsGUI1().getLabyrinthGUI1().initJTree();
     };
 
     public void setNoc(OperationCenter noc){
@@ -136,7 +146,7 @@ public class ClientSimple {
             monster.hitpoints(hitpoints);
         }
         gui.getInformationsGUI1().getLabyrinthGUI1().hitpoints(forward,attacked,hitpoints);
-        gui.getInformationsGUI1().getLabyrinthGUI1().initJTree();
+        gui.getInformationsGUI1().getLabyrinthGUI1().actualiserJTree(attacked,1);
     };
 
     public void endFight(ArrayList<Participant> winners, Participant looser) {
@@ -156,6 +166,9 @@ public class ClientSimple {
             }
         }
         gui.getInformationsGUI1().getLabyrinthGUI1().endFight(winners,looser);
+        for(Participant winner : winners){
+            gui.getInformationsGUI1().getLabyrinthGUI1().actualiserJTree(winner,1);
+        }
     };
 
     public void newFight(String attacked){
@@ -200,6 +213,12 @@ public class ClientSimple {
             monster.heal();
         }
         gui.getInformationsGUI1().getLabyrinthGUI1().heal();
+        ArrayList<Participant> participants=new ArrayList<Participant>();
+        participants.addAll(players);
+        participants.addAll(monsters);
+        for(Participant participant:participants){
+            gui.getInformationsGUI1().getLabyrinthGUI1().actualiserJTree(participant,1);
+        }
     };
 
 

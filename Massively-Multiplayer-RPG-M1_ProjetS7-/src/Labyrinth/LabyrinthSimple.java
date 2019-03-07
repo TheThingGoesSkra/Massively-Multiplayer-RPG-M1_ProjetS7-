@@ -80,8 +80,6 @@ public class LabyrinthSimple implements Serializable{
     }
 
     public void login(Session s, Client proxy){};
-<<<<<<< HEAD
-    public void changeHall(String Hall, String player, Pole direction){};
 
     public void newFight(String idHall, String forwardName, String attackedName){
         Hall hall=this.getHall(idHall);
@@ -94,17 +92,13 @@ public class LabyrinthSimple implements Serializable{
     };
 
     public void logout(String Hall, String player){};
-=======
+
     public int changeHall(String Hall, String player, Pole direction){
          int idHalls;
          Hall hall = getHall(Hall);
          idHalls= hall.changeHall(player, direction);
          return idHalls;
     };
-    public void newFight(String forward, String attacked){};
-    public void runnaway(String Hall, String forward, String runner){};
-    public void logOut(String Hall, String player){};
->>>>>>> d45f76e0186d28cc95a349c19b5c5d55d9415ec2
 
     public void setReponsabiities(HashMap<Labyrinth,ArrayList<String>> resp){
         for(Labyrinth key : resp.keySet()){

@@ -171,6 +171,11 @@ public class Fight extends Thread {
 
     public void run(){
         alertFight();
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            return;
+        }
         while(!this.isInterrupted()){
             if(forward.isAlive() && attacked.isAlive()){
             Participant notChoosed;

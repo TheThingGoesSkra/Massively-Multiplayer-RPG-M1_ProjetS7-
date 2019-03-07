@@ -1,6 +1,8 @@
 package GUI;
 
 import Game.Context;
+import Game.Monster;
+import Game.Player;
 
 /**
  *
@@ -13,7 +15,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private ActionsGUI actionsGUI1;
     private InformationsGUI informationsGUI1;
     private javax.swing.JPanel jPanel1;
-    private Context context;
+    private static Context context;
     // End of variables declaration
 
     /**
@@ -93,10 +95,13 @@ public class PrincipalGUI extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
+        Context context=new Context();
+        context.addPlayer(new Player("Antonio", 10,1,1,1,10));
+        context.addMonster(new Monster("0", "Chupacabra", 10,1,1,1,10));
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PrincipalGUI().setVisible(true);
+                new PrincipalGUI(context).setVisible(true);
             }
         });
     }

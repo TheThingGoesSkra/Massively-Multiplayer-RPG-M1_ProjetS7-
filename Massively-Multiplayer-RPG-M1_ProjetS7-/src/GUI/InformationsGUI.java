@@ -19,7 +19,7 @@ public class InformationsGUI extends javax.swing.JPanel {
     private javax.swing.JSplitPane jSplitPane1;
     private LabyrinthGUI labyrinthGUI1;
     private MessagerieGUI messagerieGUI1;
-    private Context context;
+    private static Context context;
     // End of variables declaration
 
     /**
