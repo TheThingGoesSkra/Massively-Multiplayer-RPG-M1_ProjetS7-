@@ -6,6 +6,13 @@ package GUI;
  */
 public class MessagerieGUI extends javax.swing.JPanel {
 
+    // Variables declaration - do not modify
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JTextArea jTextArea4;
+    // End of variables declaration
+
     /**
      * Creates new form MessagerieGUI
      */
@@ -58,11 +65,5 @@ public class MessagerieGUI extends javax.swing.JPanel {
     }// </editor-fold>
 
 
-    // Variables declaration - do not modify
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTextArea jTextArea4;
-    // End of variables declaration
 }
 

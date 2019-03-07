@@ -6,17 +6,44 @@ package GUI;
  * and open the template in the editor.
  */
 
+import Game.Context;
+
 /**
  *
  * @author Thomas
  */
 public class InformationsGUI extends javax.swing.JPanel {
 
+    // Variables declaration - do not modify
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JSplitPane jSplitPane1;
+    private LabyrinthGUI labyrinthGUI1;
+    private MessagerieGUI messagerieGUI1;
+    private static Context context;
+    // End of variables declaration
+
     /**
      * Creates new form InformationsGUI
      */
-    public InformationsGUI() {
+    public InformationsGUI(Context context) {
+        this.context=context;
         initComponents();
+    }
+
+    public LabyrinthGUI getLabyrinthGUI1() {
+        return labyrinthGUI1;
+    }
+
+    public void setLabyrinthGUI1(LabyrinthGUI labyrinthGUI1) {
+        this.labyrinthGUI1 = labyrinthGUI1;
+    }
+
+    public MessagerieGUI getMessagerieGUI1() {
+        return messagerieGUI1;
+    }
+
+    public void setMessagerieGUI1(MessagerieGUI messagerieGUI1) {
+        this.messagerieGUI1 = messagerieGUI1;
     }
 
     /**
@@ -30,7 +57,7 @@ public class InformationsGUI extends javax.swing.JPanel {
 
         jPanel2 = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
-        labyrinthGUI1 = new LabyrinthGUI();
+        labyrinthGUI1 = new LabyrinthGUI(this.context);
         messagerieGUI1 = new MessagerieGUI();
 
         setLayout(new java.awt.BorderLayout());
@@ -49,12 +76,5 @@ public class InformationsGUI extends javax.swing.JPanel {
         add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>
 
-
-    // Variables declaration - do not modify
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JSplitPane jSplitPane1;
-    private LabyrinthGUI labyrinthGUI1;
-    private MessagerieGUI messagerieGUI1;
-    // End of variables declaration
 }
 

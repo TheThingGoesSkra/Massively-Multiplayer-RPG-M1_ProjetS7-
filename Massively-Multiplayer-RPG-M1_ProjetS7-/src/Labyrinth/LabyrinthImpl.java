@@ -53,6 +53,7 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	}
 	public int changeHall(String Hall, String player, Pole direction) throws RemoteException{
 
@@ -64,13 +65,25 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 	public void logOut(String Hall, String player) throws RemoteException{};
 =======
 	public void changeHall(String Hall, String player, Pole direction) throws RemoteException{};
+=======
+>>>>>>> master
 	public void newFight(String idHall, String forward, String attacked) throws RemoteException{
 		labyrinth.newFight(idHall, forward,attacked);
 	};
 	public void runnaway(String idHall, String forward, String runner) throws RemoteException{
 		labyrinth.runnaway(idHall,forward,runner);
 	};
+
+	public int changeHall(String Hall, String player, Pole direction) throws RemoteException{
+		int idHalls = labyrinth.changeHall(Hall, player, direction);
+		return idHalls;
+	};
+
 	public void logout(String Hall, String player) throws RemoteException{};
+<<<<<<< HEAD
+>>>>>>> master
+=======
+
 >>>>>>> master
 	public void setReponsabiities(HashMap<Labyrinth,ArrayList<String>> resp) throws RemoteException{
 		System.out.println("setresponsabilities");
@@ -84,7 +97,6 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 			e.printStackTrace();
 		}
 	}
-
 
 	public static void main(String[] args) throws RemoteException {
 		LabyrinthImpl impl=new LabyrinthImpl();

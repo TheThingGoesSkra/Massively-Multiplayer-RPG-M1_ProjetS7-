@@ -1,16 +1,45 @@
 package GUI;
 
+import Game.Context;
+import Game.Monster;
+import Game.Player;
+
 /**
  *
  * @author Thomas
  */
 public class PrincipalGUI extends javax.swing.JFrame {
 
+
+    // Variables declaration - do not modify
+    private ActionsGUI actionsGUI1;
+    private InformationsGUI informationsGUI1;
+    private javax.swing.JPanel jPanel1;
+    private static Context context;
+    // End of variables declaration
+
     /**
      * Creates new form NewJFrame1
      */
-    public PrincipalGUI() {
+    public PrincipalGUI(Context context) {
+        this.context=context;
         initComponents();
+    }
+
+    public ActionsGUI getActionsGUI1() {
+        return actionsGUI1;
+    }
+
+    public void setActionsGUI1(ActionsGUI actionsGUI1) {
+        this.actionsGUI1 = actionsGUI1;
+    }
+
+    public InformationsGUI getInformationsGUI1() {
+        return informationsGUI1;
+    }
+
+    public void setInformationsGUI1(InformationsGUI informationsGUI1) {
+        this.informationsGUI1 = informationsGUI1;
     }
 
     /**
@@ -23,7 +52,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        informationsGUI1 = new InformationsGUI();
+        informationsGUI1 = new InformationsGUI(context);
         actionsGUI1 = new ActionsGUI();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -66,17 +95,14 @@ public class PrincipalGUI extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
+        Context context=new Context();
+        context.addPlayer(new Player("Antonio", 10,1,1,1,10));
+        context.addMonster(new Monster("0", "Chupacabra", 10,1,1,1,10));
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PrincipalGUI().setVisible(true);
+                new PrincipalGUI(context).setVisible(true);
             }
         });
     }
-
-    // Variables declaration - do not modify
-    private ActionsGUI actionsGUI1;
-    private InformationsGUI informationsGUI1;
-    private javax.swing.JPanel jPanel1;
-    // End of variables declaration
 }

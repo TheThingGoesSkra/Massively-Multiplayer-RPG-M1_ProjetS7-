@@ -108,30 +108,27 @@ public class Hall implements Serializable {
     }
 
     public int changeHall(String player, Pole pole){
-        int idHalls =0;
+      /*  int idHalls =0;
         Door door = new Door();
         getDoor(pole);
         if ( getDoor(pole) != null) {
            Player player1=context.getPlayers(player);
             exitPlayer(player1);
-
             if(exitPlayer(player1) == true){
-               Hall hall= door.getOtherHall(this.idHall);
+               Hall hall= door.getOtherHall(this);
                 getName();
                Client client =  player1.getProxy();
                hall.getProxy();
-
                if ( hall.getProxy() == this.getProxy()){
                     hall.addPlayer(player1);
                }
-
                else if ( hall.getProxy() != this.getProxy()){
                     player1.getProxy();
                }
             }
-
         }
-        return idHalls;
+        return idHalls;*/
+      return 0;
     }
 
 
@@ -142,12 +139,10 @@ public class Hall implements Serializable {
 
     public void addDoor(Door door, Pole pole){
         this.doors.put(pole,door);
-
     }
 
     public void addMonster(Monster monster) {
         context.addMonster(monster);
-
     }
 
     public void removeParticipant(Participant participant){
@@ -156,7 +151,6 @@ public class Hall implements Serializable {
 
     public void removeMonster(Monster monster) {
         context.removeMonster(monster);
-
     }
 
     public void addPlayers(Player player) {
