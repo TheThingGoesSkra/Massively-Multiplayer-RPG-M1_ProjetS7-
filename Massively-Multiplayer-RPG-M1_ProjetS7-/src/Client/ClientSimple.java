@@ -31,37 +31,6 @@ public class ClientSimple {
             Client proxy=new ClientImpl(this);
             this.proxy=proxy;
             this.context=new Context();
-            /* Set the Nimbus look and feel */
-            //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-            /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-             * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-             */
-            try {
-                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                    if ("Nimbus".equals(info.getName())) {
-                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                        break;
-                    }
-                }
-            } catch (ClassNotFoundException ex) {
-                java.util.logging.Logger.getLogger(PrincipalGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            } catch (InstantiationException ex) {
-                java.util.logging.Logger.getLogger(PrincipalGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                java.util.logging.Logger.getLogger(PrincipalGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-                java.util.logging.Logger.getLogger(PrincipalGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            }
-            //</editor-fold>
-            //</editor-fold>
-
-            /* Create and display the form */
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    gui=new PrincipalGUI(context);
-                    gui.setVisible(true);
-                }
-            });
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -73,6 +42,35 @@ public class ClientSimple {
 
     public void setGui(PrincipalGUI gui) {
         this.gui = gui;
+    }
+
+    public void startGUI(){
+        /* Set the Nimbus look and feel */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(PrincipalGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(PrincipalGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(PrincipalGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(PrincipalGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        gui=new PrincipalGUI(this);
+        gui.setVisible(true);
+    }
+
+    public void setContextSimple(Context context){
+        this.context=context;
     }
 
     public void setContext(Context context){
@@ -119,11 +117,20 @@ public class ClientSimple {
         context.addPlayer(player);
         System.out.println("Nouveau context : "+context.getPlayers().toString());
     };
-    public void setHall(String Hall){};
-    public void setLabyrinthServer(Labyrinth server){};
+
+    public void setHall(String idHall){
+        session.setIdHall(idHall);
+    };
+
+    public void setXY(int x, int y){
+        session.setx(x);
+        session.sety(y);
+    }
+    public void setLabyrinthServer(Labyrinth server){
+        session.setProxy(server);
+    };
 
     public void startFight(Participant forward, Participant attacked){
-        System.out.println(forward.getName()+" attaque "+attacked.getName()+" !");
         gui.getInformationsGUI1().getLabyrinthGUI1().startFight(forward,attacked);
     };
 
@@ -146,7 +153,6 @@ public class ClientSimple {
             monster.hitpoints(hitpoints);
         }
         gui.getInformationsGUI1().getLabyrinthGUI1().hitpoints(forward,attacked,hitpoints);
-        gui.getInformationsGUI1().getLabyrinthGUI1().actualiserJTree(attacked,1);
     };
 
     public void endFight(ArrayList<Participant> winners, Participant looser) {
@@ -165,10 +171,10 @@ public class ClientSimple {
                 monster.heal(1);
             }
         }
+        // TODO : Ne pas supprimer si on veux pouvoir réanimer
+        Participant participant=context.getParticipant(looser.getName());
+        context.removeParticipant(participant);
         gui.getInformationsGUI1().getLabyrinthGUI1().endFight(winners,looser);
-        for(Participant winner : winners){
-            gui.getInformationsGUI1().getLabyrinthGUI1().actualiserJTree(winner,1);
-        }
     };
 
     public void newFight(String attacked){
@@ -221,6 +227,43 @@ public class ClientSimple {
         }
     };
 
+    public void changeHall(Pole direction){
+       String idHall=session.getIdHall();
+       Player player=session.getPlayer();
+       String name=player.getName();
+       Labyrinth labyrinth=session.getProxy();
+        try {
+            int answer=labyrinth.changeHall(idHall,name,direction);
+            int x, y;
+            switch (answer){
+                case -1 :
+                    gui.getInformationsGUI1().getLabyrinthGUI1().append("Il n'y à pas de porte dans cette direction.");
+                    break;
+                case 0 :
+                    gui.getInformationsGUI1().getLabyrinthGUI1().append("Vous êtes en train de combattre, vous devez d'abord fuir avant de changer de salle.");
+                    break;
+                case 1 :
+                    gui.getInformationsGUI1().getLabyrinthGUI1().append("Vous venez de changer de salle.");
+                    x=session.getx();
+                    y=session.gety();
+                    System.out.println("repaint ! -------------------------------------- 1 ");
+                    gui.changeHall(x,y, direction);
+                    break;
+                case 2 :
+                    labyrinthConnection();
+                    gui.getInformationsGUI1().getLabyrinthGUI1().append("Vous venez de changer de salle.");
+                    x=session.getx();
+                    y=session.gety();
+                    System.out.println("repaint ! -------------------------------------- 1 ");
+                    gui.changeHall(x,y, direction);
+                    break;
+            }
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void initialisation(){
         OperationCenter r = null;
@@ -253,8 +296,8 @@ public class ClientSimple {
         }
     }
 
-
-    public static void main(String[] args) throws RemoteException {
+    // Tests clients
+   /* public static void main(String[] args) throws RemoteException {
 
         ClientSimple client=new ClientSimple();
         client.initialisation();;
@@ -285,14 +328,16 @@ public class ClientSimple {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            client.newFight(str2);
+            System.out.println("go!");
+            client.changeHall(Pole.SOUTH);
+           /*client.newFight(str2);
             try {
                 sleep(9000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            client.runnaway(str2);
+            client.runnaway(str2);/*
         }
-    }
+    }*/
 
 }

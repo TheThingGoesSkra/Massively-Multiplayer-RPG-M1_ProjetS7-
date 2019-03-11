@@ -70,6 +70,7 @@ public class InformationsGUI extends javax.swing.JPanel {
         jSplitPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jSplitPane1.setRightComponent(labyrinthGUI1);
         jSplitPane1.setLeftComponent(messagerieGUI1);
+        jSplitPane1.setDividerLocation(300);
 
         jPanel2.add(jSplitPane1, java.awt.BorderLayout.CENTER);
 

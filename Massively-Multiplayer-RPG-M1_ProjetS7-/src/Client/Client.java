@@ -13,7 +13,8 @@ public interface Client extends Remote {
 
     void setContext(Context context) throws RemoteException;
     void addPlayer(Player player) throws RemoteException;
-    void setHall(String Hall) throws RemoteException;
+    void setHall(String idHall) throws RemoteException;
+    void setXY(int x, int y) throws RemoteException;
     void setLabyrinthServer(Labyrinth server) throws RemoteException;
     void startFight(Participant forward, Participant attacked) throws RemoteException;
     void hitpoints(Participant forward, Participant attacked, int hitpoints) throws RemoteException;

@@ -1,8 +1,15 @@
 package GUI;
 
+import Client.ClientSimple;
+import Client.Session;
 import Game.Context;
 import Game.Monster;
 import Game.Player;
+import Game.Pole;
+import Labyrinth.Labyrinth;
+import Labyrinth.LabyrinthImpl;
+
+import java.rmi.RemoteException;
 
 /**
  *
@@ -15,15 +22,13 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private ActionsGUI actionsGUI1;
     private InformationsGUI informationsGUI1;
     private javax.swing.JPanel jPanel1;
-    private static Context context;
     // End of variables declaration
 
     /**
      * Creates new form NewJFrame1
      */
-    public PrincipalGUI(Context context) {
-        this.context=context;
-        initComponents();
+    public PrincipalGUI(ClientSimple client) {
+        initComponents(client);
     }
 
     public ActionsGUI getActionsGUI1() {
@@ -49,11 +54,12 @@ public class PrincipalGUI extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
-    private void initComponents() {
+    private void initComponents(ClientSimple client) {
 
         jPanel1 = new javax.swing.JPanel();
+        Context context=client.getContext();
         informationsGUI1 = new InformationsGUI(context);
-        actionsGUI1 = new ActionsGUI();
+        actionsGUI1 = new ActionsGUI(client);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,10 +69,14 @@ public class PrincipalGUI extends javax.swing.JFrame {
         jPanel1.add(actionsGUI1, java.awt.BorderLayout.PAGE_END);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
-
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/GUI/Icones/Start.png")).getImage());
         pack();
     }// </editor-fold>
 
+    public void changeHall(int x, int y, Pole direction){
+        System.out.println("repaint ! -------------------------------------- 2 ");
+        actionsGUI1.changeHall(x, y, direction);
+    }
     /**
      * @param args the command line arguments
      */
@@ -94,15 +104,16 @@ public class PrincipalGUI extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
-        Context context=new Context();
-        context.addPlayer(new Player("Antonio", 10,1,1,1,10));
-        context.addMonster(new Monster("0", "Chupacabra", 10,1,1,1,10));
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PrincipalGUI(context).setVisible(true);
-            }
-        });
+        try {
+            Context context=new Context();
+            Labyrinth labyrinth = new LabyrinthImpl();
+            context.addPlayer(new Player("Antonio", 10,1,1,1,10));
+            context.addMonster(new Monster("0", "Chupacabra", 10,1,1,1,10));
+            ClientSimple clientSimple=new ClientSimple();
+            clientSimple.setContextSimple(context);
+            new PrincipalGUI(clientSimple).setVisible(true);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }

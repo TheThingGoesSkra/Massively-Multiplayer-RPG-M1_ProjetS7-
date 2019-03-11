@@ -24,8 +24,19 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     public void addPlayer(Player player) throws RemoteException {
         client.addPlayer(player);
     };
-    public void setHall(String Hall) throws RemoteException {};
-    public void setLabyrinthServer(Labyrinth server) throws RemoteException {};
+    public void setHall(String idHall) throws RemoteException {
+        client.setHall(idHall);
+    }
+
+    @Override
+    public void setXY(int x, int y) throws RemoteException {
+        client.setXY(x,y);
+    }
+
+    ;
+    public void setLabyrinthServer(Labyrinth server) throws RemoteException {
+        client.setLabyrinthServer(server);
+    };
     public void startFight(Participant forward, Participant attacked) throws RemoteException {
         client.startFight(forward,attacked);
     };

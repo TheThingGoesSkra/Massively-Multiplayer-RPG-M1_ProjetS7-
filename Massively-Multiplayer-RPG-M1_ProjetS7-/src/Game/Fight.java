@@ -119,6 +119,7 @@ public class Fight extends Thread {
             }
         }
         context.removeParticipant(looser);
+        // TODO : ADD TO DEAD PEOPLE
         for(Fight fight:fightsToStop){
             fight.endFight();
         }
@@ -141,7 +142,6 @@ public class Fight extends Thread {
 
     public void endFight(){
         int index=fights.indexOf(this);
-        System.out.println(index);
         fights.remove(index);
         if(fights.isEmpty()){
             ArrayList<Player> players=context.getPlayers();

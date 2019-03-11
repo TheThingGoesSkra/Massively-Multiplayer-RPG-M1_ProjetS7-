@@ -67,11 +67,11 @@ public class OperationCenterSimple {
             List<String> infosMonstre= myBDD.getResult().get(0);
             String idMonster = infosMonstre.get(0);
             String name = infosMonstre.get(1);
-            int attack =Integer.parseInt(infosMonstre.get(2));
-            int chance = Integer.parseInt(infosMonstre.get(3));
-            int résilience = Integer.parseInt(infosMonstre.get(4));
-            int maxLife = Integer.parseInt(infosMonstre.get(5));
-            int boss = Integer.parseInt(infosMonstre.get(2));
+            int maxLife = Integer.parseInt(infosMonstre.get(2));
+            int attack =Integer.parseInt(infosMonstre.get(3));
+            int chance = Integer.parseInt(infosMonstre.get(4));
+            int résilience = Integer.parseInt(infosMonstre.get(5));
+            int boss = Integer.parseInt(infosMonstre.get(6));
             // Création du monstre
             Monster monster = new Monster(idMonster, name, attack, chance,
                     résilience, maxLife, boss);
@@ -113,7 +113,9 @@ public class OperationCenterSimple {
             String idHall=ligne.get(0);
             String name=ligne.get(1);
             String idTypeHall=ligne.get(2);
-            Hall hall=new Hall("", idHall, name, idTypeHall);
+            int x=Integer.parseInt(ligne.get(4));
+            int y=Integer.parseInt(ligne.get(5));
+            Hall hall=new Hall("", idHall, name, idTypeHall,x,y);
             tamponHalls.add(hall);
             halls.add(idHall);
         }
@@ -163,7 +165,7 @@ public class OperationCenterSimple {
                 String idMonster = ligne2.get(0);
                 Monster monster = getMonster(idMonster, tamponMonsters);
                 if (monster != null) {
-                    hall.addMonster(monster);
+                    hall.addMonster(new Monster(monster.getIdMonster(), monster.getName(), monster.getAttack(), monster.getChance(), monster.getResilience(), monster.getMaxlife(), monster.getBoss() ));
                 } else {
                     System.err.println("Error : no monster add in Hall " + idTypeHall);
                 }
@@ -260,14 +262,19 @@ public class OperationCenterSimple {
             if (!res.isEmpty()) {
                 res1 = res.get(0);
                 String idHall = res1.get(2);
+                Hall hall=labyrinth.getHall(idHall);
+                int x=hall.getx();
+                int y=hall.gety();
                 String life = res1.get(3);
                 player.setLife(Integer.parseInt(life));
                 // TODO : Intégrer adresse serveur messagerie
-                session = new Session(player, idLabyrinth, idHall);
+                session = new Session(player, idLabyrinth, idHall, x, y);
             }else{
                 String idHall = "0";
+                int x=2;
+                int y=1;
                 player.setLife(player.getMaxlife());
-                session = new Session(player, idLabyrinth, idHall);
+                session = new Session(player, idLabyrinth, idHall, x, y);
             }
         } else {
                 String values = "(\"" + name + "\",10,1,1,1,0)";
@@ -275,7 +282,9 @@ public class OperationCenterSimple {
                 player = new Player(name, 10, 1, 1, 1, 10);
                 String idLabyrinth = "0";
                 String idHall = "0";
-                session = new Session(player, idLabyrinth, idHall);
+                int x=2;
+                int y=1;
+                session = new Session(player, idLabyrinth, idHall, x , y);
         }
         String idHall = session.getIdHall();
         for(Labyrinth key : resp.keySet()){

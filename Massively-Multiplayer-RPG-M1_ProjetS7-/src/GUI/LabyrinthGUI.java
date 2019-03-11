@@ -11,6 +11,7 @@ import javax.swing.tree.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
 
 /**
  *
@@ -125,6 +126,7 @@ public class LabyrinthGUI extends javax.swing.JPanel {
         BasicTreeUI basicTreeUI = (BasicTreeUI) jTree1.getUI();
         basicTreeUI.setRightChildIndent(2);
         basicTreeUI.setLeftChildIndent(4);
+        jTree1.setFocusable(false);
         jScrollPane3.setViewportView(jTree1);
 
         jPanel5.add(jScrollPane3, java.awt.BorderLayout.LINE_START);
@@ -133,10 +135,11 @@ public class LabyrinthGUI extends javax.swing.JPanel {
         jScrollPane6.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jTextPane1.setEditable(false);
+        jTextPane1.setFocusable(false);
         jTextPane1.setBackground(new java.awt.Color(102, 102, 102));
         jTextPane1.setBorder(null);
         jTextPane1.setContentType("text/html"); // NOI18N
-        debutTexte="<html>\r\n<head>\r\n\r\n</head>\r\n<body bgcolor=\"#666666\">\r\n<p style=\"margin-top: 2 ; margin-left: 8\">\r<font size=\"+1\">C'est partie !<br>\n";
+        debutTexte="<html>\r\n<head>\r\n\r\n</head>\r\n<body bgcolor=\"#666666\">\r\n<p style=\"margin-top: 1 ; margin-left: 7\">\r<font size=\"+1\">C'est partie !<br>\n";
         finTexte="</font></p>\n</body>\n</html>\n";
         jTextPane1.setText(debutTexte+finTexte);
         jScrollPane6.setViewportView(jTextPane1);
@@ -215,7 +218,7 @@ public class LabyrinthGUI extends javax.swing.JPanel {
         treeNode = new DefaultMutableTreeNode(name);
         if(mode==0)
             groupNode.add(treeNode);
-        else{
+        else if(mode==1) {
             DefaultMutableTreeNode temp = searchNode(groupNode,name);
             if(temp != null) {
                 temp.setUserObject(name);
@@ -225,6 +228,33 @@ public class LabyrinthGUI extends javax.swing.JPanel {
         }
         model.reload();
         return treeNode;
+    }
+
+    public void removeParticipant(Participant participant){
+        DefaultMutableTreeNode treeNode = null;
+        DefaultTreeModel model = (DefaultTreeModel)this.jTree1.getModel();
+        DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode)model.getRoot();
+        DefaultMutableTreeNode groupNode=null;
+        if(participant instanceof Player){
+            //Recherche du noeud
+            groupNode = searchNode(rootNode,"Players");
+        }else if(participant instanceof Monster){
+            //Recherche du noeud
+            groupNode = searchNode(rootNode,"Monsters");
+        }
+
+        //Si on ne le trouve pas on creer le groupe
+        if(groupNode == null)
+            return;
+        String name=participant.getLife()+" "+participant.getName();
+        DefaultMutableTreeNode temp = searchNode(groupNode,name);
+        if(temp != null) {
+            DefaultMutableTreeNode parent=((DefaultMutableTreeNode) temp.getParent());
+            parent.remove(temp);
+            if(parent.getChildCount()==0)
+                ((DefaultMutableTreeNode) parent.getParent()).remove(parent);
+
+        }
     }
 
     public DefaultMutableTreeNode ajouterPlayer(Player participant, int mode){
@@ -325,26 +355,89 @@ public class LabyrinthGUI extends javax.swing.JPanel {
         expandAll(jTree1);
     }
 
-    public void startFight(Participant forward, Participant attacked) {
-        String alert=forward.getName()+" attaque "+attacked.getName()+" !<br>\n";
-        debutTexte=debutTexte+alert;
+    public void append(String string){
+        debutTexte=debutTexte+string+"<br>\n";
         jTextPane1.setText(debutTexte+finTexte);
+    }
+
+    public void startFight(Participant forward, Participant attacked) {
+        String forwardName="";
+        String attackedName="";
+        if(attacked instanceof Monster){
+            attackedName="<font color=red>"+attacked.getName()+"</font>";
+        }else if(attacked instanceof Player){
+            attackedName="<font color=blue>"+attacked.getName()+"</font>";
+        }
+        if(forward instanceof Monster){
+            forwardName="<font color=red>"+forward.getName()+"</font>";
+        }else if(forward instanceof Player){
+            forwardName="<font color=blue>"+forward.getName()+"</font>";
+        }
+        String alert=forwardName+" attaque "+attackedName+" !";
+        append(alert);
     }
     public void hitpoints(Participant forward, Participant attacked, int hitpoints) {
-        String alert=forward.getName()+" fait perdre "+hitpoints+" pts de vie à "+attacked.getName()+" !<br>\n";
-        debutTexte=debutTexte+alert;
-        jTextPane1.setText(debutTexte+finTexte);
+        String forwardName="";
+        String attackedName="";
+        if(attacked instanceof Monster){
+            attackedName="<font color=red>"+attacked.getName()+"</font>";
+        }else if(attacked instanceof Player){
+            attackedName="<font color=blue>"+attacked.getName()+"</font>";
+        }
+        if(forward instanceof Monster){
+            forwardName="<font color=red>"+forward.getName()+"</font>";
+        }else if(forward instanceof Player){
+            forwardName="<font color=blue>"+forward.getName()+"</font>";
+        }
+        String alert=forwardName+" fait perdre "+hitpoints+" pts de vie à "+attackedName+".";
+        append(alert);
+        actualiserJTree(attacked,1);
+
     }
     public void endFight(ArrayList<Participant> winners, Participant looser) {
-        String alert="Perdant : "+looser.getName()+" Gagnants : "+winners.toString()+"\n";
-        //jTextArea4.append(alert);
+        String looserName="";
+        if(looser instanceof Monster){
+            looserName="<font color=red>"+looser.getName()+"</font>";
+        }else if(looser instanceof Player){
+            looserName="<font color=blue>"+looser.getName()+"</font>";
+        }
+        String alert="Perdant : "+looserName;
+        if(winners.size()==1)
+            alert=alert+" Gagnant : ";
+        else
+            alert=alert+" Gagnants : ";
+        for (Iterator<Participant> ite = winners.iterator();ite.hasNext();){
+            Participant winner=ite.next();
+            if(winner instanceof Monster){
+                alert=alert+"<font color=red>"+winner.getName()+"</font>";
+            }else if(winner instanceof Player){
+                alert=alert+"<font color=blue>"+winner.getName()+"</font>";
+            }
+            if(ite.hasNext())
+                alert=alert+", ";
+        }
+        append(alert);
+        removeParticipant(looser);
     }
+
     public void alertRunnaway(Participant forward, Participant runner) {
-        String alert=runner.getName()+" fuit le combat face à "+forward.getName()+" !\n";
-        //jTextArea4.append(alert);
+        String forwardName="";
+        String runnerName="";
+        if(runner instanceof Monster){
+            runnerName="<font color=red>"+runner.getName()+"</font>";
+        }else if(runner instanceof Player){
+            runnerName="<font color=blue>"+runner.getName()+"</font>";
+        }
+        if(forward instanceof Monster){
+            forwardName="<font color=red>"+forward.getName()+"</font>";
+        }else if(forward instanceof Player){
+            forwardName="<font color=blue>"+forward.getName()+"</font>";
+        }
+        String alert=runnerName+" fuit le combat face à "+forwardName+" !";
+        append(alert);
     }
     public void heal() {
-        String alert="Tous le monde est soigné !\n";
-        //jTextArea4.append(alert);
+        String alert="Tous le monde est soigné !";
+        append(alert);
     }
 }

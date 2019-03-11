@@ -14,6 +14,8 @@ import java.io.Serializable;
 
 public class Hall implements Serializable {
     private String idHall;
+    private int x;
+    private int y;
     private String idLabyrinth;
     private String name;
     private String idType;
@@ -24,7 +26,7 @@ public class Hall implements Serializable {
     private OperationCenter noc;
 
 
-    public Hall (String idLabyrinth, String id, String name, String idType){
+    public Hall (String idLabyrinth, String id, String name, String idType, int x, int y){
         this.context = new Context();
         this.fights = new ArrayList<Fight>();
         this.doors = new HashMap<Pole,Door>();
@@ -32,6 +34,8 @@ public class Hall implements Serializable {
         this.idHall =id;
         this.name=name;
         this.idType=idType;
+        this.x=x;
+        this.y=y;
     }
 
     public String getIdHall() {
@@ -40,6 +44,22 @@ public class Hall implements Serializable {
 
     public void setIdHall(String idHall) {
         this.idHall = idHall;
+    }
+
+    public int getx() {
+        return x;
+    }
+
+    public void setx(int x) {
+        this.x = x;
+    }
+
+    public int gety() {
+        return y;
+    }
+
+    public void sety(int y) {
+        this.y = y;
     }
 
     public String getName() {
@@ -108,27 +128,39 @@ public class Hall implements Serializable {
     }
 
     public int changeHall(String player, Pole pole){
-      /*  int idHalls =0;
-        Door door = new Door();
-        getDoor(pole);
-        if ( getDoor(pole) != null) {
-           Player player1=context.getPlayers(player);
-            exitPlayer(player1);
-            if(exitPlayer(player1) == true){
-               Hall hall= door.getOtherHall(this);
-                getName();
+        Door door = getDoor(pole);
+        if ( door == null) {
+            return -1;
+        }else{
+            Player player1=context.getPlayer(player);
+            Boolean exitHall=exitPlayer(player1);
+            if(exitHall == false) {
+                return 0;
+            }else{
+               Hall hall = door.getOtherHall(this);
+               String idHall = hall.getIdHall();
                Client client =  player1.getProxy();
-               hall.getProxy();
-               if ( hall.getProxy() == this.getProxy()){
-                    hall.addPlayer(player1);
+               try {
+                    client.setHall(idHall);
+               } catch (RemoteException e) {
+                    e.printStackTrace();
                }
-               else if ( hall.getProxy() != this.getProxy()){
-                    player1.getProxy();
+               Labyrinth proxy=hall.getProxy();
+               if ( proxy == this.proxy){
+                    hall.addPlayer(player1);
+                    return 1;
+               }
+               else if ( proxy != this.proxy){
+                   try {
+                       client.setLabyrinthServer(proxy);
+                   } catch (RemoteException e) {
+                       e.printStackTrace();
+                   }
+                   return 2;
                }
             }
         }
-        return idHalls;*/
-      return 0;
+        return -2;
     }
 
 
@@ -155,16 +187,16 @@ public class Hall implements Serializable {
 
     public void addPlayers(Player player) {
         context.addPlayer(player);
-
     }
 
     public void addPlayer(Player player){
         ArrayList<Player> players;
-        List<Monster> monsters;
+        ArrayList<Monster> monsters;
         Client client= player.getProxy();
         Client tamponClient;
         try {
             client.setContext(context);
+            client.setXY(this.x,this.y);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -187,7 +219,7 @@ public class Hall implements Serializable {
 
     public boolean exitPlayer (Player player){
         boolean isFighting = isFighting(player);
-        if (isFighting = false) {
+        if (isFighting == false) {
             context.removePlayer(player);
             return true;
         } else {

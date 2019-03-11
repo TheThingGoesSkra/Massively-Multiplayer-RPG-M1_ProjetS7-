@@ -24,7 +24,7 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
     private OperationCenter noc;
 
 
-	protected LabyrinthImpl() throws RemoteException {
+	public LabyrinthImpl() throws RemoteException {
 	}
 
 	public LabyrinthSimple getLabyrinth() {
@@ -52,21 +52,6 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 		 labyrinth.addPlayer(idHall,player);
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	}
-	public int changeHall(String Hall, String player, Pole direction) throws RemoteException{
-
-		int idHalls = labyrinth.changeHall(Hall, player, direction);
-				return idHalls;
-	};
-	public void newFight(String forward, String attacked) throws RemoteException{};
-	public void runnaway(String Hall, String forward, String runner) throws RemoteException{};
-	public void logOut(String Hall, String player) throws RemoteException{};
-=======
-	public void changeHall(String Hall, String player, Pole direction) throws RemoteException{};
-=======
->>>>>>> master
 	public void newFight(String idHall, String forward, String attacked) throws RemoteException{
 		labyrinth.newFight(idHall, forward,attacked);
 	};
@@ -74,17 +59,13 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 		labyrinth.runnaway(idHall,forward,runner);
 	};
 
-	public int changeHall(String Hall, String player, Pole direction) throws RemoteException{
-		int idHalls = labyrinth.changeHall(Hall, player, direction);
+	public int changeHall(String idHall, String player, Pole direction) throws RemoteException{
+		int idHalls = labyrinth.changeHall(idHall, player, direction);
 		return idHalls;
 	};
 
-	public void logout(String Hall, String player) throws RemoteException{};
-<<<<<<< HEAD
->>>>>>> master
-=======
+	public void logout(String idHall, String player) throws RemoteException{};
 
->>>>>>> master
 	public void setReponsabiities(HashMap<Labyrinth,ArrayList<String>> resp) throws RemoteException{
 		System.out.println("setresponsabilities");
 		labyrinth.setReponsabiities(resp);

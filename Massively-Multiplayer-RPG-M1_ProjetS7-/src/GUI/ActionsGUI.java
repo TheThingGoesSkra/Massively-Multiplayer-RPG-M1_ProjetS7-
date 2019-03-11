@@ -1,10 +1,18 @@
 package GUI;
 
-/**
- *
- * @author Thomas
- */
+import Client.ClientSimple;
+import Client.Session;
+import Game.Pole;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+
 public class ActionsGUI extends javax.swing.JPanel {
+
+    private ClientSimple client;
+    private MapGUI map;
 
     // Variables declaration - do not modify
     private javax.swing.JButton jButton12;
@@ -24,7 +32,12 @@ public class ActionsGUI extends javax.swing.JPanel {
     /**
      * Creates new form ActionsGUI
      */
-    public ActionsGUI() {
+    public ActionsGUI(ClientSimple client) {
+        this.client=client;
+        Session session=this.client.getSession();
+        int x=session.getx();
+        int y=session.gety();
+        this.map = new MapGUI(x, y);
         initComponents();
     }
 
@@ -63,6 +76,11 @@ public class ActionsGUI extends javax.swing.JPanel {
         jButton12.setBackground(new java.awt.Color(204, 204, 204));
         jButton12.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton12.setText("Help");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
         jPanel6.add(jButton12);
 
         jButton13.setBackground(new java.awt.Color(204, 204, 204));
@@ -88,6 +106,11 @@ public class ActionsGUI extends javax.swing.JPanel {
         jButton5.setBackground(new java.awt.Color(204, 204, 204));
         jButton5.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton5.setText("Change Labyrinth");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel6.add(jButton5);
 
         jButton15.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -101,6 +124,11 @@ public class ActionsGUI extends javax.swing.JPanel {
 
         jButton16.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton16.setText("Map");
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
         jPanel6.add(jButton16);
 
         jPanel5.add(jPanel6, java.awt.BorderLayout.CENTER);
@@ -115,6 +143,67 @@ public class ActionsGUI extends javax.swing.JPanel {
         jScrollPane3.setBackground(new java.awt.Color(102, 102, 102));
 
         jTextPane3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jTextPane3.addKeyListener(new KeyListener() {
+            private boolean shift=false;
+            private int cptLigneJTexteArea1=0;
+            private int lineCount=2;
+            @Override
+            public void keyPressed(KeyEvent arg0) {
+                if(arg0.getKeyCode()==KeyEvent.VK_SHIFT){
+                    shift=true;
+                }
+                if(arg0.getKeyCode()==KeyEvent.VK_ENTER){
+                    if(shift){
+                        jTextPane3.setText(jTextPane3.getText()+"\n");
+                    }else{
+                        arg0.consume();
+                        String texte=jTextPane3.getText();
+                        String[] commande=texte.split(" ");
+                        switch (commande[0]){
+                            case "n":
+                                client.changeHall(Pole.NORTH);
+                                break;
+                            case "s":
+                                client.changeHall(Pole.SOUTH);
+                                break;
+                            case "e":
+                                client.changeHall(Pole.EAST);
+                                break;
+                            case "o":
+                                client.changeHall(Pole.WEST);
+                                break;
+                            case "a":
+                                if(commande.length>=2){
+                                    String attacked=texte.substring(2);
+                                    client.newFight(attacked);
+                                }
+                                break;
+                            case "r":
+                                if(commande.length>=2){
+                                    String forward=texte.substring(2);
+                                    client.runnaway(forward);
+                                }
+                                break;
+                        }
+                        jTextPane3.setText("");
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent arg0) {
+                if(arg0.getKeyCode()==KeyEvent.VK_SHIFT){
+                    shift=false;
+                }
+            }
+
+            @Override
+            public void keyTyped(KeyEvent arg0) {
+
+            }
+
+        });
+
         jScrollPane3.setViewportView(jTextPane3);
 
         jPanel2.add(jScrollPane3, java.awt.BorderLayout.CENTER);
@@ -126,8 +215,21 @@ public class ActionsGUI extends javax.swing.JPanel {
         add(jPanel5, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>
 
+    private void jButton16ActionPerformed(ActionEvent evt) {
+        this.map.setVisible(true);
+    }
+
+    private void jButton12ActionPerformed(ActionEvent evt) {
+    }
+
+    private void jButton5ActionPerformed(ActionEvent evt) {
+        LabyrinthChoiceGUI choice=new LabyrinthChoiceGUI();
+        choice.setVisible(true);
+    }
+
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        InventoryGUI inventory=new InventoryGUI();
+        inventory.setVisible(true);
     }
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {
@@ -135,6 +237,23 @@ public class ActionsGUI extends javax.swing.JPanel {
     }
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        client.getGui().setVisible(false);
+        LoginGUI newGui=new LoginGUI(client);
+        newGui.setVisible(true);
+    }
+
+    public void changeHall(int x,int y, Pole direction){
+        MapGUI.MapJPanel panel=map.getjPanel1();
+        panel.setx(x);
+        panel.sety(y);
+        if(direction==Pole.WEST){
+            panel.setDirection(direction);
+
+        }if(direction==Pole.EAST){
+            panel.setDirection(direction);
+        }
+        System.out.println("repaint !----------------------------------------------------------3");
+        panel.repaint();
+
     }
 }
