@@ -13,6 +13,8 @@ public class Session implements Serializable{
     private int y;
     private Player player;
     private Labyrinth proxy;
+    private int numPortMessaging;
+    private String hostMessaging;
 
     public Session(Player player, String idLabyrinth, String idHall, int x, int y) {
         this.player=player;
@@ -72,5 +74,22 @@ public class Session implements Serializable{
 
     public void setProxy(Labyrinth proxy) {
         this.proxy = proxy;
+    }
+
+
+    public int getNumPortMessaging() {
+        return numPortMessaging;
+    }
+
+    public void setNumPortMessaging(int numPortMessaging) {
+        this.numPortMessaging = numPortMessaging;
+    }
+
+    public String getHostMessaging() {
+        return hostMessaging;
+    }
+
+    public void setHostMessaging(String hostMessaging) {
+        this.hostMessaging = hostMessaging;
     }
 }
