@@ -32,7 +32,10 @@ public class OperationCenterImpl extends UnicastRemoteObject implements Operatio
         LabyrinthSimple labyrinth=noc.getLabyrinth();
         return labyrinth;
     }
-    public ArrayList<String> recordMessagerie(String ip,int numPort) throws RemoteException {return null;};
+    public ArrayList<String> recordMessagerie(String ip,int numPort) throws RemoteException {
+        ArrayList<String> halls = noc.recordMessagerie(ip,numPort);
+        return halls;
+    }
 
    /*public void a(){
         Labyrinth a;

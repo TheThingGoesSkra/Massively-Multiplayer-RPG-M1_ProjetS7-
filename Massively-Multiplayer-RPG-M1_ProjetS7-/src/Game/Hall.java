@@ -196,7 +196,6 @@ public class Hall implements Serializable {
         Client tamponClient;
         try {
             client.setContext(context);
-            client.setXY(this.x,this.y);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -204,7 +203,7 @@ public class Hall implements Serializable {
         for ( Player tamponPlayer : players ) {
             tamponClient = tamponPlayer.getProxy();
             try {
-                tamponClient.addPlayer(player);
+                tamponClient.addParticipant(player);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -221,6 +220,15 @@ public class Hall implements Serializable {
         boolean isFighting = isFighting(player);
         if (isFighting == false) {
             context.removePlayer(player);
+            ArrayList<Player> players = context.getPlayers();
+            for(Player player1 : players){
+                Client client = player1.getProxy();
+                try {
+                    client.removePlayer(player);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
             return true;
         } else {
             System.out.println("Le joueur est en train de se battre.");

@@ -58,7 +58,10 @@ public class PrincipalGUI extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         Context context=client.getContext();
-        informationsGUI1 = new InformationsGUI(context);
+        Session session=client.getSession();
+        Player player=session.getPlayer();
+        String myplayer=player.getName();
+        informationsGUI1 = new InformationsGUI(context,myplayer);
         actionsGUI1 = new ActionsGUI(client);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -74,7 +77,6 @@ public class PrincipalGUI extends javax.swing.JFrame {
     }// </editor-fold>
 
     public void changeHall(int x, int y, Pole direction){
-        System.out.println("repaint ! -------------------------------------- 2 ");
         actionsGUI1.changeHall(x, y, direction);
     }
     /**

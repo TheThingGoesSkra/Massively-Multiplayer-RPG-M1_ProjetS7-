@@ -64,6 +64,10 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 		return idHalls;
 	};
 
+	public void chooseBonus(String idHall, String namePlayer, String bonus) throws RemoteException {
+		labyrinth.chooseBonus(idHall,namePlayer,bonus);
+	}
+
 	public void logout(String idHall, String player) throws RemoteException{};
 
 	public void setReponsabiities(HashMap<Labyrinth,ArrayList<String>> resp) throws RemoteException{
@@ -71,16 +75,7 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 		labyrinth.setReponsabiities(resp);
 	}
 
-	public void recordServer() throws RemoteException {
-		try {
-			this.labyrinth=noc.recordLabyrinth(this);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void main(String[] args) throws RemoteException {
-		LabyrinthImpl impl=new LabyrinthImpl();
+	public void nocConnection(){
 		OperationCenter r = null;
 		try {
 			r = (OperationCenter) Naming.lookup("rmi://localhost/ServerNocRMI");
@@ -91,11 +86,24 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		impl.setNoc((OperationCenter)r);
-		impl.recordServer();
-		LabyrinthSimple labyrinth=impl.getLabyrinth();
-		labyrinth.setNoc((OperationCenter)r);
+		setNoc((OperationCenter)r);
+	}
 
+	public void recordServer() throws RemoteException {
+		try {
+			this.labyrinth=noc.recordLabyrinth(this);
+			this.labyrinth.setNoc(this.noc);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) throws RemoteException {
+		LabyrinthImpl impl=new LabyrinthImpl();
+		impl.nocConnection();
+		impl.recordServer();
+
+		LabyrinthSimple labyrinth=impl.getLabyrinth();
 		// Test
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Veuillez saisir start lorsque le NOC aura terminer la distribution des responsabilités :");

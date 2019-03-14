@@ -8,6 +8,11 @@ package GUI;
 
 import Game.Context;
 
+import javax.swing.*;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 /**
  *
  * @author Thomas
@@ -19,15 +24,13 @@ public class InformationsGUI extends javax.swing.JPanel {
     private javax.swing.JSplitPane jSplitPane1;
     private LabyrinthGUI labyrinthGUI1;
     private MessagerieGUI messagerieGUI1;
-    private static Context context;
     // End of variables declaration
 
     /**
      * Creates new form InformationsGUI
      */
-    public InformationsGUI(Context context) {
-        this.context=context;
-        initComponents();
+    public InformationsGUI(Context context,String myplayer) {
+        initComponents(context,myplayer);
     }
 
     public LabyrinthGUI getLabyrinthGUI1() {
@@ -53,28 +56,48 @@ public class InformationsGUI extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
-    private void initComponents() {
+    private void initComponents(Context context, String myplayer) {
 
-        jPanel2 = new javax.swing.JPanel();
-        jSplitPane1 = new javax.swing.JSplitPane();
-        labyrinthGUI1 = new LabyrinthGUI(this.context);
+        jPanel2 = new JPanel();
+        jSplitPane1 = new JSplitPane();
+        labyrinthGUI1 = new LabyrinthGUI(context,myplayer);
         messagerieGUI1 = new MessagerieGUI();
 
-        setLayout(new java.awt.BorderLayout());
+        setLayout(new BorderLayout());
 
-        jPanel2.setBackground(new java.awt.Color(102, 102, 102));
-        jPanel2.setPreferredSize(new java.awt.Dimension(800, 300));
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        labyrinthGUI1.setBackground(new Color(102, 102, 102));
+        jPanel2.setBackground(new Color(102, 102, 102));
+        jPanel2.setPreferredSize(new Dimension(800, 300));
+        jPanel2.setLayout(new BorderLayout());
 
-        jSplitPane1.setBackground(new java.awt.Color(102, 102, 102));
-        jSplitPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jSplitPane1.setBackground(new Color(102, 102, 102));
+        jSplitPane1.setBorder(BorderFactory.createEtchedBorder());
         jSplitPane1.setRightComponent(labyrinthGUI1);
         jSplitPane1.setLeftComponent(messagerieGUI1);
         jSplitPane1.setDividerLocation(300);
+        jSplitPane1.setResizeWeight(0.5);
+        jSplitPane1.setContinuousLayout(true);
 
-        jPanel2.add(jSplitPane1, java.awt.BorderLayout.CENTER);
+        jPanel2.add(jSplitPane1, BorderLayout.CENTER);
 
-        add(jPanel2, java.awt.BorderLayout.CENTER);
+        add(jPanel2, BorderLayout.CENTER);
+
+        messagerieGUI1.getjScrollPane1().setPreferredSize(new Dimension(15,0));
+        messagerieGUI1.getjScrollPane6().setPreferredSize(new Dimension(240,0));
+        messagerieGUI1.getjTextPane1().setPreferredSize(new Dimension(240,0));
+
+        //labyrinthGUI1.getjScrollPane7().setMinimumSize(new Dimension(1000,0));
+        labyrinthGUI1.getjScrollPane7().setPreferredSize(new Dimension(280,0));
+        ((JTextPane) labyrinthGUI1.getjTextPane1()).setPreferredSize(new Dimension(280, 0));
+        labyrinthGUI1.getjPanel5().setPreferredSize(new Dimension(280, 0));
+        labyrinthGUI1.getjPanel6().setPreferredSize(new Dimension(280, 0));
+
+
+
+        //labyrinthGUI1.getjPanel5().setPreferredSize(new Dimension(800, 0));
+        //labyrinthGUI1.getjScrollPane7().setPreferredSize(new Dimension(800,0));
+        //labyrinthGUI1.getjTextPane1().setPreferredSize(new Dimension(800, 0));
+
     }// </editor-fold>
 
 }

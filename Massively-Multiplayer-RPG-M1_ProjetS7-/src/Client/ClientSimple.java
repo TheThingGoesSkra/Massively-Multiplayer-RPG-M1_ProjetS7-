@@ -1,20 +1,16 @@
 package Client;
 
-import GUI.LabyrinthGUI;
-import GUI.PrincipalGUI;
+import GUI.*;
 import Game.*;
 import Labyrinth.Labyrinth;
-import OperationCenter.OperationCenter;
+import OperationCenter.*;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.UnknownHostException;
-import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
 
@@ -25,12 +21,19 @@ public class ClientSimple {
     private OperationCenter noc;
     private static Context context;
     private Session session;
+    private Messaging messaging;
+    private GestionBDD myBDD;
 
     public ClientSimple() {
         try {
             Client proxy=new ClientImpl(this);
             this.proxy=proxy;
             this.context=new Context();
+            String url = "jdbc:mysql://localhost:3306/projets7";
+            url += "?autoReconnect=true&useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
+            String user = "root";
+            String passwd = "";
+            myBDD = new GestionBDD(url,user,passwd);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -64,7 +67,6 @@ public class ClientSimple {
         }
         //</editor-fold>
         //</editor-fold>
-
         gui=new PrincipalGUI(this);
         gui.setVisible(true);
     }
@@ -81,8 +83,12 @@ public class ClientSimple {
         players.removeAll(players);
         players.addAll(context.getPlayers());
         players.add(session.getPlayer());
-        gui.getInformationsGUI1().getLabyrinthGUI1().removeAll();
-        gui.getInformationsGUI1().getLabyrinthGUI1().initJTree();
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                gui.getInformationsGUI1().getLabyrinthGUI1().removeAll();
+                gui.getInformationsGUI1().getLabyrinthGUI1().initJTree();
+            }
+        });
     };
 
     public void setNoc(OperationCenter noc){
@@ -113,25 +119,44 @@ public class ClientSimple {
         this.session = session;
     }
 
-    public void addPlayer(Player player){
-        context.addPlayer(player);
-        System.out.println("Nouveau context : "+context.getPlayers().toString());
+    public void addParticipant(Participant participant){
+        if(participant instanceof Player) {
+            context.addPlayer((Player)participant);
+        }else if(participant instanceof Monster){
+            context.addMonster((Monster)participant);
+        }
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                gui.getInformationsGUI1().getLabyrinthGUI1().ajouterParticipant(participant);
+            }
+        });
+    };
+
+    public void removePlayer(Player player){
+        context.removePlayer(player);
+        System.out.println("yeah");
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                gui.getInformationsGUI1().getLabyrinthGUI1().removePlayer(player);
+            }
+        });
     };
 
     public void setHall(String idHall){
         session.setIdHall(idHall);
     };
 
-    public void setXY(int x, int y){
-        session.setx(x);
-        session.sety(y);
-    }
+
     public void setLabyrinthServer(Labyrinth server){
         session.setProxy(server);
     };
 
     public void startFight(Participant forward, Participant attacked){
-        gui.getInformationsGUI1().getLabyrinthGUI1().startFight(forward,attacked);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                gui.getInformationsGUI1().getLabyrinthGUI1().startFight(forward,attacked);
+            }
+        });
     };
 
     public void hitpoints(Participant forward, Participant attacked, int hitpoints){
@@ -152,7 +177,11 @@ public class ClientSimple {
             Monster monster=context.getMonster(attacked.getName());
             monster.hitpoints(hitpoints);
         }
-        gui.getInformationsGUI1().getLabyrinthGUI1().hitpoints(forward,attacked,hitpoints);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                gui.getInformationsGUI1().getLabyrinthGUI1().hitpoints(forward,attacked,hitpoints);
+            }
+        });
     };
 
     public void endFight(ArrayList<Participant> winners, Participant looser) {
@@ -174,7 +203,11 @@ public class ClientSimple {
         // TODO : Ne pas supprimer si on veux pouvoir réanimer
         Participant participant=context.getParticipant(looser.getName());
         context.removeParticipant(participant);
-        gui.getInformationsGUI1().getLabyrinthGUI1().endFight(winners,looser);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                gui.getInformationsGUI1().getLabyrinthGUI1().endFight(winners,looser);
+            }
+        });
     };
 
     public void newFight(String attacked){
@@ -203,7 +236,11 @@ public class ClientSimple {
 
     public void alertRunnaway(Participant forward, Participant runner) {
         System.out.println(runner.getName()+" fuit le combat face à "+forward.getName()+" !");
-        gui.getInformationsGUI1().getLabyrinthGUI1().alertRunnaway(forward,runner);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                gui.getInformationsGUI1().getLabyrinthGUI1().alertRunnaway(forward,runner);
+            }
+        });
     }
 
     public void heal() throws RemoteException{
@@ -218,21 +255,26 @@ public class ClientSimple {
         for(Monster monster:monsters) {
             monster.heal();
         }
-        gui.getInformationsGUI1().getLabyrinthGUI1().heal();
-        ArrayList<Participant> participants=new ArrayList<Participant>();
-        participants.addAll(players);
-        participants.addAll(monsters);
-        for(Participant participant:participants){
-            gui.getInformationsGUI1().getLabyrinthGUI1().actualiserJTree(participant,1);
-        }
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                gui.getInformationsGUI1().getLabyrinthGUI1().heal();
+                ArrayList<Participant> participants=new ArrayList<Participant>();
+                participants.addAll(players);
+                participants.addAll(monsters);
+                for(Participant participant:participants){
+                    gui.getInformationsGUI1().getLabyrinthGUI1().actualiserJTree(participant,1);
+                }            }
+        });
     };
 
     public void changeHall(Pole direction){
-       String idHall=session.getIdHall();
-       Player player=session.getPlayer();
-       String name=player.getName();
-       Labyrinth labyrinth=session.getProxy();
-        try {
+        String where;
+        List<String> res;
+        String idHall=session.getIdHall();
+        Player player=session.getPlayer();
+        String name=player.getName();
+        Labyrinth labyrinth=session.getProxy();
+         try {
             int answer=labyrinth.changeHall(idHall,name,direction);
             int x, y;
             switch (answer){
@@ -240,21 +282,27 @@ public class ClientSimple {
                     gui.getInformationsGUI1().getLabyrinthGUI1().append("Il n'y à pas de porte dans cette direction.");
                     break;
                 case 0 :
-                    gui.getInformationsGUI1().getLabyrinthGUI1().append("Vous êtes en train de combattre, vous devez d'abord fuir avant de changer de salle.");
+                    gui.getInformationsGUI1().getLabyrinthGUI1().append("Vous devez d'abord fuir le combat avant de changer de salle...");
                     break;
                 case 1 :
                     gui.getInformationsGUI1().getLabyrinthGUI1().append("Vous venez de changer de salle.");
-                    x=session.getx();
-                    y=session.gety();
-                    System.out.println("repaint ! -------------------------------------- 1 ");
+                    idHall = session.getIdHall();
+                    where="idHall="+"\""+idHall+"\"";
+                    myBDD.requeteSelect("*", "Hall", where);
+                    res = myBDD.getResult().get(0);
+                    x=Integer.parseInt(res.get(4));
+                    y=Integer.parseInt(res.get(5));
                     gui.changeHall(x,y, direction);
                     break;
                 case 2 :
                     labyrinthConnection();
                     gui.getInformationsGUI1().getLabyrinthGUI1().append("Vous venez de changer de salle.");
-                    x=session.getx();
-                    y=session.gety();
-                    System.out.println("repaint ! -------------------------------------- 1 ");
+                    idHall = session.getIdHall();
+                    where="idHall="+"\""+idHall+"\"";
+                    myBDD.requeteSelect("*", "Hall", where);
+                    res = myBDD.getResult().get(0);
+                    x=Integer.parseInt(res.get(4));
+                    y=Integer.parseInt(res.get(5));
                     gui.changeHall(x,y, direction);
                     break;
             }
@@ -264,8 +312,115 @@ public class ClientSimple {
         }
     }
 
+    public void useBonus(Participant participant, Bonus bonus){
+            Player myplayer = session.getPlayer();
+            if(participant.getName().equals(myplayer.getName())){
+                myplayer.useBonus(bonus);
+                myplayer.removeBonus(bonus);
+                gui.getActionsGUI1().getInventory().removeBonus(bonus.getName());
+            }else {
+                Player player = context.getPlayer(participant.getName());
+                if (player != null) {
+                    player.useBonus(bonus);
+                    player.removeBonus(bonus);
+                }
+            }
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                gui.getInformationsGUI1().getLabyrinthGUI1().useBonus(participant, bonus);
+            }
+        });
+    }
 
-    public void initialisation(){
+    public void chooseBonus(String bonus){
+        String idHall=session.getIdHall();
+        String idPlayer=session.getPlayer().getName();
+        Labyrinth labyrinth=session.getProxy();
+        try {
+            labyrinth.chooseBonus(idHall,idPlayer,bonus);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void receiveDrop(Bonus bonus){
+        Player player=session.getPlayer();
+        player.addBonus(bonus);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                gui.getInformationsGUI1().getLabyrinthGUI1().receiveBonus(bonus);
+                gui.getActionsGUI1().getInventory().addBonus(bonus.getName());
+            }
+        });
+    }
+
+    public void showInfosBonus(String bonusName){
+        String where="name="+"\""+bonusName+"\"";
+        myBDD.requeteSelect("*", "Bonus", where);
+        List<String> ligne2 = myBDD.getResult().get(0);
+        int life = Integer.parseInt(ligne2.get(2));
+        int attack = Integer.parseInt(ligne2.get(3));
+        int resilience = Integer.parseInt(ligne2.get(4));
+        int chance = Integer.parseInt(ligne2.get(5));
+        int maxlife = Integer.parseInt(ligne2.get(6));
+        gui.getInformationsGUI1().getLabyrinthGUI1().showInfosBonus(bonusName,life,attack,resilience,chance,maxlife);
+    }
+
+
+    public void showInfosBonus(int idBonus){
+        String where="idBonus="+"\""+idBonus+"\"";
+        myBDD.requeteSelect("*", "Bonus", where);
+        List<String> ligne2 = myBDD.getResult().get(0);
+        String bonusName = ligne2.get(1);
+        int life = Integer.parseInt(ligne2.get(2));
+        int attack = Integer.parseInt(ligne2.get(3));
+        int resilience = Integer.parseInt(ligne2.get(4));
+        int chance = Integer.parseInt(ligne2.get(5));
+        int maxlife = Integer.parseInt(ligne2.get(6));
+        gui.getInformationsGUI1().getLabyrinthGUI1().showInfosBonus(bonusName,life,attack,resilience,chance,maxlife);
+    }
+
+    public void showBonusDonjon(){
+        String idLabyrinth=session.getIdLabyrinth();
+        String where="idlabyrinth="+"\""+idLabyrinth+"\"";
+        myBDD.requeteSelect("*", "bonusestdanslabyrinth", where);
+        //myBDD.printResultData();
+        List<List<String>> resultats = myBDD.getResult();
+        for (List<String> ligne : resultats) {
+            int idBonus = Integer.parseInt(ligne.get(0));
+            showInfosBonus(idBonus);
+        }
+    }
+
+    public void showMonstersHall() {
+        ArrayList<Monster> monsters = context.getMonsters();
+        for(Monster monster : monsters){
+            showInfosParticipant(monster);
+        }
+    }
+
+    public void showMonstersDonjon(){
+
+    }
+
+    public void showInfosMonster(String monsterName) {
+        String where="Name="+"\""+monsterName+"\"";
+        myBDD.requeteSelect("*", "Monstre", where);
+        List<String> ligne2 = myBDD.getResult().get(0);
+        String name = ligne2.get(1);
+        int maxlife = Integer.parseInt(ligne2.get(2));
+        int attack = Integer.parseInt(ligne2.get(3));
+        int resilience = Integer.parseInt(ligne2.get(4));
+        int chance = Integer.parseInt(ligne2.get(5));
+        Monster monster=new Monster("",name,attack,resilience,chance,maxlife,0);
+        showInfosParticipant(monster);
+    }
+
+    public void showInfosParticipant(Participant participant){
+        gui.getInformationsGUI1().getLabyrinthGUI1().showInfosParticipant(participant);
+    }
+
+    public void nocConnection(){
         OperationCenter r = null;
         try {
             r = (OperationCenter) Naming.lookup("rmi://localhost/ServerNocRMI");
@@ -279,12 +434,21 @@ public class ClientSimple {
         setNoc((OperationCenter)r);
     }
 
-    public void nocConnection(String name){
+    public void identification(String name){
         try {
             this.session=noc.identification(name);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public void messagingConnection(){
+        String name=session.getPlayer().getName();
+        int numPort=session.getNumPortMessaging();
+        String host=session.getHostMessaging();
+        MessagerieGUI messagerieGUI=gui.getInformationsGUI1().getMessagerieGUI1();
+        messaging=new Messaging(messagerieGUI,numPort,host,name);
+        messaging.start();
     }
 
     public void labyrinthConnection(){
@@ -295,6 +459,11 @@ public class ClientSimple {
             e.printStackTrace();
         }
     }
+
+    public void sendMessage(String message){
+        messaging.sendMessage(message);
+    }
+
 
     // Tests clients
    /* public static void main(String[] args) throws RemoteException {

@@ -79,17 +79,75 @@ public class Fight extends Thread {
         }
     }
     public int calculateHitpoint(Participant forward, Participant attacked){
-        int hitpoints = forward.getAttack();
+        int attack = forward.getAttack();
+        int resilience = attacked.getResilience();
+        int hitpoints;
+        if(attack>=resilience)
+            hitpoints = 1*(attack)/resilience;
+        else
+            hitpoints = 1;
         return hitpoints;
     }
 
     public Participant chooseParticipant(){
         Random random = new Random();
+        Boolean choosed = false;
         int pileOuFace = random.nextInt(2);
-        if (pileOuFace == 0) {
-            return forward;
-        } else {
-            return attacked;
+        while(!choosed) {
+            if (pileOuFace == 0) {
+                if(forward.getChance()==2)
+                    return chooseParticipantAgain();
+                else
+                    return forward;
+            } else {
+                if(attacked.getChance()==2)
+                    return chooseParticipantAgain();
+                else
+                    return attacked;
+            }
+        }
+        return null;
+    }
+
+    public Participant chooseParticipantAgain(){
+        Random random = new Random();
+        Boolean choosed = false;
+        int pileOuFace = random.nextInt(2);
+            if (pileOuFace == 0) {
+                return forward;
+            } else {
+                return attacked;
+            }
+    }
+
+    public void sendDrop(ArrayList<Participant> winners, Participant looser){
+        boolean choosed=false;
+        ArrayList<Bonus> bonusList=looser.getListeBonus();
+        System.out.println(bonusList);
+        int size=bonusList.size();
+        Random random = new Random();
+        int temp;
+        int rand;
+        Bonus bonus;
+        temp = random.nextInt(10) + 1;
+        rand = random.nextInt(size);
+        bonus = bonusList.get(rand);
+        System.out.println("Choosed : "+bonus);
+        int prob = bonus.getProba();
+        if(prob>=temp) {
+            System.out.println(prob+" >= "+temp+" ? --> YES");
+            ArrayList<Player> players=context.getPlayers();
+            int rand2 = random.nextInt(players.size());
+            Player player=players.get(rand2);
+            Client client = player.getProxy();
+            try {
+                client.receiveDrop(bonus);
+                player.addBonus(bonus);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }else{
+            System.out.println(prob+" >= "+temp+" ? --> NO");
         }
     }
 
@@ -119,6 +177,8 @@ public class Fight extends Thread {
             }
         }
         context.removeParticipant(looser);
+        if(looser instanceof Monster)
+            sendDrop(winners,looser);
         // TODO : ADD TO DEAD PEOPLE
         for(Fight fight:fightsToStop){
             fight.endFight();
@@ -201,7 +261,7 @@ public class Fight extends Thread {
                 }
             }
             try {
-                sleep(2000);
+                sleep(1000);
             } catch (InterruptedException e) {
                 return;
             }

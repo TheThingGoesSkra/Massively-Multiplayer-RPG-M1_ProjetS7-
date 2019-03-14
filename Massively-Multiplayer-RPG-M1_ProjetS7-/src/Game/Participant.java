@@ -1,6 +1,7 @@
 package Game;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Participant implements Serializable{
 
@@ -10,6 +11,7 @@ public class Participant implements Serializable{
     private int resilience;
     private int chance;
     private int maxlife;
+    private ArrayList<Bonus> listeBonus;
 
     public Participant(String name, int life, int attack, int resilience, int chance, int maxlife) {
         this.name = name;
@@ -18,6 +20,7 @@ public class Participant implements Serializable{
         this.resilience = resilience;
         this.chance = chance;
         this.maxlife = maxlife;
+        this.listeBonus=new ArrayList<Bonus>();
     }
 
     public Participant(String name, int attack, int resilience, int chance, int maxlife) {
@@ -26,8 +29,57 @@ public class Participant implements Serializable{
         this.resilience = resilience;
         this.chance = chance;
         this.maxlife = maxlife;
+        this.listeBonus=new ArrayList<Bonus>();
     }
 
+
+    public Participant(String name, int life, int attack, int resilience, int chance, int maxlife, ArrayList<Bonus> bonus) {
+        this.name = name;
+        this.life = life;
+        this.attack = attack;
+        this.resilience = resilience;
+        this.chance = chance;
+        this.maxlife = maxlife;
+        this.listeBonus=bonus;
+    }
+
+    public void useBonus(Bonus bonus){
+        int attack = bonus.getAttack();
+        int resilience = bonus.getResilience();
+        int chance = bonus.getChance();
+        int life = bonus.getLife();
+        int maxLife =  bonus.getMaxlife();
+        this.attack=this.attack+attack;
+        this.resilience=this.resilience+resilience;
+        if(chance!=0)
+            this.chance=chance;
+        this.life=this.life+life;
+        this.maxlife=this.maxlife+maxLife;
+    }
+
+    public ArrayList<Bonus> getListeBonus() {
+        return listeBonus;
+    }
+
+    public void setListeBonus(ArrayList<Bonus> listeBonus) {
+        this.listeBonus = listeBonus;
+    }
+
+    public void addBonus(Bonus bonnus){
+        listeBonus.add(bonnus);
+    }
+
+    public void removeBonus(Bonus bonus){
+        int index=0;
+        for(Bonus bonus1 : listeBonus){
+            if(bonus.getName().equals(bonus1.getName())) {
+                listeBonus.remove(index);
+                break;
+            }else{
+                index++;
+            }
+        }
+    }
     public String getName() {
         return name;
     }

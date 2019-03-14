@@ -5,10 +5,8 @@ import Game.*;
 import Labyrinth.Labyrinth;
 import Labyrinth.LabyrinthSimple;
 
-import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
-import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.UnknownHostException;
 import java.rmi.registry.LocateRegistry;
@@ -19,7 +17,10 @@ public class OperationCenterSimple {
     private LabyrinthSimple labyrinth;
     HashMap<Labyrinth,ArrayList<String>> resp;
     private ArrayList<String> halls;
+    private  ArrayList<Bonus> tamponBonus;
     private GestionBDD myBDD;
+    private int numPortMessaging;
+    private String hostMessaging;
 
     public OperationCenterSimple(){
         String url = "jdbc:mysql://localhost:3306/projets7";
@@ -29,6 +30,7 @@ public class OperationCenterSimple {
         myBDD = new GestionBDD(url,user,passwd);
         halls=new ArrayList<String>();
         resp=new HashMap<Labyrinth,ArrayList<String>>();
+        tamponBonus=new ArrayList<Bonus>();
     }
 
     public void initialisation(String labyrinthName){
@@ -43,16 +45,32 @@ public class OperationCenterSimple {
         // Création du labyrinthe
         this.labyrinth=new LabyrinthSimple(idLabyrinth,labyrinthName);
         // Savoir quels bonus sont présents dans le labyrinthe
+
         where="idlabyrinth="+"\""+idLabyrinth+"\"";
         myBDD.requeteSelect("*", "bonusestdanslabyrinth", where);
         //myBDD.printResultData();
         List<List<String>> resultats = myBDD.getResult();
         for (List<String> ligne : resultats) {
+            String idBonus=ligne.get(0);
             // Récupération des infos pour chaque bonus
-            // TODO création bonus
+            where="idBonus="+"\""+idBonus+"\"";
+            myBDD.requeteSelect("*", "bonus", where);
+            //myBDD.printResultData();
+            List<List<String>> resultatsBonus = myBDD.getResult();
+            List<String> ligne2=resultatsBonus.get(0);
+            String name = ligne2.get(1);
+            int life = Integer.parseInt(ligne2.get(2));
+            int attack = Integer.parseInt(ligne2.get(3));
+            int resilience = Integer.parseInt(ligne2.get(4));
+            int chance = Integer.parseInt(ligne2.get(5));
+            int maxlife = Integer.parseInt(ligne2.get(6));
+            int proba = Integer.parseInt(ligne2.get(7));
+            Bonus bonus = new Bonus(idBonus,name,life,attack,resilience,chance,maxlife,proba);
+            System.out.println(bonus);
+            tamponBonus.add(bonus);
         }
 
-        // Savoir quels monstre sont présents dans le labyrinthe
+        // Savoir quels monstres sont présents dans le labyrinthe
         where="idlabyrinth="+"\""+idLabyrinth+"\"";
         myBDD.requeteSelect("*", "monstreestdanslabyrinth", where);
         //myBDD.printResultData();
@@ -70,11 +88,11 @@ public class OperationCenterSimple {
             int maxLife = Integer.parseInt(infosMonstre.get(2));
             int attack =Integer.parseInt(infosMonstre.get(3));
             int chance = Integer.parseInt(infosMonstre.get(4));
-            int résilience = Integer.parseInt(infosMonstre.get(5));
+            int resilience = Integer.parseInt(infosMonstre.get(5));
             int boss = Integer.parseInt(infosMonstre.get(6));
             // Création du monstre
             Monster monster = new Monster(idMonster, name, attack, chance,
-                    résilience, maxLife, boss);
+                    resilience, maxLife, boss);
             // Savoir quels bonus sont distribués par le monstre
             where="idmonstre="+"\""+idMonstre+"\"";
             myBDD.requeteSelect("*", "monstredistribue", where);
@@ -83,6 +101,17 @@ public class OperationCenterSimple {
             for (List<String> ligne2 : resultats) {
                 // insertion des bonus dans le monstre
                 // TODO Insérer les bonus (getBonus(...))
+                 String idBonus = ligne2.get(1);
+                 Bonus bonus = getBonus(idBonus,tamponBonus);
+                 int life = bonus.getLife();
+                 name=bonus.getName();
+                 attack = bonus.getAttack();
+                 resilience = bonus.getResilience();
+                 chance = bonus.getChance();
+                 maxLife = bonus.getMaxlife();
+                 int proba = bonus.getProba();
+                 Bonus bonus2 = new Bonus(idBonus,name,life,attack,resilience,chance,maxLife,proba);
+                 monster.addBonus(bonus2);
             }
             tamponMonsters.add(monster);
         }
@@ -165,7 +194,7 @@ public class OperationCenterSimple {
                 String idMonster = ligne2.get(0);
                 Monster monster = getMonster(idMonster, tamponMonsters);
                 if (monster != null) {
-                    hall.addMonster(new Monster(monster.getIdMonster(), monster.getName(), monster.getAttack(), monster.getChance(), monster.getResilience(), monster.getMaxlife(), monster.getBoss() ));
+                    hall.addMonster(new Monster(monster.getIdMonster(), monster.getName(), monster.getAttack(), monster.getChance(), monster.getResilience(), monster.getMaxlife(), monster.getBoss(), monster.getListeBonus()));
                 } else {
                     System.err.println("Error : no monster add in Hall " + idTypeHall);
                 }
@@ -255,7 +284,6 @@ public class OperationCenterSimple {
             player = new Player(res1.get(0), Integer.parseInt(res1.get(2)),
                     Integer.parseInt(res1.get(3)), Integer.parseInt(res1.get(4)), Integer.parseInt(res1.get(1)));
             String idLabyrinth = "0";
-            // TODO : && idlabyrinth = idLabyrinth
             where = "idplayer=" + "\"" + name + "\"";
             this.myBDD.requeteSelect("*", "session", where);
             res = this.myBDD.getResult();
@@ -286,22 +314,36 @@ public class OperationCenterSimple {
                 int y=1;
                 session = new Session(player, idLabyrinth, idHall, x , y);
         }
+        where = "idplayer=" + "\"" + name + "\"";
+        this.myBDD.requeteSelect("*", "playerdispose", where);
+        res = this.myBDD.getResult();
+        for(List<String> disp : res){
+            String idBonus= disp.get(1);
+            Bonus bonus = getBonus(idBonus,tamponBonus);
+            player.addBonus(bonus);
+        }
         String idHall = session.getIdHall();
         for(Labyrinth key : resp.keySet()){
             for(String hall : resp.get(key)){
                 if(hall.equals(idHall)){
                     session.setProxy(key);
-                    return session;
+                    break;
                 }
             }
         }
+        session.setNumPortMessaging(this.numPortMessaging);
+        session.setHostMessaging(this.hostMessaging);
         return session;
     }
 
 
     public void save(ArrayList<Player> players, String labyrinth, String Hall) {};
 
-    public ArrayList<String> recordMessagerie(String ip,int numPort) {return halls;};
+    public ArrayList<String> recordMessagerie(String host,int numPort) {
+        this.numPortMessaging=numPort;
+        this.hostMessaging=host;
+        return halls;
+    };
 
     public void buildDistribution() throws RemoteException {
         // distribuer chaque hall à un serveur  dans la structure

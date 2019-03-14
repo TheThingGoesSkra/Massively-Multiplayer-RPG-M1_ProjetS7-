@@ -1,5 +1,14 @@
 package GUI;
 
+import Client.ClientSimple;
+import Client.Session;
+import Game.Bonus;
+import Labyrinth.Labyrinth;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
 public class InventoryGUI extends javax.swing.JFrame {
 
     private javax.swing.JButton jButton1;
@@ -34,7 +43,13 @@ public class InventoryGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane7;
 
-    public InventoryGUI() {
+    private ArrayList<Bonus> listBonus;
+    private ClientSimple client;
+
+
+    public InventoryGUI(ArrayList<Bonus> listBonus, ClientSimple client) {
+        this.listBonus=listBonus;
+        this.client=client;
         initComponents();
     }
 
@@ -119,14 +134,21 @@ public class InventoryGUI extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(16, 143, 16, 148);
         jPanel29.add(jButton1, gridBagConstraints);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jPanel26.add(jPanel29, java.awt.BorderLayout.PAGE_END);
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        DefaultListModel model=new DefaultListModel();
+        for(Bonus bonus : listBonus){
+            String name=bonus.getName();
+            model.addElement(name);
+        }
+
+        jList2.setModel(model);
         jScrollPane7.setViewportView(jList2);
 
         jPanel26.add(jScrollPane7, java.awt.BorderLayout.CENTER);
@@ -136,6 +158,23 @@ public class InventoryGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>
 
+    private void jButton1ActionPerformed(ActionEvent evt) {
+        String bonus = jList2.getSelectedValue();
+        client.chooseBonus(bonus);
+    }
+
+    public void removeBonus(String name){
+        DefaultListModel model= (DefaultListModel) jList2.getModel() ;
+        int index=model.indexOf(name);
+        model.remove(index);
+        jList2.updateUI();
+    }
+
+    public void addBonus(String name){
+        DefaultListModel model= (DefaultListModel) jList2.getModel() ;
+        model.addElement(name);
+        jList2.updateUI();
+    }
     /**
      * @param args the command line arguments
      */

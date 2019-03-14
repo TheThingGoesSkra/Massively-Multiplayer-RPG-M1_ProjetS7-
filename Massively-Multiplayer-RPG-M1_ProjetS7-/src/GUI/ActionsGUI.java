@@ -2,18 +2,21 @@ package GUI;
 
 import Client.ClientSimple;
 import Client.Session;
+import Game.Bonus;
+import Game.Player;
 import Game.Pole;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 
 public class ActionsGUI extends javax.swing.JPanel {
 
     private ClientSimple client;
     private MapGUI map;
-
+    private InventoryGUI inventory;
     // Variables declaration - do not modify
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
@@ -38,6 +41,9 @@ public class ActionsGUI extends javax.swing.JPanel {
         int x=session.getx();
         int y=session.gety();
         this.map = new MapGUI(x, y);
+        Player player = session.getPlayer();
+        ArrayList<Bonus> listeBonus = player.getListeBonus();
+        this.inventory=new InventoryGUI(listeBonus,client);
         initComponents();
     }
 
@@ -101,6 +107,7 @@ public class ActionsGUI extends javax.swing.JPanel {
                 jButton14ActionPerformed(evt);
             }
         });
+
         jPanel6.add(jButton14);
 
         jButton5.setBackground(new java.awt.Color(204, 204, 204));
@@ -179,11 +186,70 @@ public class ActionsGUI extends javax.swing.JPanel {
                                 }
                                 break;
                             case "r":
-                                if(commande.length>=2){
-                                    String forward=texte.substring(2);
+                                if(commande.length>=2) {
+                                    String forward = texte.substring(2);
                                     client.runnaway(forward);
                                 }
+                            case "i":
+                                if(commande.length>2) {
+                                    switch(commande[1]) {
+                                        case "b":
+                                            switch(commande[2]) {
+                                                case "d":
+                                                    client.showBonusDonjon();
+                                                    break;
+                                                default:
+                                                    String bonusName = texte.substring(4);
+                                                    client.showInfosBonus(bonusName);
+                                                    break;
+                                            }
+                                        case "p":
+                                            switch(commande[2]) {
+                                                case "h":
+                                                    // TODO
+                                                    //client.showPlayersHall();
+                                                    break;
+                                                case "d":
+                                                    // TODO
+                                                    //client.showPlayersDonjon();
+                                                    break;
+                                                default :
+                                                    // TODO
+                                                    break;
+                                            }
+                                            break;
+                                        case "m":
+                                            switch(commande[2]) {
+                                                case "h":
+                                                    client.showMonstersHall();
+                                                    break;
+                                                case "d":
+                                                    client.showMonstersDonjon();
+                                                    break;
+                                                default :
+                                                    String MonsterName = texte.substring(4);
+                                                    client.showInfosMonster(MonsterName);
+                                                    break;
+                                            }
+                                            break;
+                                    }
+                                }
+                                if(commande.length==2) {
+                                    switch(commande[1]){
+                                            case "d":
+                                                client.showMonstersDonjon();
+                                                client.showBonusDonjon();
+                                                break;
+                                            case "p":
+                                                Session session=client.getSession();
+                                                Player player=session.getPlayer();
+                                                client.showInfosParticipant(player);
+                                                break;
+                                    }
+                                }
                                 break;
+                            default :
+                                client.sendMessage(texte);
                         }
                         jTextPane3.setText("");
                     }
@@ -228,7 +294,6 @@ public class ActionsGUI extends javax.swing.JPanel {
     }
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryGUI inventory=new InventoryGUI();
         inventory.setVisible(true);
     }
 
@@ -252,8 +317,23 @@ public class ActionsGUI extends javax.swing.JPanel {
         }if(direction==Pole.EAST){
             panel.setDirection(direction);
         }
-        System.out.println("repaint !----------------------------------------------------------3");
         panel.repaint();
 
+    }
+
+    public MapGUI getMap() {
+        return map;
+    }
+
+    public void setMap(MapGUI map) {
+        this.map = map;
+    }
+
+    public InventoryGUI getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(InventoryGUI inventory) {
+        this.inventory = inventory;
     }
 }

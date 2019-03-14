@@ -36,7 +36,7 @@ public class LoginGUI extends javax.swing.JFrame {
     public LoginGUI() {
         initComponents();
         this.client=new ClientSimple();
-        this.client.initialisation();;
+        this.client.nocConnection();
     }
 
     public LoginGUI(ClientSimple client) {
@@ -227,10 +227,16 @@ public class LoginGUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         String username=jTextField3.getText();
-        client.nocConnection(username);
+        client.identification(username);
         this.setVisible(false);
         client.startGUI();
-        client.labyrinthConnection();
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                client.labyrinthConnection();
+                client.messagingConnection();
+            }
+        });
+
     }
 
     /**

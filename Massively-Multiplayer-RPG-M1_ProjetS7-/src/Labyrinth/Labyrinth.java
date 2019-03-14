@@ -14,5 +14,6 @@ public interface Labyrinth extends Remote {
 	public void runnaway(String Hall, String forward, String runner) throws RemoteException;
 	public void logout(String Hall, String player) throws RemoteException;
 	public void setReponsabiities(HashMap<Labyrinth,ArrayList<String>> resp) throws RemoteException;
+	public void chooseBonus(String idHall, String namePlayer, String bonus) throws RemoteException;
 
-}
+	}

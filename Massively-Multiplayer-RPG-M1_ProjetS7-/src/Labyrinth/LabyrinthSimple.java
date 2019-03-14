@@ -5,6 +5,7 @@ import Client.Session;
 import Game.*;
 import OperationCenter.OperationCenter;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -96,9 +97,30 @@ public class LabyrinthSimple implements Serializable{
     public int changeHall(String idHall, String player, Pole direction){
          int answer;
          Hall hall = getHall(idHall);
-         answer= hall.changeHall(player, direction);
+         answer = hall.changeHall(player, direction);
          return answer;
     };
+
+    public void chooseBonus(String idHall, String namePlayer, String bonus) throws RemoteException {
+        Hall hall = getHall(idHall);
+        Context context = hall.getContext();
+        Player player = context.getPlayer(namePlayer);
+        ArrayList<Bonus> bonusList=player.getListeBonus();
+        int i=0;
+        for(Bonus bonus2 : bonusList){
+            if(bonus2.getName().equals(bonus)){
+                player.useBonus(bonus2);
+                ArrayList<Player> players=context.getPlayers();
+                for(Player player1:players){
+                    Client client=player.getProxy();
+                    client.useBonus(player,bonus2);
+                }
+                bonusList.remove(i);
+                break;
+            }
+            i++;
+        }
+    }
 
     public void setReponsabiities(HashMap<Labyrinth,ArrayList<String>> resp){
         for(Labyrinth key : resp.keySet()){

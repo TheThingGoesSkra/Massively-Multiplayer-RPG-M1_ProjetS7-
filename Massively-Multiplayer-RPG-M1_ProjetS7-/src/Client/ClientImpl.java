@@ -1,5 +1,6 @@
 package Client;
 
+import Game.Bonus;
 import Game.Context;
 import Game.Participant;
 import Game.Player;
@@ -21,16 +22,14 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     public void setContext(Context context) throws RemoteException {
         client.setContext(context);
     };
-    public void addPlayer(Player player) throws RemoteException {
-        client.addPlayer(player);
+    public void addParticipant(Participant participant) throws RemoteException {
+        client.addParticipant(participant);
+    };
+    public void removePlayer(Player player) throws RemoteException {
+        client.removePlayer(player);
     };
     public void setHall(String idHall) throws RemoteException {
         client.setHall(idHall);
-    }
-
-    @Override
-    public void setXY(int x, int y) throws RemoteException {
-        client.setXY(x,y);
     }
 
     ;
@@ -43,7 +42,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
 
     public void hitpoints(Participant forward, Participant attacked, int hitpoints) throws RemoteException {
         client.hitpoints(forward,attacked,hitpoints);
-    };
+    }
+
+    public void useBonus(Participant participant, Bonus bonus) throws RemoteException {
+        client.useBonus(participant,bonus);
+    }
 
     public void endFight(ArrayList<Participant> winners, Participant looser) throws RemoteException {
         client.endFight(winners,looser);
@@ -51,7 +54,12 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
 
     public void alertRunnaway(Participant forward, Participant runner) throws RemoteException{
         client.alertRunnaway(forward,runner);
-    };
+    }
+
+    @Override
+    public void receiveDrop(Bonus bonus) throws RemoteException {
+        client.receiveDrop(bonus);
+    }
 
     public void heal() throws RemoteException{
         client.heal();
