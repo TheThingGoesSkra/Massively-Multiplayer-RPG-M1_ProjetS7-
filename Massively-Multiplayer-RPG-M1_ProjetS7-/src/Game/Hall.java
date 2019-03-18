@@ -133,6 +133,7 @@ public class Hall implements Serializable {
             return -1;
         }else{
             Player player1=context.getPlayer(player);
+            // TODO Test if player1==NULL "arrete de nous prendre des cons"
             Boolean exitHall=exitPlayer(player1);
             if(exitHall == false) {
                 return 0;

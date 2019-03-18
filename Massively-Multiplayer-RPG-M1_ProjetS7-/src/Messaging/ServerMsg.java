@@ -13,6 +13,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class ServerMsg {
@@ -25,6 +26,8 @@ public class ServerMsg {
   private static clientThread[] threads = new clientThread[maxClientsCount];
   private OperationCenter noc;
   private ArrayList<String> halls;
+  private HashMap<String, ArrayList<clientThread>> relationsClHalls;
+  // TODO
 
   public ServerMsg(int portNumber){
     // Numero de port
@@ -75,6 +78,7 @@ public class ServerMsg {
   public void recordServer() throws RemoteException {
     try {
       this.halls=noc.recordMessagerie("localhost",portNumber);
+      // TODO
     } catch (RemoteException e) {
       e.printStackTrace();
     }

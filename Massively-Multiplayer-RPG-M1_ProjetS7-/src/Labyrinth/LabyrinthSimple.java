@@ -18,12 +18,14 @@ public class LabyrinthSimple implements Serializable{
     private String id;
     private String name;
     private HashSet<Hall> halls;
+    private String idHall;
     private OperationCenter noc;
 
 
-    public LabyrinthSimple(String id, String name){
+    public LabyrinthSimple(String id, String name, String idHall){
         this.id=id;
         this.name=name;
+        this.idHall=idHall;
         this.halls = new HashSet<Hall>();
     }
 
@@ -82,6 +84,10 @@ public class LabyrinthSimple implements Serializable{
 
     public void login(Session s, Client proxy){};
 
+    public void newGame(Player player){
+        // TODO : Mettre le joueur dans le hall d'entrée, s'inspirer de login dans labyrinthImpl.
+    }
+
     public void newFight(String idHall, String forwardName, String attackedName){
         Hall hall=this.getHall(idHall);
         hall.addFight(forwardName,attackedName);
@@ -92,7 +98,9 @@ public class LabyrinthSimple implements Serializable{
         hall.runnaway(forwardName,runnerName);
     };
 
-    public void logout(String Hall, String player){};
+    public void logout(String Hall, String player){
+        // TODO : Réutiliser code changeHall pour prévenir joueur que vous quitté la salle.
+    };
 
     public int changeHall(String idHall, String player, Pole direction){
          int answer;

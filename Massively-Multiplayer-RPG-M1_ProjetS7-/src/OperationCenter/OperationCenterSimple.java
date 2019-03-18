@@ -41,9 +41,10 @@ public class OperationCenterSimple {
         List<String> Res = myBDD.getResult().get(0);
         String idLabyrinth=Res.get(0);
         String labyrinthname=Res.get(1);
+        String idHallEntre=Res.get(3);
         //myBDD.printResultData();
         // Création du labyrinthe
-        this.labyrinth=new LabyrinthSimple(idLabyrinth,labyrinthName);
+        this.labyrinth=new LabyrinthSimple(idLabyrinth,labyrinthName, idHallEntre);
         // Savoir quels bonus sont présents dans le labyrinthe
 
         where="idlabyrinth="+"\""+idLabyrinth+"\"";
@@ -337,7 +338,11 @@ public class OperationCenterSimple {
     }
 
 
-    public void save(ArrayList<Player> players, String labyrinth, String Hall) {};
+    public void save(ArrayList<Player> players, String labyrinth, String Hall) {
+        // TODO Sauvegarder/Update dans la table session : idPlayer, idLab, idHall, Life.
+        // TODO Sauvegarde/Update dans la table joueur : attack, resilience, chance, maxlife.
+        // TODO Sauvegarde/Update playerDispose : player, idBonus.
+    };
 
     public ArrayList<String> recordMessagerie(String host,int numPort) {
         this.numPortMessaging=numPort;

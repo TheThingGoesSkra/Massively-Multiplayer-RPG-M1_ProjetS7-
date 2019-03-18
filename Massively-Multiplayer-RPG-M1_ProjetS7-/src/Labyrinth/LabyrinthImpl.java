@@ -52,6 +52,11 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 		 labyrinth.addPlayer(idHall,player);
 	}
 
+	public void newGame(Player player, Client proxy){
+		player.setProxy(proxy);
+		labyrinth.newGame(player);
+	}
+
 	public void newFight(String idHall, String forward, String attacked) throws RemoteException{
 		labyrinth.newFight(idHall, forward,attacked);
 	};
@@ -68,7 +73,9 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 		labyrinth.chooseBonus(idHall,namePlayer,bonus);
 	}
 
-	public void logout(String idHall, String player) throws RemoteException{};
+	public void logout(String idHall, String player) throws RemoteException{
+		labyrinth.logout(idHall,player);
+	};
 
 	public void setReponsabiities(HashMap<Labyrinth,ArrayList<String>> resp) throws RemoteException{
 		System.out.println("setresponsabilities");
