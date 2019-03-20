@@ -18,7 +18,7 @@ et Redistribuable Visual C++ pour Visual Studio  2013:
 https://www.microsoft.com/fr-FR/download/details.aspx?id=40784 
 
 Si vous êtes sur Windows 10 vous devrez désactiver IIS pour executer correctement Wamp:
-https://openclassrooms.com/forum/sujet/probleme-wampserver-windows-10#message-89111670)
+https://openclassrooms.com/forum/sujet/probleme-wampserver-windows-10#message-89111670
 
 Lancez l'installateur avec les droits d'administrateurs !
 
