@@ -10,14 +10,18 @@ https://java.com/fr/
 
 Wamp (pour Windows) à cette adresse:
 https://sourceforge.net/projects/wampserver/files/
-(pour Wamp vour aurez besoin (si non installé) de
+(pour Wamp vous aurez besoin (si non installé) de
+
 Redistribuable Visual C++ pour Visual Studio  2015:
 https://www.microsoft.com/fr-FR/download/details.aspx?id=48145 
+
 et Redistribuable Visual C++ pour Visual Studio  2013:
 https://www.microsoft.com/fr-FR/download/details.aspx?id=40784 
+
 Si vous êtes sur Windows 10 vous devrez désactiver IIS pour executer correctement Wamp:
-https://openclassrooms.com/forum/sujet/probleme-wampserver-windows-10#message-89111670 )
-Installez le (lancer l'installateur avec les droits d'administrateurs).
+https://openclassrooms.com/forum/sujet/probleme-wampserver-windows-10#message-89111670)
+
+Lancez l'installateur avec les droits d'administrateurs !
 
 ou Lamp (pour Linux):
 https://doc.ubuntu-fr.org/lamp
