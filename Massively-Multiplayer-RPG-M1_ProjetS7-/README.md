@@ -10,9 +10,8 @@ https://java.com/fr/
 
 Wamp (pour Windows) à cette adresse:
 https://sourceforge.net/projects/wampserver/files/
-(pour Wamp vous aurez besoin (si non installé) de
 
-Redistribuable Visual C++ pour Visual Studio  2015:
+Pour Wamp vous aurez besoin (si non installé) de Redistribuable Visual C++ pour Visual Studio 2015:
 https://www.microsoft.com/fr-FR/download/details.aspx?id=48145 
 
 et Redistribuable Visual C++ pour Visual Studio  2013:
