@@ -20,9 +20,9 @@ https://www.microsoft.com/fr-FR/download/details.aspx?id=40784
 Si vous êtes sur Windows 10 vous devrez désactiver IIS pour executer correctement Wamp:
 https://openclassrooms.com/forum/sujet/probleme-wampserver-windows-10#message-89111670
 
-Lancez l'installateur avec les droits d'administrateurs !
+- Lancez l'installateur avec les droits d'administrateurs !
 
-  - ou Lamp (pour Linux):
+  - Ou utilisez Lamp (pour Linux):
 https://doc.ubuntu-fr.org/lamp
 https://doc.ubuntu-fr.org/phpmyadmin
 
@@ -48,5 +48,6 @@ Pour Wamp (Windows):
 
 Pour les utilisateurs Linux vous pouvez aussi utiliser adminer:
 http://www.ubuntuboss.com/how-to-install-adminer-on-ubuntu/
+
 Sinon phpmyadmin est fourni avec Lamp par défaut. 
 Vous pouvez executer le contenu du fichier sql fourni avec le projet : "BDD_Create.sql".
