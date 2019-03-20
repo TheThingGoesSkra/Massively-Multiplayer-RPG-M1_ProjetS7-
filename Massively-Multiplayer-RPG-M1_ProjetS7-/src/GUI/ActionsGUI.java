@@ -302,9 +302,14 @@ public class ActionsGUI extends javax.swing.JPanel {
     }
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {
-        client.getGui().setVisible(false);
-        LoginGUI newGui=new LoginGUI(client);
-        newGui.setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                client.getGui().getActionsGUI1().getInventory().dispose();
+                client.getGui().getActionsGUI1().getMap().dispose();
+                client.getGui().dispose();
+                LoginGUI newGui=new LoginGUI(client);
+                newGui.setVisible(true);            }
+        });
     }
 
     public void changeHall(int x,int y, Pole direction){

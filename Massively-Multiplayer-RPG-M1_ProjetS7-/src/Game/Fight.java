@@ -197,7 +197,13 @@ public class Fight extends Thread {
                 e.printStackTrace();
             }
         }
-        this.endFight();
+        this.stopFight();
+    }
+
+    public void stopFight(){
+        int index=fights.indexOf(this);
+        fights.remove(index);
+        this.interrupt();
     }
 
     public void endFight(){
