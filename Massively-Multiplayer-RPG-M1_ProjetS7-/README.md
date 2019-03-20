@@ -8,7 +8,7 @@ https://java.com/fr/
 
 - Si ce n'est pas déjà fait téléchargez :
 
-Wamp (pour Windows) à cette adresse:
+  - Wamp (pour Windows) à cette adresse:
 https://sourceforge.net/projects/wampserver/files/
 
 Pour Wamp vous aurez besoin (si non installé) de Redistribuable Visual C++ pour Visual Studio 2015:
@@ -22,7 +22,7 @@ https://openclassrooms.com/forum/sujet/probleme-wampserver-windows-10#message-89
 
 Lancez l'installateur avec les droits d'administrateurs !
 
-ou Lamp (pour Linux):
+  - ou Lamp (pour Linux):
 https://doc.ubuntu-fr.org/lamp
 https://doc.ubuntu-fr.org/phpmyadmin
 
