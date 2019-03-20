@@ -29,25 +29,27 @@ https://doc.ubuntu-fr.org/phpmyadmin
 Un simple serveur SQL peut aussi faire l'affaire. 
 Néanmoins, il faudrat vous assurer qu'il fonctionne bel et bien sur le numéro de port standard à MYSQL : 3306. 
 
-Pour Wamp (Windows):
+- Pour Wamp (Windows):
 
-- Copier le fichier "adminer.php" à la racine du dossier de Wamp, par défaut "C:\wamp64".
+  - Copier le fichier "adminer.php" à la racine du dossier de Wamp, par défaut "C:\wamp64".
 
-- Executer Wampserver (wampmanager.exe)
+  - Executer Wampserver (wampmanager.exe)
 
-- Si ce n'est pas déjà fait lancez votre navigateur internet puis tapez "localhost" dans la barre de recherche de site.
+  - Si ce n'est pas déjà fait lancez votre navigateur internet puis tapez "localhost" dans la barre de recherche de site.
 
-- Dans la partie "Vos alias" cliquez sur "adminer".
+  - Dans la partie "Vos alias" cliquez sur "adminer".
 
-- Mettez "root" dans le champ "Utilisateur" puis laissez les champs "Mot de passe" et “Base de données” vide. Connectez-vous.
+  - Mettez "root" dans le champ "Utilisateur" puis laissez les champs "Mot de passe" et “Base de données” vide. Connectez-vous.
 
-- Cliquez sur “Requête SQL” dans les menus à gauche. Copiez le contenu du fichier BDD_Create.sql (ou importez le fichier avec le menu “Importer”). La base de données est créée et est vide.
+  - Cliquez sur “Requête SQL” dans les menus à gauche. Copiez le contenu du fichier BDD_Create.sql (ou importez le fichier avec le menu “Importer”). La base de données est créée et est vide.
 
 (vous pouvez aussi créer et modifier les tables à partir de phpmyadmin)
 
 
-Pour les utilisateurs Linux vous pouvez aussi utiliser adminer:
+- Pour les utilisateurs Linux :
+
+  - vous pouvez aussi utiliser adminer:
 http://www.ubuntuboss.com/how-to-install-adminer-on-ubuntu/
 
-Sinon phpmyadmin est fourni avec Lamp par défaut. 
+  - Sinon phpmyadmin est fourni avec Lamp par défaut. 
 Vous pouvez executer le contenu du fichier sql fourni avec le projet : "BDD_Create.sql".
