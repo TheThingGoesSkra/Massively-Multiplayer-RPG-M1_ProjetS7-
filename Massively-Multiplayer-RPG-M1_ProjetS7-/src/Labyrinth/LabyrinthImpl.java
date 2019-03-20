@@ -111,7 +111,8 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 		impl.recordServer();
 
 		LabyrinthSimple labyrinth=impl.getLabyrinth();
-		// Test
+
+		/*// Tests
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Veuillez saisir start lorsque le NOC aura terminer la distribution des responsabilités :");
 		String str = sc.nextLine();
@@ -144,7 +145,7 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 					System.out.println("Monster : {" + monster.getIdMonster() + ", " + monster.getName() + "}");
 				}
 			}
-		}
+		}*/
 
 	}
 

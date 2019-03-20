@@ -23,7 +23,7 @@ public class OperationCenterSimple {
     private String hostMessaging;
 
     public OperationCenterSimple(){
-        String url = "jdbc:mysql://localhost:3306/projets7";
+        String url = "jdbc:mysql://localhost:3306/projets8";
         url += "?autoReconnect=true&useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
         String user = "root";
         String passwd = "";
@@ -390,13 +390,13 @@ public class OperationCenterSimple {
         }
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("Veuillez saisir start lorsque vous aurez terminé d'enregistrer les serveurs de jeux :");
-        String str = sc.nextLine();
-        if(str.equals("start")){
-            noc.buildDistribution();
-        }
         while(true){
-
+            System.out.println("Veuillez saisir start lorsque vous aurez terminé d'enregistrer les serveurs de jeux :");
+            String str = sc.nextLine();
+            if(str.equals("start")){
+                noc.buildDistribution();
+                break;
+            }
         }
     }
     }
