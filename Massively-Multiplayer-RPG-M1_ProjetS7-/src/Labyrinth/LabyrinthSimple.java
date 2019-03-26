@@ -86,6 +86,9 @@ public class LabyrinthSimple implements Serializable{
 
     public void newGame(Player player){
         // TODO : Mettre le joueur dans le hall d'entrée, s'inspirer de login dans labyrinthImpl.
+        String idHall;
+        idHall= this.idHall;
+        addPlayer(idHall,player);
     }
 
     public void newFight(String idHall, String forwardName, String attackedName){
