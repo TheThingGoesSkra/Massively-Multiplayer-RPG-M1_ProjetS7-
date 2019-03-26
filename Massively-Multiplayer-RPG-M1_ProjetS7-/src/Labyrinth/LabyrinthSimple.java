@@ -100,6 +100,10 @@ public class LabyrinthSimple implements Serializable{
 
     public void logout(String Hall, String player){
         // TODO : Réutiliser code changeHall pour prévenir joueur que vous quitté la salle.
+        Hall hall = getHall(idHall);
+        Context context = hall.getContext();
+        Player player1= context.getPlayer(player);
+        hall.exitPlayer(player1);
     };
 
     public int changeHall(String idHall, String player, Pole direction){
