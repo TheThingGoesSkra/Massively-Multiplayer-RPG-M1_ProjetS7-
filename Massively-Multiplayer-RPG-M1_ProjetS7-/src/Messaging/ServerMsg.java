@@ -26,7 +26,7 @@ public class ServerMsg {
   private static clientThread[] threads = new clientThread[maxClientsCount];
   private OperationCenter noc;
   private ArrayList<String> halls;
-  private HashMap<String, ArrayList<clientThread>> relationsClHalls;
+  private HashMap<String, clientThread[]> relationsClHalls;
   // TODO
 
   public ServerMsg(int portNumber){
@@ -99,7 +99,9 @@ public class ServerMsg {
       this.threads = threads;
       maxClientsCount = threads.length;
     }
-
+    
+  
+    
     public void run() {
       try {
         /*
@@ -160,7 +162,9 @@ public class ServerMsg {
               }
             }
           } else {
-            /* Messages publiques, broadcast. */
+//TODO A MODIFIER///////////////////////////////////////
+        	  
+        	  /* Messages publiques, broadcast. */
             synchronized (this) {
               System.out.println(line);
               for (int i = 0; i < maxClientsCount; i++) {
@@ -169,6 +173,7 @@ public class ServerMsg {
                 }
               }
             }
+///////////////////////////////////////////////////////            
           }
         }
 
