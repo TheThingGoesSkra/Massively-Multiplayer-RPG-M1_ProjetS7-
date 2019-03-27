@@ -108,9 +108,8 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 		impl.nocConnection();
 		impl.recordServer();
 
-		LabyrinthSimple labyrinth=impl.getLabyrinth();
-
 		/*// Tests
+		LabyrinthSimple labyrinth=impl.getLabyrinth();
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Veuillez saisir start lorsque le NOC aura terminer la distribution des responsabilités :");
 		String str = sc.nextLine();

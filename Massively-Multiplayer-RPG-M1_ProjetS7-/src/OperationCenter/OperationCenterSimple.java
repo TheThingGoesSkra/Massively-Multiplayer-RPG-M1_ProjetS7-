@@ -5,6 +5,7 @@ import Client.Session;
 import Game.*;
 import Labyrinth.Labyrinth;
 import Labyrinth.LabyrinthSimple;
+import Messaging.ChatLocalisation;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -20,6 +21,7 @@ public class OperationCenterSimple {
     private ArrayList<String> halls;
     private  ArrayList<Bonus> tamponBonus;
     private GestionBDD myBDD;
+    private ChatLocalisation chatProxy;
     private int numPortMessaging;
     private String hostMessaging;
 
@@ -328,6 +330,7 @@ public class OperationCenterSimple {
         Labyrinth proxyLabyrinth=session.getProxy();
         try {
             proxy.receiveSession(session);
+            this.chatProxy.addPlayer(idHall,player.getName());
             proxyLabyrinth.login(session,proxy);
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -359,9 +362,14 @@ public class OperationCenterSimple {
 
     };
 
-    public ArrayList<String> recordMessagerie(String host,int numPort) {
+    public ArrayList<String> recordMessagerie(String host, int numPort, ChatLocalisation chatProxy) {
         this.numPortMessaging=numPort;
         this.hostMessaging=host;
+        HashSet<Hall> allHalls=this.labyrinth.getHalls();
+        for(Hall hall : allHalls){
+            hall.setChatProxy(chatProxy);
+        }
+        this.chatProxy=chatProxy;
         return halls;
     };
 
