@@ -26,8 +26,7 @@ public class ServerMsg {
   private static clientThread[] threads = new clientThread[maxClientsCount];
   private OperationCenter noc;
   private ArrayList<String> halls;
-  private HashMap<String, ArrayList<clientThread>> relationsClHalls;
-  // TODO
+  private HashMap<String,clientThread[]> relationsClHalls;
 
   public ServerMsg(int portNumber){
     // Numero de port
