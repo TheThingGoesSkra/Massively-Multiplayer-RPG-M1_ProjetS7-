@@ -343,15 +343,10 @@ public class OperationCenterSimple {
             ArrayList<Bonus> bonusList=player.getListeBonus();
             where="";
             for(Bonus bonus : bonusList){
-                life=Integer.toString(bonus.getLife());
-                maxLife=Integer.toString(bonus.getMaxlife());
-                attack=Integer.toString(bonus.getAttack());
-                resilience=Integer.toString(bonus.getResilience());
-                chance=Integer.toString(bonus.getChance());
-                String values = "(\"" + name + "\",10,1,1,1,0)";
+                String idBonus=bonus.getIdBonus();
+                String values = "(\"" + name + "\", \"" + idBonus + "\")";
                 this.myBDD.requeteInsertInto("playerdispose",values,where);
             }
-            // TODO insert all : player, idBonus.
         }
 
 

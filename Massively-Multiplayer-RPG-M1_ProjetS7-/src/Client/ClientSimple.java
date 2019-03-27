@@ -22,18 +22,15 @@ public class ClientSimple {
     private static Context context;
     private Session session;
     private Messaging messaging;
-    private GestionBDD myBDD;
+    private GestionBDDI myBDD;
 
     public ClientSimple() {
         try {
             Client proxy=new ClientImpl(this);
             this.proxy=proxy;
             this.context=new Context();
-            String url = "jdbc:mysql://localhost:3306/projets7";
-            url += "?autoReconnect=true&useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
-            String user = "root";
-            String passwd = "";
-            myBDD = new GestionBDD(url,user,passwd);
+            String url = "jdbc:sqlite:projets7.sqlite";
+            this.myBDD = new GestionBDDI(url);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -406,11 +403,11 @@ public class ClientSimple {
 
     }
 
-    public GestionBDD getMyBDD() {
+    public GestionBDDI getMyBDD() {
         return myBDD;
     }
 
-    public void setMyBDD(GestionBDD myBDD) {
+    public void setMyBDD(GestionBDDI myBDD) {
         this.myBDD = myBDD;
     }
 

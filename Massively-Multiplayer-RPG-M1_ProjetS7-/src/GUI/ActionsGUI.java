@@ -1,6 +1,7 @@
 package GUI;
 
 import Client.ClientSimple;
+import Client.GestionBDDI;
 import Client.Session;
 import Game.Bonus;
 import Game.Player;
@@ -39,7 +40,7 @@ public class ActionsGUI extends javax.swing.JPanel {
         Session session=this.client.getSession();
         String idHall = session.getIdHall();
         String where="idHall="+"\""+idHall+"\"";
-        GestionBDD myBDD=client.getMyBDD();
+        GestionBDDI myBDD=client.getMyBDD();
         myBDD.requeteSelect("*", "Hall", where);
         List<String> res = myBDD.getResult().get(0);
         int x=Integer.parseInt(res.get(4));
