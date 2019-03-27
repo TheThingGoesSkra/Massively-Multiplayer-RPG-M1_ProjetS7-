@@ -75,6 +75,10 @@ public class GestionBDD {
                         break;
                     case 1:
                         state.executeUpdate(requete);
+                        break;
+                    case 2:
+                        state.execute(requete);
+                        break;
                 }
                 state.close(); // A la fin
                 conn.close();
@@ -108,9 +112,15 @@ public class GestionBDD {
         }
         public List<List<String>> requeteCreateTable(String nomTable, String nomColonnes_types){
             String requete = "";
-            requete = "CREATE TABLE "+nomTable+" ("+nomColonnes_types+")";
+            requete = "CREATE FROM "+nomTable+" ("+nomColonnes_types+")";
             return this.requete(requete,1);
         }
+
+        public void requeteDelete(String nomTable, String where){
+            String requete = "DELETE FROM "+nomTable+" WHERE "+where;
+            this.requete(requete,2);
+        }
+
         public void printResultData(){
             System.out.println(this.result);
         }

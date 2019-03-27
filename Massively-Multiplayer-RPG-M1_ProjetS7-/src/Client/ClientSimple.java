@@ -134,7 +134,6 @@ public class ClientSimple {
 
     public void removePlayer(Player player){
         context.removePlayer(player);
-        System.out.println("yeah");
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 gui.getInformationsGUI1().getLabyrinthGUI1().removePlayer(player);
@@ -295,8 +294,8 @@ public class ClientSimple {
                     gui.changeHall(x,y, direction);
                     break;
                 case 2 :
-                    labyrinthConnection();
                     gui.getInformationsGUI1().getLabyrinthGUI1().append("Vous venez de changer de salle.");
+                    labyrinthConnection();
                     idHall = session.getIdHall();
                     where="idHall="+"\""+idHall+"\"";
                     myBDD.requeteSelect("*", "Hall", where);
@@ -317,7 +316,11 @@ public class ClientSimple {
             if(participant.getName().equals(myplayer.getName())){
                 myplayer.useBonus(bonus);
                 myplayer.removeBonus(bonus);
-                gui.getActionsGUI1().getInventory().removeBonus(bonus.getName());
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        gui.getActionsGUI1().getInventory().removeBonus(bonus.getName());
+                    }
+                });
             }else {
                 Player player = context.getPlayer(participant.getName());
                 if (player != null) {
@@ -403,6 +406,14 @@ public class ClientSimple {
 
     }
 
+    public GestionBDD getMyBDD() {
+        return myBDD;
+    }
+
+    public void setMyBDD(GestionBDD myBDD) {
+        this.myBDD = myBDD;
+    }
+
     public void showInfosMonster(String monsterName) {
         String where="Name="+"\""+monsterName+"\"";
         myBDD.requeteSelect("*", "Monstre", where);
@@ -458,6 +469,37 @@ public class ClientSimple {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public void labyrinthLogout(){
+        Player player=session.getPlayer();
+        String idPlayer=player.getName();
+        String idHall=session.getIdHall();
+        Labyrinth labyrinth=session.getProxy();
+        try {
+            labyrinth.logout(idHall,idPlayer);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void newGame(){
+        Player player=session.getPlayer();
+        String idPlayer=player.getName();
+        String idHall=session.getIdHall();
+        Labyrinth labyrinth=session.getProxy();
+        try {
+            labyrinth.newGame(idHall,idPlayer);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        idHall = session.getIdHall();
+        String where="idHall="+"\""+idHall+"\"";
+        myBDD.requeteSelect("*", "Hall", where);
+        List<String> res = myBDD.getResult().get(0);
+        int x=Integer.parseInt(res.get(4));
+        int y=Integer.parseInt(res.get(5));
+        gui.changeHall(x,y, Pole.EAST);
     }
 
     public void sendMessage(String message){

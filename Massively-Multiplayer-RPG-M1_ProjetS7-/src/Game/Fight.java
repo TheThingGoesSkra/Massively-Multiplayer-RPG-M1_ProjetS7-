@@ -197,7 +197,6 @@ public class Fight extends Thread {
                 e.printStackTrace();
             }
         }
-        this.stopFight();
     }
 
     public void stopFight(){

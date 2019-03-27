@@ -23,7 +23,7 @@ public class OperationCenterSimple {
     private String hostMessaging;
 
     public OperationCenterSimple(){
-        String url = "jdbc:mysql://localhost:3306/projets8";
+        String url = "jdbc:mysql://localhost:3306/projets7";
         url += "?autoReconnect=true&useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
         String user = "root";
         String passwd = "";
@@ -42,11 +42,9 @@ public class OperationCenterSimple {
         String idLabyrinth=Res.get(0);
         String labyrinthname=Res.get(1);
         String idHallEntre=Res.get(3);
-        //myBDD.printResultData();
         // Création du labyrinthe
         this.labyrinth=new LabyrinthSimple(idLabyrinth,labyrinthName, idHallEntre);
         // Savoir quels bonus sont présents dans le labyrinthe
-
         where="idlabyrinth="+"\""+idLabyrinth+"\"";
         myBDD.requeteSelect("*", "bonusestdanslabyrinth", where);
         //myBDD.printResultData();
@@ -145,11 +143,10 @@ public class OperationCenterSimple {
             String idTypeHall=ligne.get(2);
             int x=Integer.parseInt(ligne.get(4));
             int y=Integer.parseInt(ligne.get(5));
-            Hall hall=new Hall("", idHall, name, idTypeHall,x,y);
+            Hall hall=new Hall(idLabyrinth, idHall, name, idTypeHall,x,y);
             tamponHalls.add(hall);
             halls.add(idHall);
         }
-
         // Trouver les portes correspondant à chaque hall
         for (Hall hall : tamponHalls) {
             String idHall = hall.getIdHall();
@@ -292,18 +289,13 @@ public class OperationCenterSimple {
                 res1 = res.get(0);
                 String idHall = res1.get(2);
                 Hall hall=labyrinth.getHall(idHall);
-                int x=hall.getx();
-                int y=hall.gety();
                 String life = res1.get(3);
                 player.setLife(Integer.parseInt(life));
-                // TODO : Intégrer adresse serveur messagerie
-                session = new Session(player, idLabyrinth, idHall, x, y);
+                session = new Session(player, idLabyrinth, idHall);
             }else{
                 String idHall = "0";
-                int x=2;
-                int y=1;
                 player.setLife(player.getMaxlife());
-                session = new Session(player, idLabyrinth, idHall, x, y);
+                session = new Session(player, idLabyrinth, idHall);
             }
         } else {
                 String values = "(\"" + name + "\",10,1,1,1,0)";
@@ -311,9 +303,7 @@ public class OperationCenterSimple {
                 player = new Player(name, 10, 1, 1, 1, 10);
                 String idLabyrinth = "0";
                 String idHall = "0";
-                int x=2;
-                int y=1;
-                session = new Session(player, idLabyrinth, idHall, x , y);
+                session = new Session(player, idLabyrinth, idHall);
         }
         where = "idplayer=" + "\"" + name + "\"";
         this.myBDD.requeteSelect("*", "playerdispose", where);
@@ -338,10 +328,33 @@ public class OperationCenterSimple {
     }
 
 
-    public void save(ArrayList<Player> players, String labyrinth, String Hall) {
-        // TODO Sauvegarder/Update dans la table session : idPlayer, idLab, idHall, Life.
-        // TODO Sauvegarde/Update dans la table joueur : attack, resilience, chance, maxlife.
-        // TODO Sauvegarde/Update playerDispose : player, idBonus.
+    public void save(ArrayList<Player> players, String idLabyrinth, String idHall) {
+        for(Player player : players){
+            String name=player.getName();
+            String life=Integer.toString(player.getLife());
+            String maxLife=Integer.toString(player.getMaxlife());
+            String attack=Integer.toString(player.getAttack());
+            String resilience=Integer.toString(player.getResilience());
+            String chance=Integer.toString(player.getChance());
+            String where = "idplayer=" + "\"" + name + "\"";
+            this.myBDD.requeteUpdate("player", ("life="+ "\"" +maxLife+ "\"" +", attaque="+ "\"" +attack+ "\"" +", resistance="+ "\"" +resilience+ "\"" +", chance="+ "\"" +chance+ "\""), where);
+            this.myBDD.requeteUpdate("session",("idlabyrinth="+ "\"" +idLabyrinth+ "\"" +", idhall="+ "\"" + idHall + "\"" +", life="+ "\"" + life + "\""), where);;
+            this.myBDD.requeteDelete("playerdispose",where);
+            ArrayList<Bonus> bonusList=player.getListeBonus();
+            where="";
+            for(Bonus bonus : bonusList){
+                life=Integer.toString(bonus.getLife());
+                maxLife=Integer.toString(bonus.getMaxlife());
+                attack=Integer.toString(bonus.getAttack());
+                resilience=Integer.toString(bonus.getResilience());
+                chance=Integer.toString(bonus.getChance());
+                String values = "(\"" + name + "\",10,1,1,1,0)";
+                this.myBDD.requeteInsertInto("playerdispose",values,where);
+            }
+            // TODO insert all : player, idBonus.
+        }
+
+
     };
 
     public ArrayList<String> recordMessagerie(String host,int numPort) {

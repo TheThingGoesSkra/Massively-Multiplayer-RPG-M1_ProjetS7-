@@ -237,6 +237,52 @@ public class Hall implements Serializable {
         }
     }
 
+    public void forceExitPlayer (Player player){
+        boolean isFighting = isFighting(player);
+        if (isFighting == true) {
+            runnawayAll(player);
+        }
+        context.removePlayer(player);
+        ArrayList<Player> players = context.getPlayers();
+        for(Player player1 : players){
+            Client client = player1.getProxy();
+            try {
+                client.removePlayer(player);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void forceDeadPlayer(Player looser){
+        ArrayList<Participant> winners = new ArrayList<Participant>();
+        ArrayList<Fight> fightsToStop = new ArrayList<Fight>();
+        for(Fight fight:fights){
+            Boolean exist=fight.participantExist(looser);
+            if(exist){
+                Participant winner=fight.getOtherParticipant(looser);
+                winners.add(winner);
+                fightsToStop.add(fight);
+            }
+        }
+        for(Participant winner:winners){
+            winner.heal(1);
+        }
+        ArrayList<Player> players=context.getPlayers();
+        for(Player player:players){
+            Client client=player.getProxy();
+            try {
+                client.endFight(winners,looser);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        context.removeParticipant(looser);
+        for(Fight fight:fightsToStop){
+            fight.endFight();
+        }
+    }
+
     public Fight getFight(Participant forward, Participant attacked){
         for(Fight fight:fights){
             Boolean forwardExist=fight.participantExist(forward);
@@ -254,8 +300,24 @@ public class Hall implements Serializable {
         if(forward!=null && runner!=null) {
             Fight fight = this.getFight(forward, runner);
             if(fight!=null){
-                System.out.println("runnaway");
                 fight.runnaway(runner);
+                fight.stopFight();
+            }
+        }
+    }
+
+    public void runnawayAll(Participant runner){
+        ArrayList<Fight> fightsToRun=new ArrayList<Fight>();
+        for(Fight fight:fights){
+            Boolean exist=fight.participantExist(runner);
+            if(exist){
+                    fightsToRun.add(fight);
+            }
+        }
+        for(Fight fight : fightsToRun){
+            if(fight.participantExist(runner)){
+                fight.runnaway(runner);
+                fight.stopFight();
             }
         }
     }

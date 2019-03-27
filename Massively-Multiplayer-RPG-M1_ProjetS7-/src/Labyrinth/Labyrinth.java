@@ -8,12 +8,13 @@ import Game.*;
 import Client.*;
 public interface Labyrinth extends Remote {
 
-	public void login(Session s, Client proxy) throws RemoteException;
-	public int changeHall(String Hall, String player, Pole direction) throws RemoteException;
-	public void newFight(String idHall, String forward, String attacked) throws RemoteException;
-	public void runnaway(String Hall, String forward, String runner) throws RemoteException;
-	public void logout(String Hall, String player) throws RemoteException;
-	public void setReponsabiities(HashMap<Labyrinth,ArrayList<String>> resp) throws RemoteException;
-	public void chooseBonus(String idHall, String namePlayer, String bonus) throws RemoteException;
-
+	void login(Session s, Client proxy) throws RemoteException;
+	void login(String idHall, Player player) throws RemoteException;
+	int changeHall(String Hall, String player, Pole direction) throws RemoteException;
+	void newFight(String idHall, String forward, String attacked) throws RemoteException;
+	void runnaway(String Hall, String forward, String runner) throws RemoteException;
+	void logout(String Hall, String player) throws RemoteException;
+	void setReponsabiities(HashMap<Labyrinth,ArrayList<String>> resp) throws RemoteException;
+	void chooseBonus(String idHall, String namePlayer, String bonus) throws RemoteException;
+	void newGame(String idHall, String idPlayer) throws RemoteException;
 	}

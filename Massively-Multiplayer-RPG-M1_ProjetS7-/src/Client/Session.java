@@ -9,35 +9,15 @@ public class Session implements Serializable{
 
     private  String idLabyrinth;
     private  String idHall;
-    private int x;
-    private int y;
     private Player player;
     private Labyrinth proxy;
     private int numPortMessaging;
     private String hostMessaging;
 
-    public Session(Player player, String idLabyrinth, String idHall, int x, int y) {
+    public Session(Player player, String idLabyrinth, String idHall) {
         this.player=player;
         this.idHall=idHall;
         this.idLabyrinth=idLabyrinth;
-        this.x=x;
-        this.y=y;
-    }
-
-    public int getx() {
-        return x;
-    }
-
-    public void setx(int x) {
-        this.x = x;
-    }
-
-    public int gety() {
-        return y;
-    }
-
-    public void sety(int y) {
-        this.y = y;
     }
 
     public String getHall() {

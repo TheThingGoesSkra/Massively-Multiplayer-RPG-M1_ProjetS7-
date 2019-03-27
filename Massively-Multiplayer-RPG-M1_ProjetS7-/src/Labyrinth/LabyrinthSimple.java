@@ -82,13 +82,39 @@ public class LabyrinthSimple implements Serializable{
         return null;
     }
 
-    public void login(Session s, Client proxy){};
-
-    public void newGame(Player player){
-        // TODO : Mettre le joueur dans le hall d'entrée, s'inspirer de login dans labyrinthImpl.
+    public void login(Session s, Client proxy){
+        Player player;
         String idHall;
-        idHall= this.idHall;
+        idHall= s.getIdHall();
+        player = s.getPlayer();
+        player.setProxy(proxy);
         addPlayer(idHall,player);
+    };
+
+    public void login(String idHall, Player player){
+;       addPlayer(idHall,player);
+    };
+
+    public void newGame(String idHall, String idPlayer){
+        Hall hall = getHall(idHall);
+        Labyrinth proxy = hall.getProxy();
+        Context context = hall.getContext();
+        Player player1= context.getPlayer(idPlayer);
+        hall.forceExitPlayer(player1);
+        Client client =  player1.getProxy();
+        Hall newHall = getHall(this.idHall);
+        Labyrinth newProxy = newHall.getProxy();
+        try {
+            client.setHall(this.idHall);
+            if(proxy!=newProxy){
+                newProxy.login(this.idHall,player1);
+                client.setLabyrinthServer(newProxy);
+            }else{
+                addPlayer(this.idHall,player1);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     public void newFight(String idHall, String forwardName, String attackedName){
@@ -101,12 +127,11 @@ public class LabyrinthSimple implements Serializable{
         hall.runnaway(forwardName,runnerName);
     };
 
-    public void logout(String Hall, String player){
-        // TODO : Réutiliser code changeHall pour prévenir joueur que vous quitté la salle.
+    public void logout(String idHall, String player){
         Hall hall = getHall(idHall);
         Context context = hall.getContext();
         Player player1= context.getPlayer(player);
-        hall.exitPlayer(player1);
+        hall.forceDeadPlayer(player1);
     };
 
     public int changeHall(String idHall, String player, Pole direction){
@@ -127,7 +152,7 @@ public class LabyrinthSimple implements Serializable{
                 player.useBonus(bonus2);
                 ArrayList<Player> players=context.getPlayers();
                 for(Player player1:players){
-                    Client client=player.getProxy();
+                    Client client=player1.getProxy();
                     client.useBonus(player,bonus2);
                 }
                 bonusList.remove(i);
