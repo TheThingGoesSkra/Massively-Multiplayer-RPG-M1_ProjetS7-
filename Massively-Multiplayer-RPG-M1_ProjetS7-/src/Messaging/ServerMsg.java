@@ -1,6 +1,7 @@
 package Messaging;
 
 import Game.Hall;
+import Labyrinth.Labyrinth;
 import OperationCenter.OperationCenter;
 
 import java.io.DataInputStream;
@@ -14,6 +15,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 public class ServerMsg {
@@ -26,7 +28,7 @@ public class ServerMsg {
   private static clientThread[] threads = new clientThread[maxClientsCount];
   private OperationCenter noc;
   private ArrayList<String> halls;
-  private HashMap<String,clientThread[]> relationsClHalls;
+  private HashMap<String,ArrayList<clientThread>> relationsClHalls;
 
   public ServerMsg(int portNumber){
     // Numero de port
@@ -61,16 +63,40 @@ public class ServerMsg {
     this.threads = threads;
   }
 
-  public void removePlayer(String idHall, String name){
+  public clientThread removePlayer(String idHall, String name){
     // TODO
+	  int indx = 0;
+	  clientThread clientSortant = null;
+	  for(String hall : relationsClHalls.keySet()){
+		 ArrayList<clientThread> joueurs = relationsClHalls.get(hall);
+		 for(clientThread joueur : joueurs) {
+			if (joueur.clientName.equals(name))
+			{
+				indx = joueurs.indexOf(joueur);
+				clientSortant = joueur;
+				joueurs.remove(indx);
+				break;
+			}
+		 }
+         
+      }
+	  return clientSortant;
   }
 
   public void addPlayer(String idHall, String name){
-    // TODO
+	  for(String hall : relationsClHalls.keySet()){
+			 ArrayList<clientThread> joueurs = relationsClHalls.get(hall);
+	         joueurs.add(name);
+	      }
   }
 
-  public void moovePlayer(String idHall, String name){
-     // TODO
+  public void moovePlayer(String idHallout, String idHallin,String name){
+	  for(String hall : relationsClHalls.keySet()){
+			 ArrayList<clientThread> joueurs = relationsClHalls.get(hall);
+			 	if(idHallin.equals(hall)) {
+			         joueurs.add(removePlayer(idHallout, name));
+			 	}
+	      }
   }
 
   public void nocConnection(){
@@ -102,6 +128,7 @@ public class ServerMsg {
     private PrintStream os = null;
     private Socket clientSocket = null;
     private clientThread[] threads;
+    private clientThread[] allThreads;
     private int maxClientsCount;
 
 
