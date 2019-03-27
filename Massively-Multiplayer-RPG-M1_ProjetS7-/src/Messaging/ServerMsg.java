@@ -99,6 +99,8 @@ public class ServerMsg {
       maxClientsCount = threads.length;
     }
 
+
+
     public void run() {
       try {
         /*
@@ -159,7 +161,9 @@ public class ServerMsg {
               }
             }
           } else {
-            /* Messages publiques, broadcast. */
+//TODO A MODIFIER///////////////////////////////////////
+
+        	  /* Messages publiques, broadcast. */
             synchronized (this) {
               System.out.println(line);
               for (int i = 0; i < maxClientsCount; i++) {
@@ -168,6 +172,7 @@ public class ServerMsg {
                 }
               }
             }
+///////////////////////////////////////////////////////
           }
         }
 
