@@ -232,7 +232,6 @@ public class LoginGUI extends javax.swing.JFrame {
         client.startGUI();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                client.labyrinthConnection();
                 client.messagingConnection();
             }
         });

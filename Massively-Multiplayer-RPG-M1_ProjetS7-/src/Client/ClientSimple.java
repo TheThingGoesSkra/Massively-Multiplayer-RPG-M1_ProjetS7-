@@ -292,7 +292,6 @@ public class ClientSimple {
                     break;
                 case 2 :
                     gui.getInformationsGUI1().getLabyrinthGUI1().append("Vous venez de changer de salle.");
-                    labyrinthConnection();
                     idHall = session.getIdHall();
                     where="idHall="+"\""+idHall+"\"";
                     myBDD.requeteSelect("*", "Hall", where);
@@ -444,10 +443,14 @@ public class ClientSimple {
 
     public void identification(String name){
         try {
-            this.session=noc.identification(name);
+           noc.identification(name,this.proxy);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public void receiveSession(Session session){
+        this.session=session;
     }
 
     public void messagingConnection(){
@@ -459,14 +462,6 @@ public class ClientSimple {
         messaging.start();
     }
 
-    public void labyrinthConnection(){
-        Labyrinth labyrinth=session.getProxy();
-        try {
-            labyrinth.login(session,proxy);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void labyrinthLogout(){
         Player player=session.getPlayer();

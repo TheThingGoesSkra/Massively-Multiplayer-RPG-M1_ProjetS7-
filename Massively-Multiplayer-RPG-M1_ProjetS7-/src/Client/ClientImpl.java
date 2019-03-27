@@ -22,6 +22,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     public void setContext(Context context) throws RemoteException {
         client.setContext(context);
     };
+
+    public void receiveSession(Session session) throws RemoteException  {
+        client.receiveSession(session);
+    }
+
     public void addParticipant(Participant participant) throws RemoteException {
         client.addParticipant(participant);
     };

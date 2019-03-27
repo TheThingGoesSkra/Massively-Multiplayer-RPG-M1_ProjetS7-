@@ -91,7 +91,8 @@ public class LabyrinthSimple implements Serializable{
         addPlayer(idHall,player);
     };
 
-    public void login(String idHall, Player player){
+    public void login(String idHall, Player player, Client proxy){
+        player.setProxy(proxy);
 ;       addPlayer(idHall,player);
     };
 
@@ -107,7 +108,8 @@ public class LabyrinthSimple implements Serializable{
         try {
             client.setHall(this.idHall);
             if(proxy!=newProxy){
-                newProxy.login(this.idHall,player1);
+                Client proxyClient=player1.getProxy();
+                newProxy.login(this.idHall,player1,proxyClient);
                 client.setLabyrinthServer(newProxy);
             }else{
                 addPlayer(this.idHall,player1);

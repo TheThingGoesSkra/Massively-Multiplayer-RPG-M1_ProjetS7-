@@ -1,5 +1,6 @@
 package OperationCenter;
 
+import Client.Client;
 import Client.Session;
 import Game.Hall;
 import Game.Player;
@@ -22,8 +23,8 @@ public class OperationCenterImpl extends UnicastRemoteObject implements Operatio
         this.noc=noc;
     };
 
-    public Session identification(String name) throws RemoteException {
-        return noc.identification(name);
+    public void identification(String name, Client proxy) throws RemoteException {
+        noc.identification(name, proxy);
     };
 
     public void save(ArrayList<Player> players, String idLabyrinth, String idHall)  throws RemoteException {

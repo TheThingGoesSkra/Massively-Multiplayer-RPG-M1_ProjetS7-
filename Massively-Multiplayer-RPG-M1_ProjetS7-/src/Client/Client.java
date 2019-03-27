@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public interface Client extends Remote {
 
     void setContext(Context context) throws RemoteException;
+    void receiveSession(Session session) throws RemoteException;
     void addParticipant(Participant participant) throws RemoteException;
     void removePlayer(Player player) throws RemoteException;
     void setHall(String idHall) throws RemoteException;

@@ -43,12 +43,12 @@ public class LabyrinthImpl extends UnicastRemoteObject implements Labyrinth, Ser
 		this.noc = noc;
 	}
 
-	public void login(Session session, Client proxy) throws RemoteException{
+	public void login(Session session, Client proxy) throws RemoteException {
 		labyrinth.login(session,proxy);
 	}
 
-	public void login(String idHall, Player player) throws RemoteException{
-		labyrinth.login(idHall,player);
+	public void login(String idHall, Player player, Client proxy) throws RemoteException {
+		labyrinth.login(idHall,player,proxy);
 	}
 
 	public void newGame(String idHall, String idPlayer)throws RemoteException{

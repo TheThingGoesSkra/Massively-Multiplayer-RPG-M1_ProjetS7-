@@ -154,6 +154,8 @@ public class Hall implements Serializable {
                else if ( proxy != this.proxy){
                    try {
                        client.setLabyrinthServer(proxy);
+                       Client proxyClient=player1.getProxy();
+                       proxy.login(idHall,player1,proxyClient);
                    } catch (RemoteException e) {
                        e.printStackTrace();
                    }

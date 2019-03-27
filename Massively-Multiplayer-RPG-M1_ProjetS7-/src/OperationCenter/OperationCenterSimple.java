@@ -1,5 +1,6 @@
 package OperationCenter;
 
+import Client.Client;
 import Client.Session;
 import Game.*;
 import Labyrinth.Labyrinth;
@@ -270,7 +271,7 @@ public class OperationCenterSimple {
         resp.put(server, new ArrayList<String>());
     };
 
-    public Session identification(String name) {
+    public void identification(String name, Client proxy) {
         Player player;
         Session session;
         String where = "idplayer=" + "\"" + name + "\"";
@@ -324,7 +325,13 @@ public class OperationCenterSimple {
         }
         session.setNumPortMessaging(this.numPortMessaging);
         session.setHostMessaging(this.hostMessaging);
-        return session;
+        Labyrinth proxyLabyrinth=session.getProxy();
+        try {
+            proxy.receiveSession(session);
+            proxyLabyrinth.login(session,proxy);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
 

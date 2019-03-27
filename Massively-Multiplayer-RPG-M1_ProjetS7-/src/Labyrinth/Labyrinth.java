@@ -9,7 +9,7 @@ import Client.*;
 public interface Labyrinth extends Remote {
 
 	void login(Session s, Client proxy) throws RemoteException;
-	void login(String idHall, Player player) throws RemoteException;
+	void login(String idHall, Player player, Client proxy) throws RemoteException;
 	int changeHall(String Hall, String player, Pole direction) throws RemoteException;
 	void newFight(String idHall, String forward, String attacked) throws RemoteException;
 	void runnaway(String Hall, String forward, String runner) throws RemoteException;
