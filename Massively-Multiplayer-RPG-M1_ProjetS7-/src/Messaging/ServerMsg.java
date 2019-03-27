@@ -96,7 +96,6 @@ public class ServerMsg {
   public void recordServer() throws RemoteException {
     try {
       this.halls=noc.recordMessagerie("localhost",portNumber, proxy);
-      // TODO
     } catch (RemoteException e) {
       e.printStackTrace();
     }
