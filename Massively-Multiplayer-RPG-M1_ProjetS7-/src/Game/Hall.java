@@ -5,6 +5,7 @@ import java.util.*;
 
 import Client.Client;
 import Labyrinth.Labyrinth;
+import Messaging.ChatLocalisation;
 import OperationCenter.OperationCenter;
 
 import java.io.Serializable;
@@ -21,6 +22,7 @@ public class Hall implements Serializable {
     private String idType;
     private HashMap<Pole,Door> doors;
     private transient Labyrinth proxy;
+    private ChatLocalisation chatProxy;
     private Context context;
     private ArrayList<Fight> fights;
     private OperationCenter noc;
@@ -36,6 +38,14 @@ public class Hall implements Serializable {
         this.idType=idType;
         this.x=x;
         this.y=y;
+    }
+
+    public ChatLocalisation getChatProxy() {
+        return chatProxy;
+    }
+
+    public void setChatProxy(ChatLocalisation chatProxy) {
+        this.chatProxy = chatProxy;
     }
 
     public String getIdHall() {
@@ -141,8 +151,11 @@ public class Hall implements Serializable {
                Hall hall = door.getOtherHall(this);
                String idHall = hall.getIdHall();
                Client client =  player1.getProxy();
+               String name = player1.getName();
+               ChatLocalisation chatProxy=hall.getChatProxy();
                try {
                     client.setHall(idHall);
+                    chatProxy.moovePlayer(this.idHall,name,idHall);
                } catch (RemoteException e) {
                     e.printStackTrace();
                }

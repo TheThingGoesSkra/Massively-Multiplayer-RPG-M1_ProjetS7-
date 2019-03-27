@@ -25,11 +25,18 @@ public class ServerMsg {
   private static int maxClientsCount = 10;
   private static clientThread[] threads = new clientThread[maxClientsCount];
   private OperationCenter noc;
+  private ChatLocalisation proxy;
   private ArrayList<String> halls;
   private HashMap<String,clientThread[]> relationsClHalls;
 
   public ServerMsg(int portNumber){
     // Numero de port
+    try {
+      this.proxy = new ChatLocalisatonImpl(this);
+    } catch (RemoteException e) {
+      e.printStackTrace();
+    }
+
     this.portNumber = portNumber;
     try {
       this.serverSocket = new ServerSocket(portNumber);
@@ -69,8 +76,8 @@ public class ServerMsg {
     // TODO
   }
 
-  public void moovePlayer(String idHall, String name){
-     // TODO
+  public void moovePlayer(String idHall, String name, String idHall2){
+    // TODO
   }
 
   public void nocConnection(){
@@ -88,7 +95,7 @@ public class ServerMsg {
 
   public void recordServer() throws RemoteException {
     try {
-      this.halls=noc.recordMessagerie("localhost",portNumber);
+      this.halls=noc.recordMessagerie("localhost",portNumber, proxy);
       // TODO
     } catch (RemoteException e) {
       e.printStackTrace();
@@ -101,6 +108,7 @@ public class ServerMsg {
     private DataInputStream is = null;
     private PrintStream os = null;
     private Socket clientSocket = null;
+    private clientThread[] allThreads;
     private clientThread[] threads;
     private int maxClientsCount;
 

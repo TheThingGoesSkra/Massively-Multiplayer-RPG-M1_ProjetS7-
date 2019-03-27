@@ -6,6 +6,7 @@ import Game.Hall;
 import Game.Player;
 import Labyrinth.Labyrinth;
 import Labyrinth.LabyrinthSimple;
+import Messaging.ChatLocalisation;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -35,8 +36,8 @@ public class OperationCenterImpl extends UnicastRemoteObject implements Operatio
         LabyrinthSimple labyrinth=noc.getLabyrinth();
         return labyrinth;
     }
-    public ArrayList<String> recordMessagerie(String ip,int numPort) throws RemoteException {
-        ArrayList<String> halls = noc.recordMessagerie(ip,numPort);
+    public ArrayList<String> recordMessagerie(String ip, int numPort, ChatLocalisation proxy) throws RemoteException {
+        ArrayList<String> halls = noc.recordMessagerie(ip,numPort,proxy);
         return halls;
     }
 
