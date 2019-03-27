@@ -61,6 +61,18 @@ public class ServerMsg {
     this.threads = threads;
   }
 
+  public void removePlayer(String idHall, String name){
+    // TODO
+  }
+
+  public void addPlayer(String idHall, String name){
+    // TODO
+  }
+
+  public void moovePlayer(String idHall, String name){
+     // TODO
+  }
+
   public void nocConnection(){
     OperationCenter r = null;
     try {
@@ -97,6 +109,10 @@ public class ServerMsg {
       this.clientSocket = clientSocket;
       this.threads = threads;
       maxClientsCount = threads.length;
+    }
+
+    public void setThreads(clientThread[] threads){
+      this.threads=threads;
     }
 
 
