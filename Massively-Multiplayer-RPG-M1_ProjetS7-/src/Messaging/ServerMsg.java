@@ -24,8 +24,8 @@ public class ServerMsg {
   private static ServerSocket serverSocket;
   private int portNumber;
   //Creation des thread client ; Max client=10 pour test
-  private static int maxClientsCount = 10;
-  private static clientThread[] threads = new clientThread[maxClientsCount];
+  private int maxClientsCount = 10;
+  private clientThread[] threads = new clientThread[maxClientsCount];
   private OperationCenter noc;
   private ChatLocalisation proxy;
   private ArrayList<String> halls;
@@ -38,7 +38,7 @@ public class ServerMsg {
     } catch (RemoteException e) {
       e.printStackTrace();
     }
-
+    relationsClHalls=new HashMap<String,ArrayList<clientThread>>();
     this.portNumber = portNumber;
     try {
       this.serverSocket = new ServerSocket(portNumber);
@@ -70,40 +70,57 @@ public class ServerMsg {
     this.threads = threads;
   }
 
-  public clientThread removePlayer(String idHall, String name){
+  public clientThread removePlayer(String name, String idHall){
+    System.out.println("               ->"+" "+name+" "+idHall);
     // TODO
 	  int indx = 0;
-	  clientThread clientSortant = null;
 	  for(String hall : relationsClHalls.keySet()){
-		 ArrayList<clientThread> joueurs = relationsClHalls.get(hall);
-		 for(clientThread joueur : joueurs) {
-			if (joueur.clientName.equals(name))
-			{
-				indx = joueurs.indexOf(joueur);
-				clientSortant = joueur;
-				joueurs.remove(indx);
-				break;
-			}
-		 }
-         
+	    if(hall.equals(idHall)) {
+          ArrayList<clientThread> joueurs = relationsClHalls.get(hall);
+          if(!joueurs.isEmpty()) {
+              System.out.println("liste1 : "+joueurs);
+            for (clientThread joueur : joueurs) {
+              String namej = joueur.getClientName();
+              namej=namej.substring(1);
+              if (namej.equals(name)) {
+                indx = joueurs.indexOf(joueur);
+                joueurs.remove(indx);
+                System.out.println("liste2 : "+joueurs);
+                return joueur;
+              }
+            }
+          }else{
+            System.out.println("JoueursHallIsEmpty");
+          }
+        }
       }
-	  return clientSortant;
+	  return null;
   }
 
   public void addPlayer(String idHall, String name){
-	  for(String hall : relationsClHalls.keySet()){
-			 ArrayList<clientThread> joueurs = relationsClHalls.get(hall);
-	         //joueurs.add(name);
-	      }
+    System.out.println("               ->"+" "+name+" "+idHall);
+    for(String hall : relationsClHalls.keySet()) {
+      if (hall.equals(idHall)) {
+        ArrayList<clientThread> joueurs = relationsClHalls.get(hall);
+        clientThread thread=new clientThread(joueurs,threads,name);
+        joueurs.add(thread);
+      }
+    }
   }
 
-  public void moovePlayer(String idHallout,String name,String idHallin){
-	  for(String hall : relationsClHalls.keySet()){
-			 ArrayList<clientThread> joueurs = relationsClHalls.get(hall);
-			 	if(idHallin.equals(hall)) {
-			         joueurs.add(removePlayer(idHallout, name));
-			 	}
-	      }
+  public void moovePlayer(String idHallout, String name, String idHallin){
+    System.out.println("               ->"+idHallout+" "+name+" "+idHallin);
+    clientThread thread=removePlayer(name,idHallout);
+	  for(String hall : relationsClHalls.keySet()) {
+        if (hall.equals(idHallin)) {
+          ArrayList<clientThread> joueurs = relationsClHalls.get(hall);
+          joueurs.add(thread);
+          System.out.print(thread.getHallThreads());
+          System.out.print(joueurs);
+          thread.setHallThreads(joueurs);
+          break;
+        }
+      }
   }
 
   public void nocConnection(){
@@ -122,136 +139,11 @@ public class ServerMsg {
   public void recordServer() throws RemoteException {
     try {
       this.halls=noc.recordMessagerie("localhost",portNumber, proxy);
+      for(String hall : halls){
+        this.relationsClHalls.put(hall,new ArrayList<clientThread>());
+      }
     } catch (RemoteException e) {
       e.printStackTrace();
-    }
-  }
-
-  public class clientThread extends Thread {
-
-    private String clientName = null;
-    private DataInputStream is = null;
-    private PrintStream os = null;
-    private Socket clientSocket = null;
-    private clientThread[] allThreads;
-    private clientThread[] threads;
-    private int maxClientsCount;
-
-
-    public clientThread(Socket clientSocket, clientThread[] threads) {
-      this.clientSocket = clientSocket;
-      this.threads = threads;
-      maxClientsCount = threads.length;
-    }
-
-    public void setThreads(clientThread[] threads){
-      this.threads=threads;
-    }
-
-
-
-    public void run() {
-      try {
-        /*
-         * Creation de canal.
-         */
-        is = new DataInputStream(clientSocket.getInputStream());
-        os = new PrintStream(clientSocket.getOutputStream());
-        String name;
-        while (true) {
-          name = is.readLine().trim();
-          if (name.indexOf('@') == -1) {
-            break;
-          } else {
-            os.println("Le pseudo ne doit pas contenir le caractére '@'.");
-          }
-        }
-
-        /* Acceuillir nouveau joueur. */
-        os.println("Bienvenue "+name+" !! \nUtilisez :  \n /quit pour quitter.<br>@pseudo pour un message prive.");
-
-        synchronized (this) {
-          for (int i = 0; i < maxClientsCount; i++) {
-            if (threads[i] != null && threads[i] == this) {
-              clientName = "@" + name;
-              break;
-            }
-          }
-          for (int i = 0; i < maxClientsCount; i++) {
-            if (threads[i] != null && threads[i] != this) {
-              threads[i].os.println(name + " rejoint la session.");
-            }
-          }
-        }
-        /* communication. */
-        while (true) {
-          String line = is.readLine();
-          if (line.startsWith("/quit")) {
-            break;
-          }
-          /* Gestion message privé entre joueurs  */
-          if (line.startsWith("@")) {
-            String[] words = line.split("\\s", 2);
-            if (words.length > 1 && words[1] != null) {
-              words[1] = words[1].trim();
-              if (!words[1].isEmpty()) {
-                synchronized (this) {
-                  for (int i = 0; i < maxClientsCount; i++) {
-                    if (threads[i] != null && threads[i] != this
-                            && threads[i].clientName != null
-                            && threads[i].clientName.equals(words[0])) {
-                      String message = "<font color=teal>"+name + "</font> : " + words[1];
-                      threads[i].os.println(message);
-                      this.os.println(message);
-                      break;
-                    }
-                  }
-                }
-              }
-            }
-          } else {
-//TODO A MODIFIER///////////////////////////////////////
-
-        	  /* Messages publiques, broadcast. */
-            synchronized (this) {
-              System.out.println(line);
-              for (int i = 0; i < maxClientsCount; i++) {
-                if (threads[i] != null && threads[i].clientName != null) {
-                  threads[i].os.println("<font color=blue>" + name + "</font> : " + line);
-                }
-              }
-            }
-///////////////////////////////////////////////////////
-          }
-        }
-
-        synchronized (this) {
-          for (int i = 0; i < maxClientsCount; i++) {
-            if (threads[i] != null && threads[i] != this
-                    && threads[i].clientName != null) {
-              threads[i].os.println(name
-                      + " quitte la session.");
-            }
-          }
-        }
-        os.println("Au revoir " + name +" !");
-
-      /* preparation du thread pour un nouveau joueur  */
-        synchronized (this) {
-          for (int i = 0; i < maxClientsCount; i++) {
-            if (threads[i] == this) {
-              threads[i] = null;
-            }
-          }
-        }
-        /*
-         * fermeture des cannaux et de la socket de service
-         */
-        is.close();
-        os.close();
-        clientSocket.close();
-      } catch (IOException e) {
-      }
     }
   }
 
@@ -268,7 +160,8 @@ public class ServerMsg {
         int i = 0;
         for (i = 0; i < getMaxClientsCount(); i++) {
           if (threads[i] == null) {
-            (threads[i] = new clientThread(clientSocket, threads)).start();
+            threads[i] = new clientThread(clientSocket, threads, relationsClHalls);
+            threads[i].start();
             break;
           }
         }

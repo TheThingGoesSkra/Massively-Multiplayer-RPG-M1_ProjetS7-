@@ -23,7 +23,7 @@ public class ChatLocalisatonImpl  extends UnicastRemoteObject implements ChatLoc
     }
 
     public void moovePlayer(String idHall, String name, String idHall2) throws RemoteException{
-        this.server.moovePlayer(idHall,name);
+        this.server.moovePlayer(idHall,name,idHall2);
     }
 
 }

@@ -151,11 +151,11 @@ public class Hall implements Serializable {
                Hall hall = door.getOtherHall(this);
                String idHall = hall.getIdHall();
                Client client =  player1.getProxy();
-               String name = player1.getName();
                ChatLocalisation chatProxy=hall.getChatProxy();
                try {
                     client.setHall(idHall);
-                    chatProxy.moovePlayer(this.idHall,name,idHall);
+                    System.out.println(this.idHall+" "+player+" "+idHall);
+                    chatProxy.moovePlayer(this.idHall,player,idHall);
                } catch (RemoteException e) {
                     e.printStackTrace();
                }
