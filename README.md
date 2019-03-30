@@ -14,6 +14,7 @@ Features :
 
 Possible improvements :
 
+- Ability to manage several dungeons at once 
 - Persistence/Identification system spread over several servers
 - Messaging system spread over several servers
 - Authentication system 
