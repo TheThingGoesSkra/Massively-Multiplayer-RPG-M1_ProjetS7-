@@ -1,5 +1,7 @@
 # Massively-Multiplayer-RPG-M1_ProjetS7-
 
+This is a massively multiplayer role-playing game realized while our first year of Master's degree in information system and network security.
+
 Features :
 
 - Dungeon rooms spread over several servers in a massively multiplayer perspective
