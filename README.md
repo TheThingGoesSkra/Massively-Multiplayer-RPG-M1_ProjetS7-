@@ -4,7 +4,7 @@ This is a massively multiplayer role-playing game realized while our first year 
 
 Features :
 
-- Dungeon rooms spread dynamically over several servers in a massively multiplayer perspective
+- Dungeon rooms dynamically distributed over several servers in a massively multiplayer perspective
 - Persistence
 - Cross-platform client with design graphic interface
 - Battle system against watches or players
