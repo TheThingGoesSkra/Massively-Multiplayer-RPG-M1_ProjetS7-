@@ -14,5 +14,6 @@ Features :
 
 Possible improvements :
 
+- Persistence/Identification system spread over several servers
 - Messaging system spread over several servers
 - Authentication system 
