@@ -1,5 +1,5 @@
 
-- Si vous n'avez ni Java, ni Wamp (ou Lamp) vous devez avoir une connexion internet afin de télécharger les différents installateurs.
+- Si vous n'avez ni Java, ni SQlite, ni Wamp (ou Lamp) vous devez avoir une connexion internet afin de télécharger les différents installateurs.
 
 - Si ce n'est pas déjà fait téléchargez Java à cette adresse:
 https://java.com/fr/
